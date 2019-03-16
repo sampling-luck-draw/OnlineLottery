@@ -5,21 +5,26 @@
     <title>Title</title>
 </head>
 <body>
+<h1> Test Channel.</h1>
 <script>
     var statusSocket = new WebSocket('ws://127.0.0.1:8000/ws/123');
     statusSocket.onmessage = function (e) {
-        var data = JSON.parse(e.data);
-        var message = data['message'];
-        // 收到消息后的处理逻辑
-        console.log(message);
-        document.getElementById('box').appendChild('<p>' + message + '</p>');
+        console.log(e);
+        var p = document.createElement("p");
+        var node = document.createTextNode(e.data);
+        p.appendChild(node);
+        document.getElementById('box').appendChild(p);
     };
-    statusSocket.send("knock knock");
+    function send() {
+        statusSocket.send("knock knock");
+    }
 
 </script>
+
 <div id="box">
 
 </div>
+<button onclick="send()"> Send</button>
 
 </body>
 </html>
