@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var statusSocket = new WebSocket('ws://127.0.0.1:8000/ws/123');
+    statusSocket.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        // 收到消息后的处理逻辑
+        console.log(message);
+        document.getElementById('box').appendChild('<p>' + message + '</p>');
+    };
+    statusSocket.send("knock knock");
+
+</script>
+<div id="box">
+
+</div>
+
+</body>
+</html>
