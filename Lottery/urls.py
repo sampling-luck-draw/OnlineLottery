@@ -17,11 +17,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from Lottery import settings
+from Lottery import settings, deploy
 from Pages.views import index
 
 
 urlpatterns = [
     path('', index),
+    path('deploy', deploy.deploy),
     path('admin/', admin.site.urls),
 ]
