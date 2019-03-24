@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'test_channel.html')
+    return render(request, 'pages/index.html')

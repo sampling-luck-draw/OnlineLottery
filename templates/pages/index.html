@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Prize-Draw</title>
+
+    <!--wow.js-->
+      <link rel="stylesheet" href="{% static 'pages/css/animate.min.css' %}">
+{#    <link href="https://cdn.bootcss.com/animate.css/3.7.0/animate.css" rel="stylesheet">#}
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/materialize/0.97.8/css/materialize.min.css" rel="stylesheet">
+{#      <link href="{% static 'pages/css/materialize.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    <link href="{% static "pages/css/style.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<!--导航栏-->
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">抽奖系统</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="#">登录</a></li>
+        </ul>
+        <!--小页面隐藏-->
+        <ul id="nav-mobile" class="side-nav">
+            <li><a href="#">登录</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+<!--最开始显示的界面-->
+<div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <br><br>
+            <h1 class="header center teal-text text-lighten-2">Prize Draw</h1>
+            <h1 class="header center teal-text text-lighten-2">抽奖系统</h1>
+            <div class="row center">
+                <h5 class="header col s12 light">一个快速私人定制化的抽奖系统</h5>
+            </div>
+            <div class="row center">
+                <!--跳转到下载界面-->
+                <a href="#" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">立即下载</a>
+            </div>
+            <br><br>
+
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/1.jpg' %}" alt="Unsplashed background img 1"></div>
+</div>
+
+
+<div class="container">
+    <div class="section">
+
+        <!-- 主要功能概述  -->
+        <div class="row">
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
+                    <h5 class="center">快速定制</h5>
+
+                    <p class="light">您可以在非常短的时间内得到属于您自己的抽奖系统。活动名称，奖品设置，起止时间等等都是您可以定制的选项。为您提供十分便捷的服务。</p>
+                </div>
+            </div>
+
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+                    <h5 class="center">用户参与</h5>
+
+                    <p class="light">通过微信扫一扫功能，无需手动添加参与名单，即可快速参与抽奖活动。<br/>您可以通过发送弹幕方式在任何时刻与其他参与人员进行互动。<br/>
+                        我们还推出离线版，使您无需网络，也可无忧使用。</p>
+                </div>
+            </div>
+
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
+                    <h5 class="center">使用简单</h5>
+
+                    <p class="light">我们提供精美的界面和简单方便的配置/操作。即使您对计算机操作不熟练，也可以在很短的时间内使用我们的系统。</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--抽奖形式概述-->
+<div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row center">
+                <h5 class="header col s12 light">抽奖形式的多样性为您提供更好的服务</h5>
+            </div>
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/2.jpg' %}" alt="Unsplashed background img 2"></div>
+</div>
+
+
+<!--抽奖样式展示，先简单做成图标样式-->
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 center">
+                <h3><i class="mdi-content-send brown-text"></i></h3>
+                <h4>抽奖方式示例</h4>
+            </div>
+        </div>
+        <!--设置抽奖图标-->
+        <div class="row">
+            <!--第一行-->
+            <div class="col s4">
+                <div class="icon-block">
+                    <h3 class="center brown-text"><i class="material-icons">repeat</i></h3>
+                    <h5 class="center brown-text">转盘</h5>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="icon-block">
+                    <h3 class="center brown-text"><i class="material-icons">snooze</i></h3>
+                    <h5 class="center brown-text">晃动</h5>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="icon-block">
+                    <h3 class="center brown-text"><i class="material-icons">toll</i></h3>
+                    <h5 class="center brown-text">摇奖</h5>
+                </div>
+            </div>
+        </div>
+        <!--第二行-->
+        <div class="row">
+            <!--第一行-->
+            <div class="col s4">
+                <div class="icon-block">
+                    <h3 class="center brown-text"><i class="material-icons medium">games</i></h3>
+                    <h5 class="center brown-text">游戏</h5>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="icon-block">
+                    <h3 class="center brown-text"><i class="material-icons medium">thumb_up</i></h3>
+                    <h5 class="center brown-text">赢取</h5>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="icon-block">
+                    <h3 class="center brown-text"><i class="material-icons medium">thumb_down</i></h3>
+                    <h5 class="center brown-text">惩罚</h5>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--定制功能概述-->
+<div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row center">
+                <h5 class="header col s12  white-text">强大的定制化功能为您提供自主设计酷炫活动的“权利”</h5>
+                <p class="white-text">作为一个诚实的团队，我们将告知您我们能提供的定制化服务</p>
+            </div>
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/3.jpg' %}" alt="Unsplashed background img 3"></div>
+</div>
+
+<!--卡片介绍1-->
+<div class="container">
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card deep-purple waves-effect waves-light">
+                <div class="card-content white-text">
+                    <span class="card-title">“快速定制”</span>
+                    <p>快速创建抽奖活动，定制奖品</p>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+        <!--卡片介绍2-->
+
+        <div class="col s12 m4">
+            <div class="card deep-purple darken-1 waves-effect waves-light">
+                <div class="card-content white-text">
+                    <span class="card-title">“完全控制”</span>
+                    <p>抽奖时间，风格，方式由你控制</p>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+        <!--卡片介绍3-->
+
+        <div class="col s12 m4">
+            <div class="card deep-purple darken-2 waves-effect waves-light">
+                <div class="card-content white-text">
+                    <span class="card-title">“数据保存”</span>
+                    <p>精准的存储您的使用记录及时间</p>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--联系我们-->
+<div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row center">
+                <h5 class="header col s12  white-text">如果您有任何问题请联系我们，并给予我们反馈</h5>
+            </div>
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/4.jpg' %}" alt="Unsplashed background img 3"></div>
+</div>
+
+
+<!--页脚，团队信息，联系我们，反馈方式。。。-->
+<footer class="page-footer teal brown darken-1">
+    <div class="container brown darken-1">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">LWCC Company</h5>
+                <p class="grey-text text-lighten-4">我们是由一只大学生组成的团队，许多技术还不足够成熟。如果您有任何的意见或建议，希望您能及时反馈给我们，我们将十分感激。</p>
+            </div>
+
+            <div class="col l3 s12">
+                <h5 class="white-text">附加功能</h5>
+                <ul>
+                    <li><a class="white-text" href="#!">首页</a></li>
+                    <li><a class="white-text" href="#!">帮助</a></li>
+                    <li><a class="white-text" href="#!">注册</a></li>
+                    <li><a class="white-text" href="#!">下载地址</a></li>
+                </ul>
+            </div>
+            <div class="col l3 s12">
+                <h5 class="white-text">联系方式</h5>
+                <ul>
+                    <li><a class="white-text" href="#!">xxxxx@xx.com</a></li>
+                    <li><p class="white-text">Tel:18xxxxxxxxx</p></li>
+                    <li><a class="white-text" href="#!">地址</a></li>
+                    <li><a class="white-text" href="#!">成员:L,W,C,Z</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            Made by LWCC Company.
+        </div>
+    </div>
+</footer>
+
+
+<!--  Scripts-->
+{#<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>#}
+<script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+{#<script src="{% static 'pages/js/materialize.min.js' %}"></script>#}
+<script src="https://cdn.bootcss.com/materialize/0.97.8/js/materialize.min.js"></script>
+<script src="{% static 'pages/js/init.js' %}"></script>
+
+</body>
+</html>
