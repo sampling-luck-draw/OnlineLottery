@@ -5,3 +5,7 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, 'pages/index.html')
+
+
+def test_ws(request):
+    return render(request, 'test_channel.html')

@@ -173,3 +173,4 @@ fabric.properties
 
 Lottery/secret.py
 Lottery/my.cnf
+upload_secrets.sh
