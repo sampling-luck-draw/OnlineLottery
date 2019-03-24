@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from Lottery import settings, deploy
 from Pages.views import index, test_ws
@@ -24,6 +24,7 @@ from Pages.views import index, test_ws
 urlpatterns = [
     path('', index),
     path('testws', test_ws),
+    path('wx/', include('WeChat.urls')),
     path('deploy', deploy.deploy),
     path('admin/', admin.site.urls),
 ]
