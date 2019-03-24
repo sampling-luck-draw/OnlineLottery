@@ -56,8 +56,6 @@ def handle_wechat(request):
 
 
 
-
-
 wx_token_expire_time = 0
 wx_token = ''
 

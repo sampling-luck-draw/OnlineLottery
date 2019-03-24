@@ -25,6 +25,7 @@ urlpatterns = [
     path('', index),
     path('testws', test_ws),
     path('wx/', include('WeChat.urls')),
+    path('xcx/', include('MicroProgram.urls')),
     path('deploy', deploy.deploy),
     path('admin/', admin.site.urls),
 ]
