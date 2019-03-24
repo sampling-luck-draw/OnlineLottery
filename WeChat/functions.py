@@ -11,17 +11,15 @@ def checksignature(request):
     if request.method == 'GET':
         signature = request.GET.get('signature')
         timestamp = request.GET.get('timestamp')
-        echostr = request.GET.get('echostr', 'success')
         nonce = request.GET.get('nonce')
     elif request.method == 'POST':
         signature = request.POST.get('signature')
         timestamp = request.POST.get('timestamp')
-        echostr = 'success'
         nonce = request.POST.get('nonce')
     else:
         return False
 
-    if signature and timestamp and echostr:
+    if signature and timestamp and nonce:
         l = [wechat_token, nonce, timestamp]
         l.sort()
         s = ''.join(l)
@@ -34,7 +32,7 @@ def checksignature(request):
 def handle_wechat(request):
     if request.method == 'GET':
         if checksignature(request):
-            return HttpResponse(request.GET.get('nonce'))
+            return HttpResponse(request.GET.get('echostr'))
         else:
             return HttpResponse('Fail')
 
