@@ -7,7 +7,7 @@ from Pages import consumers
 application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter([
-                url(r'^ws/123', consumers.CommandForward),
+                url(r'^ws$', consumers.CommandForward),
             ])
     ),
 })
