@@ -1,8 +1,8 @@
 from django.urls import path
-from .functions import handle_wechat, get_token
+from .functions import *
 
 
 urlpatterns = [
     path('', handle_wechat),
-    path('gettoken', get_token)
+    path('gettoken', get_token),
 ]

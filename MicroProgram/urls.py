@@ -1,7 +1,8 @@
 from django.urls import path
-from .functions import send_danmuku, get_token
+from .functions import *
 
 urlpatterns = [
-    path('sanddanmuku', send_danmuku),
-    path('geettoken', get_token)
+    path('sanddanmu', send_danmu),
+    path('gettoken', get_token),
+    path('login', micro_program_login)
 ]

@@ -2,16 +2,19 @@ import json
 import time
 
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
+
 from Lottery.secret import xcx_appid, xcx_appsecret
 
 
-def send_danmuku(request):
+def send_danmu(request):
     pass
 
 
 xcx_token_expire_time = 0
 xcx_token = ''
+
 
 def get_token(request):
     if request.method != 'GET':
@@ -28,3 +31,17 @@ def get_token(request):
         else:
             return HttpResponse(r)  # 返回错误代码
     return HttpResponse(xcx_token)
+
+
+@csrf_exempt
+def micro_program_login(request):
+    if request.method != 'POST':
+        return HttpResponseForbidden("Forbidden")
+    code = request.POST.get('code', '')
+    if not code:
+        return HttpResponseForbidden("No code")
+    response = requests.get('https://api.weixin.qq.com/sns/jscode2session?'
+                            'appid={}&secret={}&js_code={}&grant_type=authorization_code'
+                            .format(xcx_appid, xcx_appsecret, code))
+    # decode = json.loads(response.content.decode())
+    return HttpResponse(response.content)
