@@ -4,6 +4,7 @@ import time
 import requests
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
+from .models import Participant
 
 from Lottery.secret import xcx_appid, xcx_appsecret
 
@@ -34,7 +35,10 @@ def get_token(request):
 
 
 @csrf_exempt
-def micro_program_login(request):
+def login(request):
+    """
+    用于小程序的“登陆”功能，获得用户openid和session_key
+    """
     if request.method != 'POST':
         return HttpResponseForbidden("Forbidden")
     code = request.POST.get('code', '')
@@ -45,3 +49,27 @@ def micro_program_login(request):
                             .format(xcx_appid, xcx_appsecret, code))
     # decode = json.loads(response.content.decode())
     return HttpResponse(response.content)
+
+
+@csrf_exempt
+def join(request):
+    if request.method != 'POST':
+        return HttpResponseForbidden("Forbidden")
+    openid = request.POST.get('openid', '')
+    if not openid:
+        return HttpResponseForbidden("No openid")
+
+    try:
+        xcx_user = Participant.objects.get(openid=openid)
+    except Participant.DoesNotExist:
+        xcx_user = Participant(open_id=openid)
+
+    xcx_user.nick_name = request.POST.get('nickname', 'Anonymous.')
+    xcx_user.avatar = request.POST.get('avatar', 'default_avatar')
+    xcx_user.gender = request.POST.get('gender', 0)
+    xcx_user.country = request.POST.get('country', 'Solar System')
+    xcx_user.province = request.POST.get('province', 'Alpha Centauri')
+    xcx_user.city = request.POST.get('city', 'Proxima Centauri')
+    xcx_user.language = request.POST.get('language', 'Xenolinguistics')
+    xcx_user.save()
+    return HttpResponse('ok')

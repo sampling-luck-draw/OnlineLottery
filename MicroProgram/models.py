@@ -2,19 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Organizer(models):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+class Organizer(models.Model):
+    user = models.OneToOneField(to=User, on_delete=models.PROTECT)
     balance = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
 
 
-class Activity(models):
-    name = models.CharField(max_length=64)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-
-class Participant(models):
+class Participant(models.Model):
+    open_id = models.IntegerField(primary_key=True)
     nick_name = models.CharField(max_length=64)
     avatar = models.URLField()
     gender = models.SmallIntegerField()
@@ -23,3 +18,17 @@ class Participant(models):
     city = models.CharField(max_length=64)
     language = models.CharField(max_length=16)
 
+
+class Activity(models.Model):
+    name = models.CharField(max_length=64)
+    belong = models.ForeignKey(to=Organizer, on_delete=models.PROTECT)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    participants = models.ManyToManyField(to=Participant)
+
+
+class Danmu(models.Model):
+    sender = models.ForeignKey(to=Participant, on_delete=models.PROTECT)
+    activity = models.ForeignKey(to=Activity, on_delete=models.PROTECT)
+    text = models.TextField()
+    time = models.DateTimeField()
