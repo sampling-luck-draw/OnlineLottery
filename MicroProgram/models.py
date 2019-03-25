@@ -9,9 +9,9 @@ class Organizer(models.Model):
 
 
 class Participant(models.Model):
-    open_id = models.IntegerField(primary_key=True)
-    nick_name = models.CharField(max_length=64)
-    avatar = models.URLField()
+    openid = models.CharField(primary_key=True, max_length=16)
+    nickName = models.CharField(max_length=64)
+    avatarUrl = models.URLField()
     gender = models.SmallIntegerField()
     country = models.CharField(max_length=64)
     province = models.CharField(max_length=64)

@@ -62,10 +62,10 @@ def join(request):
     try:
         xcx_user = Participant.objects.get(openid=openid)
     except Participant.DoesNotExist:
-        xcx_user = Participant(open_id=openid)
+        xcx_user = Participant(openid=openid)
 
-    xcx_user.nick_name = request.POST.get('nickname', 'Anonymous.')
-    xcx_user.avatar = request.POST.get('avatar', 'default_avatar')
+    xcx_user.nickName = request.POST.get('nickName', 'Anonymous.')
+    xcx_user.avatarUrl = request.POST.get('avatarUrl', 'default_avatar')
     xcx_user.gender = request.POST.get('gender', 0)
     xcx_user.country = request.POST.get('country', 'Solar System')
     xcx_user.province = request.POST.get('province', 'Alpha Centauri')
