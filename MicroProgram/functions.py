@@ -41,7 +41,8 @@ def login(request):
     """
     if request.method != 'POST':
         return HttpResponseForbidden("Forbidden")
-    code = request.POST.get('code', '')
+    post_data = json.loads(request.body.decode('utf-8'))
+    code = post_data.get('code', '')
     if not code:
         return HttpResponseForbidden("No code")
     response = requests.get('https://api.weixin.qq.com/sns/jscode2session?'
@@ -55,7 +56,9 @@ def login(request):
 def join(request):
     if request.method != 'POST':
         return HttpResponseForbidden("Forbidden")
-    openid = request.POST.get('openid', '')
+    post_data = json.loads(request.body.decode('utf-8'))
+
+    openid = post_data.get('openid', '')
     if not openid:
         return HttpResponseForbidden("No openid")
 
@@ -64,12 +67,12 @@ def join(request):
     except Participant.DoesNotExist:
         xcx_user = Participant(openid=openid)
 
-    xcx_user.nickName = request.POST.get('nickName', 'Anonymous.')
-    xcx_user.avatarUrl = request.POST.get('avatarUrl', 'default_avatar')
-    xcx_user.gender = request.POST.get('gender', 0)
-    xcx_user.country = request.POST.get('country', 'Solar System')
-    xcx_user.province = request.POST.get('province', 'Alpha Centauri')
-    xcx_user.city = request.POST.get('city', 'Proxima Centauri')
-    xcx_user.language = request.POST.get('language', 'Xenolinguistics')
+    xcx_user.nickName = post_data.get('nickName', 'Anonymous.')
+    xcx_user.avatarUrl = post_data.get('avatarUrl', 'default_avatar')
+    xcx_user.gender = post_data.get('gender', 0)
+    xcx_user.country = post_data.get('country', 'Solar System')
+    xcx_user.province = post_data.get('province', 'Alpha Centauri')
+    xcx_user.city = post_data.get('city', 'Proxima Centauri')
+    xcx_user.language = post_data.get('language', 'Xenolinguistics')
     xcx_user.save()
     return HttpResponse('ok')
