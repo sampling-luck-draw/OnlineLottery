@@ -9,7 +9,7 @@ class Organizer(models.Model):
 
 
 class Participant(models.Model):
-    openid = models.CharField(primary_key=True, max_length=16)
+    openid = models.CharField(primary_key=True, max_length=32)
     nickName = models.CharField(max_length=64)
     avatarUrl = models.URLField()
     gender = models.SmallIntegerField()
