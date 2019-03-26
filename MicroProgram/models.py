@@ -7,6 +7,9 @@ class Organizer(models.Model):
     balance = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.user.username
+
 
 class Participant(models.Model):
     openid = models.CharField(primary_key=True, max_length=32)
@@ -18,6 +21,9 @@ class Participant(models.Model):
     city = models.CharField(max_length=64)
     language = models.CharField(max_length=16)
 
+    def __str__(self):
+        return "{} {}".format(self.openid, self.nickName)
+
 
 class Activity(models.Model):
     name = models.CharField(max_length=64)
@@ -26,9 +32,15 @@ class Activity(models.Model):
     end_time = models.DateTimeField()
     participants = models.ManyToManyField(to=Participant)
 
+    def __str__(self):
+        return self.name
+
 
 class Danmu(models.Model):
     sender = models.ForeignKey(to=Participant, on_delete=models.PROTECT)
     activity = models.ForeignKey(to=Activity, on_delete=models.PROTECT)
     text = models.TextField()
     time = models.DateTimeField()
+
+    def __str__(self):
+        return "{}: {} @ {} {}".format(self.sender.nickName, self.text, self.activity, self.time)
