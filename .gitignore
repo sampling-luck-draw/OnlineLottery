@@ -176,3 +176,4 @@ Lottery/my.cnf
 upload_secrets.sh
 rsync.sh
 .rsync.sh.swp
+**/migrations

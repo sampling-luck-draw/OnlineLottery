@@ -1,16 +1,39 @@
+import datetime
 import json
 import time
 
 import requests
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
-from .models import Participant
+from .models import Participant, Danmu, Activity
 
 from Lottery.secret import xcx_appid, xcx_appsecret
 
-
+@csrf_exempt
 def send_danmu(request):
-    pass
+    if request.method != 'POST':
+        return HttpResponseForbidden('Forbidden')
+    post_data = json.loads(request.body.decode('utf-8'))
+    openid = post_data.get('openid', '')
+    if not openid:
+        return HttpResponseForbidden('no openid')
+    text = post_data.get('danmu', '')
+    if not text:
+        return HttpResponseForbidden('no text')
+
+    danmu = Danmu()
+    try:
+        danmu.sender = Participant.objects.get(openid=openid)
+    except Participant.DoesNotExist:
+        return HttpResponseForbidden('user not exist')
+    danmu.text = text
+    danmu.time = datetime.datetime.now()
+    try:
+        danmu.activity = Activity.objects.get(id=4)
+    except Activity.DoesNotExist:
+        HttpResponseForbidden('activity not exist')
+    danmu.save()
+    return HttpResponse('ok')
 
 
 xcx_token_expire_time = 0
