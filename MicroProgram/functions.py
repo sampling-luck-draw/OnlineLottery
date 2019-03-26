@@ -71,17 +71,9 @@ def login(request):
     response = requests.get('https://api.weixin.qq.com/sns/jscode2session?'
                             'appid={}&secret={}&js_code={}&grant_type=authorization_code'
                             .format(xcx_appid, xcx_appsecret, code))
-    # decode = json.loads(response.content.decode())
-    return HttpResponse(response.content)
+    decode = json.loads(response.content.decode())
+    openid = decode.get('openid', '')
 
-
-@csrf_exempt
-def join(request):
-    if request.method != 'POST':
-        return HttpResponseForbidden("Forbidden")
-    post_data = json.loads(request.body.decode('utf-8'))
-
-    openid = post_data.get('openid', '')
     if not openid:
         return HttpResponseForbidden("No openid")
 
@@ -98,4 +90,12 @@ def join(request):
     xcx_user.city = post_data.get('city', 'Proxima Centauri')
     xcx_user.language = post_data.get('language', 'Xenolinguistics')
     xcx_user.save()
+
+    return HttpResponse(response.content)
+
+
+@csrf_exempt
+def join(request):
+    if request.method != 'POST':
+        return HttpResponseForbidden("Forbidden")
     return HttpResponse('ok')
