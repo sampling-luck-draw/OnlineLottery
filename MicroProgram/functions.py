@@ -33,7 +33,7 @@ def send_danmu(request):
     except Activity.DoesNotExist:
         HttpResponseForbidden('activity not exist')
     danmu.save()
-    return HttpResponse('ok')
+    return HttpResponse('{"result": "ok"}')
 
 
 xcx_token_expire_time = 0
@@ -90,12 +90,12 @@ def login(request):
     xcx_user.city = post_data.get('city', 'Proxima Centauri')
     xcx_user.language = post_data.get('language', 'Xenolinguistics')
     xcx_user.save()
-
-    return HttpResponse(response.content)
+    decode['result'] = 'ok'
+    return HttpResponse(json.dumps(decode))
 
 
 @csrf_exempt
 def join(request):
     if request.method != 'POST':
         return HttpResponseForbidden("Forbidden")
-    return HttpResponse('ok')
+    return HttpResponse('{"result": "ok"}')

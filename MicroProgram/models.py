@@ -32,6 +32,7 @@ class Activity(models.Model):
     end_time = models.DateTimeField()
     participants = models.ManyToManyField(to=Participant, blank=True)
 
+
     def __str__(self):
         return self.name
 
