@@ -31,7 +31,7 @@ class Activity(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     participants = models.ManyToManyField(to=Participant, blank=True)
-
+    channel_name = models.CharField(max_length=60, default="")
 
     def __str__(self):
         return self.name

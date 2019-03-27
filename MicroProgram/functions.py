@@ -3,11 +3,14 @@ import json
 import time
 
 import requests
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from .models import Participant, Danmu, Activity
 
 from Lottery.secret import xcx_appid, xcx_appsecret
+
 
 @csrf_exempt
 def send_danmu(request):
@@ -91,6 +94,18 @@ def login(request):
     xcx_user.language = post_data.get('language', 'Xenolinguistics')
     xcx_user.save()
     decode['result'] = 'ok'
+    post_data['uid'] = openid
+    post_data['avatar'] = post_data['avatarUrl']
+    post_data['nickname'] = post_data['nickName']
+    post_data['avatarUrl'] = None
+    post_data['code'] = None
+    channel_layer = get_channel_layer()
+    channel_name = Activity.objects.get(id=4).channel_name
+    async_to_sync(channel_layer.send)(
+        channel_name, {'type': 'chat.message', 'text': json.dumps(
+            {'action': 'append-user', 'content': post_data}) })
+    # print("channel_name : " + str({'type': 'chat.message', 'text': json.dumps(
+    #         {'action': 'append-user', 'content': post_data}) }))
     return HttpResponse(json.dumps(decode))
 
 
