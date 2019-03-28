@@ -1,7 +1,6 @@
 import datetime
 import json
 import time
-
 import requests
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -92,6 +91,7 @@ def login(request):
     xcx_user.province = post_data.get('province', 'Alpha Centauri')
     xcx_user.city = post_data.get('city', 'Proxima Centauri')
     xcx_user.language = post_data.get('language', 'Xenolinguistics')
+    xcx_user.activate_in = 4
     xcx_user.save()
     decode['result'] = 'ok'
     post_data['uid'] = openid
@@ -99,13 +99,17 @@ def login(request):
     post_data['nickname'] = post_data['nickName']
     post_data['avatarUrl'] = None
     post_data['code'] = None
+
+    a = Activity.objects.get(id=4)
+    a.participants.add(xcx_user)
+    a.save()
+
     channel_layer = get_channel_layer()
-    channel_name = Activity.objects.get(id=4).channel_name
+    channel_name = Activity.objects.get(id=xcx_user.activate_in).channel_name
     async_to_sync(channel_layer.send)(
         channel_name, {'type': 'chat.message', 'text': json.dumps(
             {'action': 'append-user', 'content': post_data}) })
-    # print("channel_name : " + str({'type': 'chat.message', 'text': json.dumps(
-    #         {'action': 'append-user', 'content': post_data}) }))
+
     return HttpResponse(json.dumps(decode))
 
 
