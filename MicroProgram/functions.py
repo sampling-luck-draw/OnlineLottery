@@ -28,6 +28,16 @@ def send_danmu(request):
         danmu.sender = Participant.objects.get(openid=openid)
     except Participant.DoesNotExist:
         return HttpResponseForbidden('user not exist')
+    try:
+        channel_name = Activity.objects.get(id=danmu.sender.activate_in).channel_name
+    except Activity.DoesNotExist:
+        return HttpResponse('{"result": "fail", "reason": "Activity does not exist"}')
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.send)(
+        channel_name, {'type': 'chat.message', 'text': json.dumps(
+            {'action': 'send-danmu', 'content': post_data})})
+
     danmu.text = text
     danmu.time = datetime.datetime.now()
     try:
@@ -97,8 +107,8 @@ def login(request):
     post_data['uid'] = openid
     post_data['avatar'] = post_data['avatarUrl']
     post_data['nickname'] = post_data['nickName']
-    post_data['avatarUrl'] = None
-    post_data['code'] = None
+    del post_data['avatarUrl']
+    del post_data['code']
 
     a = Activity.objects.get(id=4)
     a.participants.add(xcx_user)
@@ -108,7 +118,7 @@ def login(request):
     channel_name = Activity.objects.get(id=xcx_user.activate_in).channel_name
     async_to_sync(channel_layer.send)(
         channel_name, {'type': 'chat.message', 'text': json.dumps(
-            {'action': 'append-user', 'content': post_data}) })
+            {'action': 'append-user', 'content': post_data})})
 
     return HttpResponse(json.dumps(decode))
 

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <title>三百两抽奖系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    {#  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>#}
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    {#  <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>#}
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+    {#  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>#}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/materialize/0.97.8/css/materialize.min.css" rel="stylesheet">
+    {#  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    <link href="https://cdn.bootcss.com/animate.css/3.6.2/animate.min.css" rel="stylesheet">
+{#    <link href="css/animate.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+{#    <link href="css/animate.css" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    <script src="https://cdn.bootcss.com/materialize/0.97.8/js/materialize.js"></script>
+{#    <script src="js/materialize.js"></script>#}
+    <script src="{% static 'pages/js/init.js' %}"></script>
+    <script src="https://cdn.bootcss.com/wow/1.1.2/wow.min.js"></script>
+{#    <script src="js/wow.min.js"></script>#}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html body {
+            height: 100%;
+            width: 100%;
+        }
+
+        .gradient {
+            background-color: #4d0457c0;
+            overflow: hidden;
+            width: 100%;
+            animation: Gra 10s infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        @keyframes Gra {
+            0% {
+                background-image: url("{% static 'pages/img/new/2.jpg' %}");
+            }
+
+            25% {
+                background-image: url("{% static 'pages/img/new/3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'pages/img/new/16.jpg' %}");
+            }
+
+            75% {
+                background-image: url("{% static 'pages/img/new/12.jpg' %}");
+            }
+
+            100% {
+                background-image: url("{% static 'pages/img/new/2.jpg' %}");
+            }
+        }
+
+        .heading {
+            font-style: sans-serif;
+            color: white;
+            font-weight: bold;
+        }
+
+        .download {
+            cursor: pointer;
+            padding: 3px;
+        }
+
+        .download:hover {
+            text-shadow: 2px 2px 8px #000000;
+        }
+
+        .Detail {
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            align-content: flex-start;
+        }
+
+        .parallax-container {
+            width: 700px;
+            height: 550px;
+        }
+
+        .Text {
+            margin: 30px;
+            padding: 30px;
+        }
+
+        #rp {
+            left: 20px;
+        }
+
+        .method {
+            border: 2px solid rgba(0, 0, 0, 0.521);
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .method:hover {
+            box-shadow: 0 0 15px #888888;
+        }
+
+        .low {
+            height: 350px;
+            width: 100%;
+        }
+
+        .low > h5 {
+            width: 100%;
+        }
+
+        .ourDiv {
+            height: 80px;
+            width: 80px;
+            border: 1px solid black;
+            border-radius: 50px;
+        }
+
+        .ourHead {
+            height: 100%;
+            width: 100%;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body style="height:1500px">
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top">
+    <a class="navbar-brand" href="#">Sampling<span>三百两</span></a>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#">立即下载</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">登录</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">帮助</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">关于我们</a>
+        </li>
+    </ul>
+</nav>
+<div class="gradient">
+    <div class="heading"><h2>快速定制化的趣味弹幕互动抽奖系统</h2></div>
+</div>
+
+<div class="container">
+    <div class="section">
+        <!-- 主要功能概述  -->
+        <div class="row wow swing" data-wow-duration="3s" data-wow-offset="20" data-wow-iteration="1">
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h4 class="center brown-text"><i class="material-icons medium">flash_on</i></h4>
+                    <h4 class="center light">快速定制</h4>
+
+                </div>
+            </div>
+
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h4 class="center brown-text"><i class="material-icons medium">group</i></h4>
+                    <h4 class="center light">趣味活动</h4>
+
+                </div>
+            </div>
+
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h4 class="center brown-text"><i class="material-icons medium">settings</i></h4>
+                    <h4 class="center light">使用简单</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--定制概述-->
+<div class="Detail">
+    <div class="parallax-container">
+        <div class="parallax"><img src="{% static 'pages/img/new/10.jpg' %}" alt="Unsplashed background img 1"></div>
+    </div>
+    <div class="Text left">
+        <h4 class=" brown-text">What is Rapid Customization?</h4>
+        <h4 class=" brown-text">如何快速定制?</h4>
+
+        <p>您只需点击立即下载就可以在非常短的时间内得到属于您自己的弹幕抽奖互动系统</p>
+        <h5 class=" brown-text">定制活动功能：</h5>
+        <p>活动名称，奖品设置，起止时间，背景图片等等都是您可以定制的选项。</p>
+        <h5 class=" brown-text">定制弹幕功能:</h5>
+        <p>弹幕的发送速度，样式，背景图片，颜色，位置等等也随您改变。</p>
+    </div>
+</div>
+
+
+<div class="Detail">
+    <div class="Text right">
+        <h4 class=" brown-text">What are interesting activities?</h4>
+        <h4 class=" brown-text">如何增加活动趣味性?</h4>
+
+        <p>我们提供多样化的抽奖方式以及独有的实时弹幕功能，增加参与者与活动的互动性。</p>
+        <p>不仅让定制活动的人感觉方便有趣，而且让观众更好的参与到活动中。</p>
+        <h5 class=" brown-text">奖惩方式：</h5>
+        <p>我们为您设置了大量的抽奖方式，比如：动画，晃动，魔方，闪动，3D签到墙等等.</p>
+        <p>使您得到更方便的体验。</p>
+        <h5 class=" brown-text">弹幕功能:</h5>
+        <p>参与者只需要通过扫码进入到我们的微信小程序中，即可与活动现场互动，发送弹幕。</p>
+    </div>
+    <div class="parallax-container" id="rp">
+        <div class="parallax"><img src="{% static 'pages/img/new/9.jpg' %}" alt="Unsplashed background img 4"></div>
+    </div>
+</div>
+
+<div class="Detail">
+    <div class="parallax-container">
+        <div class="parallax"><img src="{% static 'pages/img/new/8.jpg' %}" alt="Unsplashed background img 1"></div>
+    </div>
+    <div class="Text left">
+        <h4 class=" brown-text">What is Simple Use?</h4>
+        <h4 class=" brown-text">如何简单使用?</h4>
+
+        <p>您不需要复杂的手动导入名单，只需扫码进入微信小程序即可</p>
+        <p>当您在没有网络的情况下也可以使用本系统</p>
+        <p>我们会将您的活动数据传输到云端，在您的个人中心中可以查询历史纪录</p>
+        <h5 class=" brown-text">参与活动：</h5>
+        <p>有网络的情况下，只需扫码进入微信小程序</p>
+        <p>无网络的情况下，只需简单导入，如您需要可以为您生成获奖者名单</p>
+        <h5 class=" brown-text">个人中心：</h5>
+        <p>在个人中心您可以查询到您的历史使用记录，每次活动获奖者记录</p>
+        <p>您还可以一键复制举办过的活动</p>
+    </div>
+</div>
+
+<!--抽奖样式展示，先简单做成图标样式-->
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 center">
+                <h4 class="brown-text">奖惩方式</h4>
+            </div>
+        </div>
+
+        <!--设置抽奖图标-->
+        <div class="row wow flipInY" data-wow-duration="2s" data-wow-offset="20" data-wow-iteration="1">
+            <!--第一行-->
+            <div class="col s4">
+                <div class="method icon-block">
+                    <h3 class="center brown-text"><i class="material-icons medium">games</i></h3>
+                    <h5 class="center brown-text light">闪动</h5>
+                    <p class="light center">用户的头像在签到墙上闪动</p>
+                    <p class="light center">预览请点击</p>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="method">
+                    <h3 class="center brown-text"><i class="material-icons medium">games</i></h3>
+                    <h5 class="center brown-text light">跳动</h5>
+                    <p class="light center">用户的头像不停跳动</p>
+                    <p class="light center">预览请点击</p>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="method">
+                    <h3 class="center brown-text"><i class="material-icons medium">games</i></h3>
+                    <h5 class="center brown-text light">魔方</h5>
+                    <p class="light center">3D魔方旋转样式</p>
+                    <p class="light center">预览请点击</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="parallax-container valign-wrapper low">
+
+    <div class="container">
+        <div class="row center">
+            <h5 class="header col s12 m12  black-text">强大的定制化功能为您提供自主设计有趣又酷炫活动的“权利”</h5>
+        </div>
+        <div class="row center">
+            <p class="col m12 s12 black-text">Powerful customization provides you with the right to design interesting
+                and cool activities independently.</p>
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/new/11.jpg' %}" alt="Unsplashed background img 3"></div>
+</div>
+
+<!--价格定制-->
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 center">
+                <h4 class="brown-text">定制价格</h4>
+            </div>
+        </div>
+
+        <!--设置抽奖图标-->
+        <div class="row wow rollIn" data-wow-duration="2s" data-wow-offset="10" data-wow-iteration="1">
+            <!--第一行-->
+            <div class="col s4">
+                <div class="method icon-block">
+                    <h3 class="center brown-text">FREE</h3>
+                    <h5 class="center brown-text light">免费</h5>
+                    <p class="light center">内容</p>
+                    <p class="light center">简单的定制活动</p>
+                    <p class="light center">基本的发送弹幕</p>
+                    <p class="light center">云端数据存储</p>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="method">
+                    <h3 class="center brown-text">MEDIUM</h3>
+                    <h5 class="center brown-text light">中级</h5>
+                    <p class="light center">内容</p>
+                    <p class="light center">丰富的定制活动</p>
+                    <p class="light center">弹幕审核与同步</p>
+                    <p class="light center">场内实时监控</p>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="method">
+                    <h3 class="center brown-text">COOPERATE</h3>
+                    <h5 class="center brown-text light">合作</h5>
+                    <p class="light center">内容</p>
+                    <p class="light center">团队为您定制活动</p>
+                    <p class="light center">大数据自动校审弹幕</p>
+                    <p class="light center">实时为您解决问题</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="parallax-container valign-wrapper low">
+
+    <div class="container">
+        <div class="row center">
+            <h5 class="header col s12 m12  black-text">我们是一支由大学生组成的团队</h5>
+        </div>
+        <div class="row center">
+            <p class="col m12 s12 black-text"> We are a team of College students. </p>
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/new/14.jpg' %}" alt="Unsplashed background img 3"></div>
+</div>
+
+<!--关于我们-->
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 center">
+                <p>--------------------------------------------------------------------------------</p>
+                <h4 class="brown-text">关于我们</h4>
+            </div>
+        </div>
+
+        <!--设置抽奖图标-->
+        <div class="row wow bounceInLeft" data-wow-duration="3s" data-wow-offset="10" data-wow-iteration="1">
+            <!--第一行-->
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u1.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">WMJ</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u5.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">CMY</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u7.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">LSY</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u8.jpeg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">ZC</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+        </div>
+        <!--设置抽奖图标-->
+        <div class="row wow bounceInRight" data-wow-duration="3s" data-wow-offset="0" data-wow-iteration="1">
+            <!--第二行-->
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u2.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">PL</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+
+
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u3.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">DJ</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u4.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">LYF</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="method">
+                    <div class="ourDiv center"><img src="{% static 'pages/img/new/u6.jpg' %}" class="ourHead"/></div>
+                    <h5 class="center brown-text light">BJZ</h5>
+                    <p class="light center">联系我们</p>
+                    <p class="light center">Email:...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="parallax-container valign-wrapper low">
+
+    <div class="container">
+        <div class="row center">
+            <h5 class="header col s12 m12  white-text">没什么比卷起衣袖开始新的旅程更让人激动的了</h5>
+        </div>
+        <div class="row center">
+            <p class="col m12 s12 white-text">Nothing is more exciting than rolling up your sleeves and starting a new
+                journey.</p>
+        </div>
+    </div>
+    <div class="parallax"><img src="{% static 'pages/img/new/1.jpg' %}" alt="Unsplashed background img 3"></div>
+</div>
+
+<!--页脚，团队信息，联系我们，反馈方式。。。-->
+<footer class="page-footer   light-blue darken-4">
+    <div class="container   light-blue darken-4">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">LWCC Company</h5>
+                <p class="grey-text text-lighten-4">我们是由一只大学生组成的团队，许多技术还不足够成熟。如果您有任何的意见或建议，希望您能及时反馈给我们，我们将十分感激。</p>
+            </div>
+
+            <div class="col l3 s12">
+                <h5 class="white-text">附加功能</h5>
+                <ul>
+                    <li><a class="white-text" href="#">首页</a></li>
+                    <li><a class="white-text" href="#">帮助</a></li>
+                    <li><a class="white-text" href="#">注册</a></li>
+                    <li><a class="white-text" href="#">下载地址</a></li>
+                </ul>
+            </div>
+            <div class="col l3 s12">
+                <h5 class="white-text">联系方式</h5>
+                <ul>
+                    <li><a class="white-text" href="#">xxxxx@xx.com</a></li>
+                    <li><p class="white-text">Tel:18xxxxxxxxx</p></li>
+                    <li><a class="white-text" href="#">地址</a></li>
+                    <li><a class="white-text" href="#">成员:L,W,C,Z,L,B,P,D</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            Made by LWCC Company.
+        </div>
+    </div>
+</footer>
+<script>
+    var Height = document.documentElement.clientHeight;
+    var Width = document.documentElement.clientWidth;
+    $(".gradient").css("height", Height);
+
+    new WOW().init();
+</script>
+</body>
+</html>
