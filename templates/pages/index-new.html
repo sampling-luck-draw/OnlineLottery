@@ -33,6 +33,10 @@
             height: 100%;
             width: 100%;
         }
+        canvas{
+            width:100%;
+            height:100%;
+        }
 
         .gradient {
             background-size:cover;
@@ -53,7 +57,7 @@
                 background-image: url("{% static 'pages/img/new/2.jpg' %}");
             }
 
-            25% {
+            35% {
                 background-image: url("{% static 'pages/img/new/3.jpg' %}");
             }
             50% {
@@ -137,6 +141,8 @@
             width: 100%;
             border-radius: 50px;
         }
+
+
     </style>
 </head>
 <body style="height:1500px">
@@ -507,6 +513,9 @@
     </div>
 </footer>
 </div>
+
+<canvas id="c_n9" style="position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5;"></canvas>
+<script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>
 <script>
     var Height = document.documentElement.clientHeight;
     var Width = document.documentElement.clientWidth;

@@ -18,6 +18,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="materialize" level="application" />
     <orderEntry type="library" name="wow" level="application" />
+    <orderEntry type="library" name="canvas-nest" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
