@@ -34,9 +34,17 @@ def send_danmu(request):
         return HttpResponse('{"result": "fail", "reason": "Activity does not exist"}')
 
     channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.send)(
-        channel_name, {'type': 'chat.message', 'text': json.dumps(
-            {'action': 'send-danmu', 'content': post_data})})
+    # async_to_sync(channel_layer.send)(
+    #     channel_name, {'type': 'chat.message', 'text': json.dumps(
+    #         {'action': 'send-danmu', 'content': post_data})})
+    async_to_sync(channel_layer.group_send)(
+        'test_group',
+        {
+            'type': 'chat_message',
+            'text': json.dumps(
+            {'action': 'send-danmu', 'content': post_data})
+        }
+    )
 
     danmu.text = text
     danmu.time = datetime.datetime.now()
@@ -116,9 +124,18 @@ def login(request):
 
     channel_layer = get_channel_layer()
     channel_name = Activity.objects.get(id=xcx_user.activate_in).channel_name
-    async_to_sync(channel_layer.send)(
-        channel_name, {'type': 'chat.message', 'text': json.dumps(
-            {'action': 'append-user', 'content': post_data})})
+    # async_to_sync(channel_layer.send)(
+    #     channel_name, {'type': 'chat.message', 'text': json.dumps(
+    #         {'action': 'append-user', 'content': post_data})})
+
+    async_to_sync(channel_layer.group_send)(
+        'test_group',
+        {
+            'type': 'chat_message',
+            'text': json.dumps(
+                {'action': 'append-user', 'content': post_data})
+        }
+    )
 
     return HttpResponse(json.dumps(decode))
 
