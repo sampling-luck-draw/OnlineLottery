@@ -35,6 +35,7 @@
         }
 
         .gradient {
+            background-size:cover;
             background-color: #4d0457c0;
             overflow: hidden;
             width: 100%;
@@ -92,7 +93,7 @@
 
         .parallax-container {
             width: 700px;
-            height: 550px;
+            height: 600px;
         }
 
         .Text {
@@ -160,6 +161,7 @@
 <div class="gradient">
     <div class="heading"><h2>快速定制化的趣味弹幕互动抽奖系统</h2></div>
 </div>
+<div class="container">
 
 <div class="container">
     <div class="section">
@@ -293,10 +295,10 @@
 
     <div class="container">
         <div class="row center">
-            <h5 class="header col s12 m12  black-text">强大的定制化功能为您提供自主设计有趣又酷炫活动的“权利”</h5>
+            <h5 class="header col s12 m12  white-text">强大的定制化功能为您提供自主设计有趣又酷炫活动的“权利”</h5>
         </div>
         <div class="row center">
-            <p class="col m12 s12 black-text">Powerful customization provides you with the right to design interesting
+            <p class="col m12 s12 white-text">Powerful customization provides you with the right to design interesting
                 and cool activities independently.</p>
         </div>
     </div>
@@ -318,7 +320,7 @@
             <!--第一行-->
             <div class="col s4">
                 <div class="method icon-block">
-                    <h3 class="center brown-text">FREE</h3>
+                    <h4 class="center brown-text">FREE</h4>
                     <h5 class="center brown-text light">免费</h5>
                     <p class="light center">内容</p>
                     <p class="light center">简单的定制活动</p>
@@ -329,7 +331,7 @@
 
             <div class="col s4">
                 <div class="method">
-                    <h3 class="center brown-text">MEDIUM</h3>
+                    <h4 class="center brown-text">MEDIUM</h4>
                     <h5 class="center brown-text light">中级</h5>
                     <p class="light center">内容</p>
                     <p class="light center">丰富的定制活动</p>
@@ -339,7 +341,7 @@
             </div>
             <div class="col s4">
                 <div class="method">
-                    <h3 class="center brown-text">COOPERATE</h3>
+                    <h4 class="center brown-text">COOPERATE</h4>
                     <h5 class="center brown-text light">合作</h5>
                     <p class="light center">内容</p>
                     <p class="light center">团队为您定制活动</p>
@@ -356,10 +358,10 @@
 
     <div class="container">
         <div class="row center">
-            <h5 class="header col s12 m12  black-text">我们是一支由大学生组成的团队</h5>
+            <h5 class="header col s12 m12  white-text">我们是一支由大学生组成的团队</h5>
         </div>
         <div class="row center">
-            <p class="col m12 s12 black-text"> We are a team of College students. </p>
+            <p class="col m12 s12 white-text"> We are a team of College students. </p>
         </div>
     </div>
     <div class="parallax"><img src="{% static 'pages/img/new/14.jpg' %}" alt="Unsplashed background img 3"></div>
@@ -470,7 +472,7 @@
 </div>
 
 <!--页脚，团队信息，联系我们，反馈方式。。。-->
-<footer class="page-footer   light-blue darken-4">
+<footer class="page-footer   light-blue darken-4 wow pulse" data-wow-duration="2s" data-wow-offset="10" data-wow-iteration="1">
     <div class="container   light-blue darken-4">
         <div class="row">
             <div class="col l6 s12">
@@ -504,6 +506,7 @@
         </div>
     </div>
 </footer>
+</div>
 <script>
     var Height = document.documentElement.clientHeight;
     var Width = document.documentElement.clientWidth;
