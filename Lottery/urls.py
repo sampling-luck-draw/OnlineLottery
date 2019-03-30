@@ -17,8 +17,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from Lottery import settings, deploy
-from Pages.views import index, test_ws
+from Lottery import settings, deploy, captcha
+from Pages.views import index, test_ws, get_csrf
+import MicroProgram.auth
 
 
 urlpatterns = [
@@ -26,6 +27,16 @@ urlpatterns = [
     path('testws', test_ws),
     path('wx/', include('WeChat.urls')),
     path('xcx/', include('MicroProgram.urls')),
+
+    path('get-csrf', get_csrf),
+    path('signup', MicroProgram.auth.signup),
+    path('signin', MicroProgram.auth.signin),
+    path('logout', MicroProgram.auth.logout),
+    path('changepsw', MicroProgram.auth.changePsw),
+
+    path('pc-geetest/get', captcha.pc_getcaptcha),
+    path('pc-geetest/validate', captcha.pc_validate),
+
     path('deploy', deploy.deploy),
     path('admin/', admin.site.urls),
 ]

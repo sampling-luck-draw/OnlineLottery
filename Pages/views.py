@@ -9,3 +9,7 @@ def index(request):
 
 def test_ws(request):
     return render(request, 'test_channel.html')
+
+
+def get_csrf(request):
+    return render(request, 'get_csrf.html')
