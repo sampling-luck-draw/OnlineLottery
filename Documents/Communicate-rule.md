@@ -53,26 +53,26 @@
 
       ```json
       {"action": "history-activities", 
-      "content": [{活动信息字典，具体格式待定}, {}]
+      "content": [{"活动信息字典，具体格式待定"}, {}]
       }
       ```
 
    4. 获得正在进行的活动： 云 -> 本地
 
       ```json
-      {"action": "running-activity" , "content": {活动信息字典}}
+      {"action": "running-activity" , "content": {"活动信息字典"}}
       ```
 
    5. 修改活动设置信息：本地 -> 云
 
       ```json
-      {"action": "modify-activity" , "content": {要修改的信息字典}}
+      {"action": "modify-activity" , "content": {"要修改的信息字典"}}
       ```
 
    6. 中奖：
 
       ```json
-      {"action": "lucky-dog", "content": {"uid": uid}}
+      {"action": "lucky-dog", "content": {"uid": "uid"}}
       ```
 
 
