@@ -33,7 +33,6 @@ def signup(request):
 def signin(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
-    print(request.body)
     data = json.loads(request.body)
     username = data.get('username')
     password = data.get('password')

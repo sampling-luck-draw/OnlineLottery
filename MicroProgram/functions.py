@@ -34,9 +34,9 @@ def send_danmu(request):
         return HttpResponse('{"result": "fail", "reason": "Activity does not exist"}')
 
     channel_layer = get_channel_layer()
-    # async_to_sync(channel_layer.send)(
-    #     channel_name, {'type': 'chat.message', 'text': json.dumps(
-    #         {'action': 'send-danmu', 'content': post_data})})
+
+    post_data['uid'] = post_data['openid']
+    del post_data['openid']
     async_to_sync(channel_layer.group_send)(
         'test_group',
         {
@@ -117,6 +117,7 @@ def login(request):
     post_data['nickname'] = post_data['nickName']
     del post_data['avatarUrl']
     del post_data['code']
+    del post_data['nickName']
 
     a = Activity.objects.get(id=4)
     a.participants.add(xcx_user)

@@ -5,7 +5,7 @@ from channels.generic.websocket import WebsocketConsumer
 from .models import Activity
 
 
-class CommandForward(WebsocketConsumer):
+class Console(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.cnt = 1
