@@ -11,6 +11,11 @@ class CommandForward(WebsocketConsumer):
         self.cnt = 1
 
     def connect(self):
+        user = self.scope['user']
+        if not user.is_authenticated:
+            self.close()
+            return
+
         async_to_sync(self.channel_layer.group_add)(
             'test_group',
             self.channel_name

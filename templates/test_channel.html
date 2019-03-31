@@ -3,28 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <h1> Test Channel.</h1>
+<form id="login">
+    <input type="text" name="username" title="username" id="username" value="天王盖地虎">
+    <input type="text" name="password" title="password" id="password" value="123">
+
+</form>
+<button id="login" onclick="login()">login</button>
+<button id="connect" onclick="connect()">connect</button>
+<div id="box"></div>
+<button onclick="send()"> Send</button>
+
 <script>
-    var statusSocket = new WebSocket('wss://' + window.location.host + '/ws');
-    statusSocket.onmessage = function (e) {
-        console.log(e);
-        var p = document.createElement("p");
-        var node = document.createTextNode(e.data);
-        p.appendChild(node);
-        document.getElementById('box').appendChild(p);
-    };
+    let statusSocket = null;
+    function connect() {
+        statusSocket = new WebSocket('ws://' + window.location.host + '/ws');
+        statusSocket.onmessage = function (e) {
+            console.log(e);
+            var p = document.createElement("p");
+            var node = document.createTextNode(e.data);
+            p.appendChild(node);
+            document.getElementById('box').appendChild(p);
+        };
+    }
     function send() {
         statusSocket.send("knock knock");
     }
 
+    function login() {
+        let d = {
+                username: $("#username").val(),
+                password: $("#password").val()
+            };
+        console.log(d);
+        $.ajax({
+            url: 'signin',
+            method: 'POST',
+            dataType: 'json',
+            {#contentType: "application/json",#}
+            data: JSON.stringify(d),
+            success: function(e) {
+                console.log(e);
+            }
+        })
+    }
+
 </script>
-
-<div id="box">
-
-</div>
-<button onclick="send()"> Send</button>
 
 </body>
 </html>

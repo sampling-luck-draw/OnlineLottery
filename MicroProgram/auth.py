@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse, HttpResponseForbidden
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -10,8 +12,9 @@ from Lottery.captcha import pc_validate
 def signup(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
-    username = request.POST.get('username')
-    password = request.POST.get('password')
+    data = json.loads(request.body)
+    username = data.get('username')
+    password = data.get('password')
     if not username:
         return JsonResponse({'result': 'error', 'msg': 'no username'})
     if not password:
@@ -25,12 +28,15 @@ def signup(request):
     auth.login(request, user)
     return JsonResponse({'result': 'success', 'uid': user.id})
 
+
 @csrf_exempt
 def signin(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
-    username = request.POST.get('username')
-    password = request.POST.get('password')
+    print(request.body)
+    data = json.loads(request.body)
+    username = data.get('username')
+    password = data.get('password')
     if not username:
         return JsonResponse({'result': 'error', 'msg': 'no username'})
     if not password:
@@ -55,8 +61,9 @@ def logout(request):
 def changePsw(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
-    old_psw = request.POST.get('old_psw')
-    new_psw = request.POST.get('new_psw')
+    data = json.loads(request.body)
+    old_psw = data.get('old_psw')
+    new_psw = data.get('new_psw')
     if not old_psw:
         return JsonResponse({'result': 'error', 'msg': 'no old password'})
     if not new_psw:
