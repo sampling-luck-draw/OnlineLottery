@@ -1,8 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
-
-
 def index(request):
     return render(request, 'pages/index-new.html')
 
@@ -17,3 +14,7 @@ def get_csrf(request):
 
 def signin(request):
     return render(request, 'pages/signin.html')
+
+
+def signup(request):
+    return render(request, 'pages/signup.html')

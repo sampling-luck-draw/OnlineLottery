@@ -16,7 +16,7 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="{% static "pages/js/signin.js" %}"></script>
+    <script src="{% static "pages/js/signup.js" %}"></script>
 
     <style>
         .bd-placeholder-img {
@@ -35,7 +35,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="{% static "pages/css/signin.css" %}" rel="stylesheet">
+    <link href="{% static "pages/css/signup.css" %}" rel="stylesheet">
 </head>
 
 <body class="text-center">
@@ -59,34 +59,41 @@
 </nav>
 
 <div class="container">
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="position: relative; min-height: 200px;">
-  <div id="errorToast" class="toast" data-autohide="true" data-delay="5000">
-    <div class="toast-header">
-      <strong class="mr-auto text-primary">登录失败</strong>
-      <small class="text-muted">&nbsp;</small>
-      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+    <div aria-live="polite" aria-atomic="true"
+         class="d-flex justify-content-center align-items-center" style="position: relative; min-height: 200px;">
+      <div id="errorToast" class="toast" data-autohide="true" data-delay="5000">
+        <div class="toast-header">
+          <strong class="mr-auto text-primary">注册失败</strong>
+          <small class="text-muted">&nbsp;</small>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body" id="toast-body">
+          Hello, world! This is a toast message.
+        </div>
+      </div>
     </div>
-    <div class="toast-body" id="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-  </div>
-</div>
 
-    <div class="form-signin">
+    <div class="form-signup">
         <img class="mb-4" src="{% static "pages/img/avatar.png" %}" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">登个录呗</h1>
-        <label for="inputEmail" class="sr-only">用户名</label>
-        <input type="text" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
+        <h1 class="h3 mb-3 font-weight-normal">注个册吧</h1>
+
+        <label for="inputEmail" class="sr-only">电子邮件</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="电子邮件" required autofocus>
+
+        <label for="inputUsername" class="sr-only">用户名</label>
+        <input type="text" id="inputUsername" class="form-control" placeholder="用户名" required>
+
         <label for="inputPassword" class="sr-only">密码</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" value="remember-me"> 记住我
             </label>
         </div>
 
-        <button class="btn btn-lg btn-primary btn-block" id="signinBtn" onclick="onSubmitClick()">登陆</button>
-        <a href="signup"><label>没有账号？现在注册！</label></a>
+        <button class="btn btn-lg btn-primary btn-block" id="signinBtn" onclick="onSignupClick()">注册</button>
+        <a href="signin"><label>已有帐号？立即登录！</label></a>
 
         <p class="mt-5 mb-3 text-muted">&copy; 2019-2019</p>
     </div>

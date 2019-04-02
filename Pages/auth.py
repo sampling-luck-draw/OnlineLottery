@@ -12,6 +12,8 @@ from . import views
 
 @csrf_exempt
 def signup(request):
+    if request.method == 'GET':
+        return views.signup(request)
     if request.method != 'POST':
         return HttpResponseForbidden()
     data = json.loads(request.body.decode('utf-8'))
