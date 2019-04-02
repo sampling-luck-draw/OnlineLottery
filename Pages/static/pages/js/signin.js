@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 function onSubmitClick() {
     let data =  {
-        username: $('#inputEmail').val(),
+        username: $('#inputUsername').val(),
         password: $('#inputPassword').val(),
     };
     if (data.username === '' || data.password === '')
@@ -23,9 +23,6 @@ function onSubmitClick() {
                 window.location.href="usercenter"
             } else {
                 console.log(e.msg);
-                let q = $("#signin-fail");
-                q.html(e.msg);
-                q.show();
                 $("#toast-body").html(e.msg);
                 $('.toast').toast('show');
             }

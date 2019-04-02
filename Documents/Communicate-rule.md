@@ -18,7 +18,7 @@
 
    POST: https://sampling.alphamj.cn/signup
 
-   DATA: {"username":"用户名", "password":"密码"}   // 验证码？
+   DATA: {"username":"用户名", "password":"密码", "email": "邮箱"}   // 验证码？
 
    RET: {"result": "success", "uid": user.id}
 

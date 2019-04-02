@@ -19,16 +19,19 @@ def signup(request):
     data = json.loads(request.body.decode('utf-8'))
     username = data.get('username')
     password = data.get('password')
+    email = data.get('email')
     if not username:
         return JsonResponse({'result': 'error', 'msg': 'no username'})
     if not password:
         return JsonResponse({'result': 'error', 'msg': 'no password'})
+    if not email:
+        return JsonResponse({'result': 'error', 'msg': 'no email'})
     if False and not pc_validate(request):
         return JsonResponse({'result': 'error', 'msg': '验证码错误'})
     query = User.objects.filter(username=username)
     if len(query) > 0:
         return JsonResponse({'result': 'error', 'msg': '该用户已经存在'})
-    user = User.objects.create_user(username=username, password=password)
+    user = User.objects.create_user(username=username, password=password, email=email)
     auth.login(request, user)
     return JsonResponse({'result': 'success', 'uid': user.id})
 

@@ -6,14 +6,15 @@ $(document).ready(function () {
 
 function onSignupClick() {
     let data =  {
-        username: $('#inputEmail').val(),
+        username: $('#inputUsername').val(),
         password: $('#inputPassword').val(),
+        email: $('#inputEmail').val()
     };
-    if (data.username === '' || data.password === '')
+    if (data.username === '' || data.password === '' || data.email === '')
         return;
 
     $.ajax({
-        url: 'signin',
+        url: 'signup',
         method: 'POST',
         contentType: 'json',
         dataType: 'json',
@@ -23,9 +24,6 @@ function onSignupClick() {
                 window.location.href="usercenter"
             } else {
                 console.log(e.msg);
-                let q = $("#signin-fail");
-                q.html(e.msg);
-                q.show();
                 $("#toast-body").html(e.msg);
                 $('.toast').toast('show');
             }
