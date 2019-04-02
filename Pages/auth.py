@@ -7,12 +7,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Lottery.captcha import pc_validate
 
+from . import views
+
 
 @csrf_exempt
 def signup(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
-    data = json.loads(request.body)
+    data = json.loads(request.body.decode('utf-8'))
     username = data.get('username')
     password = data.get('password')
     if not username:
@@ -31,9 +33,15 @@ def signup(request):
 
 @csrf_exempt
 def signin(request):
+    if request.method == 'GET':
+        return views.signin(request)
     if request.method != 'POST':
         return HttpResponseForbidden()
-    data = json.loads(request.body)
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except json.decoder.JSONDecodeError:
+        return HttpResponseForbidden('json decode error')
+
     username = data.get('username')
     password = data.get('password')
     if not username:
@@ -60,7 +68,7 @@ def logout(request):
 def changePsw(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
-    data = json.loads(request.body)
+    data = json.loads(request.body.decode('utf-8'))
     old_psw = data.get('old_psw')
     new_psw = data.get('new_psw')
     if not old_psw:

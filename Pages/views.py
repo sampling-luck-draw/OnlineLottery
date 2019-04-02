@@ -13,3 +13,7 @@ def test_ws(request):
 
 def get_csrf(request):
     return render(request, 'get_csrf.html')
+
+
+def signin(request):
+    return render(request, 'pages/signin.html')

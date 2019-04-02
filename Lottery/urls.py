@@ -13,13 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from Lottery import settings, deploy, captcha
+from Lottery import deploy, captcha
 from Pages.views import index, test_ws, get_csrf
-import MicroProgram.auth
+import Pages.auth
 
 
 urlpatterns = [
@@ -29,10 +28,10 @@ urlpatterns = [
     path('xcx/', include('MicroProgram.urls')),
 
     path('get-csrf', get_csrf),
-    path('signup', MicroProgram.auth.signup),
-    path('signin', MicroProgram.auth.signin),
-    path('logout', MicroProgram.auth.logout),
-    path('changepsw', MicroProgram.auth.changePsw),
+    path('signup', Pages.auth.signup),
+    path('signin', Pages.auth.signin),
+    path('logout', Pages.auth.logout),
+    path('changepsw', Pages.auth.changePsw),
 
     path('pc-geetest/get', captcha.pc_getcaptcha),
     path('pc-geetest/validate', captcha.pc_validate),
