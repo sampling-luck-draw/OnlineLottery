@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 from Lottery import deploy, captcha
-from Pages.views import index, test_ws, get_csrf
+from Pages.views import index, test_ws, get_csrf, usercenter
 import Pages.auth
 
 
 urlpatterns = [
     path('', index),
+    path('', include('gentelella.urls')),
     path('testws', test_ws),
     path('wx/', include('WeChat.urls')),
     path('xcx/', include('MicroProgram.urls')),
@@ -32,6 +33,7 @@ urlpatterns = [
     path('signin', Pages.auth.signin),
     path('logout', Pages.auth.logout),
     path('changepsw', Pages.auth.changePsw),
+    path('usercenter', include('gentelella.urls')),
 
     path('pc-geetest/get', captcha.pc_getcaptcha),
     path('pc-geetest/validate', captcha.pc_validate),

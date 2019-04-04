@@ -109,7 +109,7 @@ def login(request):
     xcx_user.province = post_data.get('province', 'Alpha Centauri')
     xcx_user.city = post_data.get('city', 'Proxima Centauri')
     xcx_user.language = post_data.get('language', 'Xenolinguistics')
-    xcx_user.activate_in = 4
+    xcx_user.activate_in = 4  # TODO: 读取二维码
     xcx_user.save()
     decode['result'] = 'ok'
     post_data['uid'] = openid

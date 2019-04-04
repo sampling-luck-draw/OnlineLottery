@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+
 def index(request):
     return render(request, 'pages/index-new.html')
 
@@ -18,3 +19,7 @@ def signin(request):
 
 def signup(request):
     return render(request, 'pages/signup.html')
+
+
+def usercenter(request):
+    return render(request, 'Pages/usercenter.html')

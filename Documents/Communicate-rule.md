@@ -74,5 +74,10 @@
       ```json
       {"action": "lucky-dog", "content": {"uid": "uid"}}
       ```
+      
+   7. 创建新活动：
+      ```json
+      {"action": "create-activity", "content": {}}
+      ```
 
 
