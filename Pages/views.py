@@ -1,9 +1,11 @@
 import collections
+import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Max
 from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponse
 from django.shortcuts import render
 import MicroProgram.models as models
@@ -70,6 +72,31 @@ def get_participants(request, activity_id):
     participants = activity.participants.all()
     qs_json = serializers.serialize('json', participants)
     return HttpResponse(qs_json, content_type='application/json')
+
+
+@login_required(login_url='/signin')
+def get_danmu(request, activity_id):
+    if request.method != 'GET':
+        return HttpResponseForbidden()
+
+    user = request.user
+    organizer = models.Organizer.objects.get(user=user)
+    activity = models.Activity.objects.get(id=activity_id)
+    if activity.belong != organizer:
+        return HttpResponseNotFound()
+
+    danmus = models.Danmu.objects.filter(activity=activity).order_by("-time")
+    participants_dict = dict([(k['openid'], k['nickName']) for k in activity.participants.values('openid', 'nickName')])
+
+    danmu_list = [{
+        'id': d.id,
+        'openid': d.sender.openid,
+        'nickName': participants_dict[d.sender.openid],
+        'text': d.text,
+        'time': d.time.strftime("%Y-%m-%d %H:%M:%S")
+    } for d in danmus]
+
+    return HttpResponse(json.dumps(danmu_list), content_type='application/json')
 
 
 @login_required(login_url='/signin')

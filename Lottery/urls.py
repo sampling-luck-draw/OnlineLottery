@@ -28,8 +28,6 @@ urlpatterns = [
     path('wx/', include('WeChat.urls')),
     path('xcx/', include('MicroProgram.urls')),
 
-
-
     path('pc-geetest/get', captcha.pc_getcaptcha),
     path('pc-geetest/validate', captcha.pc_validate),
 
