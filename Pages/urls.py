@@ -12,6 +12,7 @@ urlpatterns = [
     path('usercenter', Pages.views.usercenter),
     path('usercenter/danmu', Pages.views.danmu_manage),
     path('usercenter/participant', Pages.views.participant_manage),
+    path('usercenter/activity', Pages.views.activity_manage),
 
     path('testws', Pages.views.test_ws),
     path('get-csrf', Pages.views.get_csrf),

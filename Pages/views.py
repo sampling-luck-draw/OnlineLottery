@@ -75,3 +75,8 @@ def danmu_manage(request):
 @login_required(login_url='/signin')
 def participant_manage(request):
     return render(request, 'pages/usercenter/participants_list.html')
+
+
+@login_required(login_url='/signin')
+def activity_manage(request):
+    return render(request, 'pages/usercenter/activity_page.html')

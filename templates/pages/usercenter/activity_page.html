@@ -9,78 +9,9 @@
 
 {% block content %}
   <div class="right_col" role="main">
-    <!-- top tiles -->
-    <div class="row x_title">
-      <div class="col-md-12">
-        <h3>Overall</h3>
-      </div>
+    <div class="row">
+      <span>活动管理</span>
     </div>
-    <div class="row tile_count">
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-calendar-check-o"></i>举办活动</span>
-        <div class="count">{{ overall.activity_count }}次</div>
-        <span class="count_bottom">上次活动<i class="green">{{ overall.least_time| date:"Y-n-j" }}</i></span>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-user"></i> 总参与人数</span>
-        <div class="count">{{ overall.participant_count }}人</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_participant|floatformat }}</i>人</span>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-clock-o"></i>活动总时间</span>
-        <div class="count">{{ overall.time_count }}小时</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_time|floatformat }}</i>小时</span>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-gift"></i>总抽奖次数</span>
-        <div class="count">{{ overall.prize_draw_count }}次</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_prize|floatformat }}</i>次</span>
-      </div>
-
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-comment"></i>总弹幕数</span>
-        <div class="count">{{ overall.danmu_count }}条</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_danmu|floatformat }}</i>条</span>
-      </div>
-    </div>
-    <!-- /top tiles -->
-    <div class="row x_title">
-      <div class="col-md-12">
-        <h3>Activities</h3>
-      </div>
-    </div>
-
-    <table class="table table-striped projects">
-      <thead>
-      <tr>
-        <th style="width: 1%">#</th>
-        <th style="width: 20%">活动名称</th>
-        <th>开始时间</th>
-        <th>结束时间</th>
-        <th>参与人数</th>
-        <th>弹幕数量</th>
-        <th>状态</th>
-        <th>详情</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for activity in activities %}
-        <tr>
-          <td>{{ activity.id }}</td>
-          <td>{{ activity.name }}</td>
-          <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
-          <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
-          <td>{{ activity.participants.count }}</td>
-          <td>{{ activity.danmu_set.count }}</td>
-          <td><span class="label label-success">Finished</span></td>
-          <td><a href="/usercenter/activity?a={{ activity.id }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>查看</a></td>
-        </tr>
-      {% endfor %}
-
-      </tbody>
-    </table>
-
-
   </div>
 {% endblock content %}
 
