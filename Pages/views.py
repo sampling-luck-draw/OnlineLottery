@@ -22,4 +22,4 @@ def signup(request):
 
 
 def usercenter(request):
-    return render(request, 'Pages/usercenter.html')
+    return render(request, 'Pages/usercenter/usercenter.html')

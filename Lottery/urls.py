@@ -33,7 +33,7 @@ urlpatterns = [
     path('signin', Pages.auth.signin),
     path('logout', Pages.auth.logout),
     path('changepsw', Pages.auth.changePsw),
-    path('usercenter', include('gentelella.urls')),
+    path('usercenter', usercenter),
 
     path('pc-geetest/get', captcha.pc_getcaptcha),
     path('pc-geetest/validate', captcha.pc_validate),
