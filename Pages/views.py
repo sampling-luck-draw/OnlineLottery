@@ -3,6 +3,7 @@ from django.core import serializers
 from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponse
 from django.shortcuts import render
 import MicroProgram.models as models
+from functools import reduce
 
 
 def index(request):
@@ -29,9 +30,26 @@ def signup(request):
 def usercenter(request):
     user = request.user
     organizer = models.Organizer.objects.get(user=user)
-    activities = models.Activity.objects.filter(belong=organizer)
+    activities = models.Activity.objects.filter(belong=organizer).order_by('-id')
+
+    overall = {
+        'activity_count': activities.count(),
+        'participant_count': activities.values('participants').exclude(participants=None).count(),
+        'time_count': reduce(lambda a, b: a + b,
+                             map(lambda a: a['end_time'] - a['start_time'],
+                                 activities.values('start_time', 'end_time'))).seconds // 3600,
+        'prize_draw_count': 130,
+        'danmu_count': activities.values('danmu').exclude(danmu=None).count(),
+        'least_time': activities[0].start_time
+    }
+
+    overall['average_participant'] = overall['participant_count'] / overall['activity_count']
+    overall['average_time'] = overall['time_count'] / overall['activity_count']
+    overall['average_prize'] = overall['prize_draw_count'] / overall['activity_count']
+    overall['average_danmu'] = overall['danmu_count'] / overall['activity_count']
+
     return render(request, 'Pages/usercenter/usercenter.html',
-                  {'activities': activities})
+                  {'activities': activities, 'overall': overall})
 
 
 @login_required(login_url='/signin')
@@ -52,6 +70,7 @@ def get_participants(request, activity_id):
 @login_required(login_url='/signin')
 def danmu_manage(request):
     return render(request, 'pages/usercenter/danmu_list.html')
+
 
 @login_required(login_url='/signin')
 def participant_manage(request):
