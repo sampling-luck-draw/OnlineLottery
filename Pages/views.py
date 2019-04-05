@@ -1,9 +1,14 @@
+import collections
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponse
 from django.shortcuts import render
 import MicroProgram.models as models
 from functools import reduce
+from Pages.province import province_dict
 
 
 def index(request):
@@ -74,7 +79,27 @@ def danmu_manage(request):
 
 @login_required(login_url='/signin')
 def participant_manage(request):
-    return render(request, 'pages/usercenter/participants_list.html')
+    user = request.user
+    organizer = models.Organizer.objects.get(user=user)
+    activity_id = request.GET.get('a', None)
+    try:
+        activity = models.Activity.objects.get(id=activity_id)
+    except ObjectDoesNotExist:
+        activity = models.Activity.objects.filter(belong=organizer).order_by('-id')[0]
+
+    participant = activity.participants.all()
+    gender_statistics_male = participant.filter(gender=1).count()
+    gender_statistics_female = participant.filter(gender=2).count()
+    gender_statistics_other = participant.count() - gender_statistics_female - gender_statistics_male
+    gender_statistics = {'male': gender_statistics_male,
+                         'female': gender_statistics_female, 'other': gender_statistics_other}
+
+    province_statistics = collections.Counter(participant.values_list('province', flat=True))
+    province_statistics = [{"name": province_dict.get(k), "value": v} for k, v in province_statistics.items()]
+
+    return render(request, 'pages/usercenter/participants_list.html',
+                  {'participants': participant, 'activity': activity, 'gender_statistics': gender_statistics,
+                   'province_statistics': json.dumps(province_statistics)})
 
 
 @login_required(login_url='/signin')
