@@ -1,0 +1,18 @@
+
+from django.urls import path, include
+
+import Pages.auth, Pages.views
+
+urlpatterns = [
+    path('', Pages.views.index),
+    path('signup', Pages.auth.signup),
+    path('signin', Pages.auth.signin),
+    path('logout', Pages.auth.logout),
+    path('changepsw', Pages.auth.changePsw),
+    path('usercenter', Pages.views.usercenter),
+
+    path('testws', Pages.views.test_ws),
+    path('get-csrf', Pages.views.get_csrf),
+
+    path('get-participants/<int:activity_id>', Pages.views.get_participants)
+]

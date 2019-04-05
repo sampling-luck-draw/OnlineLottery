@@ -22,18 +22,13 @@ import Pages.auth
 
 
 urlpatterns = [
-    path('', index),
+    path('', include('Pages.urls')),
     path('', include('gentelella.urls')),
     path('testws', test_ws),
     path('wx/', include('WeChat.urls')),
     path('xcx/', include('MicroProgram.urls')),
 
-    path('get-csrf', get_csrf),
-    path('signup', Pages.auth.signup),
-    path('signin', Pages.auth.signin),
-    path('logout', Pages.auth.logout),
-    path('changepsw', Pages.auth.changePsw),
-    path('usercenter', usercenter),
+
 
     path('pc-geetest/get', captcha.pc_getcaptcha),
     path('pc-geetest/validate', captcha.pc_validate),

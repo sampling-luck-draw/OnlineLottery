@@ -38,8 +38,6 @@ class Activity(models.Model):
         return self.name
 
 
-
-
 class Danmu(models.Model):
     sender = models.ForeignKey(to=Participant, on_delete=models.PROTECT)
     activity = models.ForeignKey(to=Activity, on_delete=models.PROTECT)
