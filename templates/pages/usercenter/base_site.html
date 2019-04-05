@@ -30,7 +30,6 @@
         <link href="/static/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
       {% endblock stylesheets %}
       <!-- Custom Theme Style -->
-      <link href="{% static "pages/css/usercenter/usercenter.css" %}" rel="stylesheet">
     {% endblock head %}
   </head>
 
@@ -55,11 +54,11 @@
             <!-- {{ content }} -->
           {% endblock content %}
 
-          {% block footer %}
-            <footer>
-              {% include "pages/usercenter/footer.html" %}
-            </footer>
-          {% endblock footer %}
+{#          {% block footer %}#}
+{#            <footer>#}
+{#              {% include "pages/usercenter/footer.html" %}#}
+{#            </footer>#}
+{#          {% endblock footer %}#}
         </div>
       </div>
 
@@ -99,7 +98,6 @@
         <script type="text/javascript" src="/static/vendors/starrr/dist/starrr.js"></script>
       {% endblock %}
       <!-- Custom Theme Scripts -->
-      <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>
     {% endblock body %}
   </body>
 </html>

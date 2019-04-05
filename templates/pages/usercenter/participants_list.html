@@ -1,87 +1,37 @@
 {% extends "pages/usercenter/base_site.html" %}
 
 {% block title %} 个人中心1 {% endblock title %}
+
 {% load static %}
 {% block stylesheets %}
   {{ block.super }}
-  <link href="{% static "pages/css/usercenter/usercenter.css" %}" rel="stylesheet">
+    <link href="{% static "pages/css/usercenter/usercenter.css" %}" rel="stylesheet">
+
 {% endblock stylesheets %}
 
 {% block content %}
-  <div class="right_col" role="main">
-    <!-- top tiles -->
-    <div class="row x_title">
-      <div class="col-md-12">
-        <h3>Overall</h3>
-      </div>
-    </div>
-    <div class="row tile_count">
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-calendar-check-o"></i>举办活动</span>
-        <div class="count">8次</div>
-        <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-user"></i> 总参与人数</span>
-        <div class="count">1600人</div>
-        <span class="count_bottom">平均每场<i class="green">200</i>人</span>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-clock-o"></i>活动总时间</span>
-        <div class="count">5小时</div>
-        <span class="count_bottom">平均每次持续<i class="green">5</i>小时</span>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-gift"></i>总抽奖次数</span>
-        <div class="count">130次</div>
-        <span class="count_bottom">平均每场<i class="green">10</i>次</span>
-      </div>
 
-      <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-comment"></i>总弹幕数</span>
-        <div class="count">2315条</div>
-        <span class="count_bottom">平均每场<i class="green">120</i>条</span>
-      </div>
-    </div>
-    <!-- /top tiles -->
-      <div class="row x_title">
-      <div class="col-md-12">
-        <h3>Activities</h3>
+    <div class="row">
+
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>参与用户列表
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content" id="participant-table">
+
+          </div>
+        </div>
       </div>
     </div>
 
-    <table class="table table-striped projects">
-      <thead>
-      <tr>
-        <th style="width: 1%">#</th>
-        <th style="width: 20%">活动名称</th>
-        <th>开始时间</th>
-        <th>结束时间</th>
-        <th>参与人数</th>
-        <th>弹幕数量</th>
-        <th>状态</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for activity in activities %}
-        <tr>
-          <td>{{ activity.id }}</td>
-          <td>{{ activity.name }}</td>
-          <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
-          <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
-          <td>100</td>
-          <td>2233</td>
-          <td>
-            <button type="button" class="btn btn-success btn-xs">Success</button>
-          </td>
-        </tr>
-      {% endfor %}
-
-      </tbody>
-    </table>
-
-
-  </div>
 {% endblock content %}
 
 {% block javascripts %}
@@ -127,6 +77,6 @@
   <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-  <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>
+    <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>
 
 {% endblock javascripts %}

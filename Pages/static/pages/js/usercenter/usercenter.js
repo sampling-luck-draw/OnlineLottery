@@ -5091,6 +5091,21 @@ function getParticipants(activity_id = -1) {
         }
         activity_id = Number.parseInt(children[0].id.split('-')[1]);
     }
+    $("#participant-table").html(
+        '<table id="datatable-buttons" class="table table-striped table-bordered">\n' +
+        '              <thead>\n' +
+        '              <tr>\n' +
+        '                <th>头像</th>\n' +
+        '                <th>昵称</th>\n' +
+        '                <th>性别</th>\n' +
+        '                <th>省</th>\n' +
+        '                <th>城市</th>\n' +
+        '                <th>Id</th>\n' +
+        '              </tr>\n' +
+        '              </thead>\n' +
+        '              <tbody id="participant-table-body">\n' +
+        '              </tbody>\n' +
+        '            </table>');
     $.ajax({
         url: 'get-participants/' + activity_id,
         dataType: 'json',

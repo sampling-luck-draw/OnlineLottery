@@ -10,11 +10,6 @@
 {% block content %}
   <div class="right_col" role="main">
     <!-- top tiles -->
-    <div class="row x_title">
-      <div class="col-md-12">
-        <h3>Overall</h3>
-      </div>
-    </div>
     <div class="row tile_count">
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-calendar-check-o"></i>举办活动</span>
@@ -44,41 +39,37 @@
       </div>
     </div>
     <!-- /top tiles -->
-      <div class="row x_title">
-      <div class="col-md-12">
-        <h3>Activities</h3>
+
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="dashboard_graph">
+
+          <div class="row x_title">
+            <div class="col-md-12">
+              <h3>弹幕热度图</h3>
+            </div>
+          </div>
+
+          <div class="col-md-9 col-sm-9 col-xs-12">
+            <div id="chart_plot_01" data-stuff='["a","b","c"]' class="demo-placeholder"></div>
+          </div>
+
+          <div class="col-md-3 col-sm-3 col-xs-12 bg-white list-group" style="overflow-y: auto;"
+              id="history-activity-list">
+
+            {% for activity in activities %}
+              <a class="list-group-item list-group-item-action"
+                 id="activity-{{ activity.id }}"
+                 onclick="getParticipants({{ activity.id }})">
+                {{ activity.name }}
+              </a>
+            {% endfor %}
+          </div>
+          <div class="clearfix"></div>
+        </div>
       </div>
     </div>
-
-    <table class="table table-striped projects">
-      <thead>
-      <tr>
-        <th style="width: 1%">#</th>
-        <th style="width: 20%">活动名称</th>
-        <th>开始时间</th>
-        <th>结束时间</th>
-        <th>参与人数</th>
-        <th>弹幕数量</th>
-        <th>状态</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for activity in activities %}
-        <tr>
-          <td>{{ activity.id }}</td>
-          <td>{{ activity.name }}</td>
-          <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
-          <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
-          <td>100</td>
-          <td>2233</td>
-          <td>
-            <button type="button" class="btn btn-success btn-xs">Success</button>
-          </td>
-        </tr>
-      {% endfor %}
-
-      </tbody>
-    </table>
 
 
   </div>
@@ -130,3 +121,4 @@
   <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>
 
 {% endblock javascripts %}
+

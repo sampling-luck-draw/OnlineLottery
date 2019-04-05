@@ -47,3 +47,12 @@ def get_participants(request, activity_id):
     participants = activity.participants.all()
     qs_json = serializers.serialize('json', participants)
     return HttpResponse(qs_json, content_type='application/json')
+
+
+@login_required(login_url='/signin')
+def danmu_manage(request):
+    return render(request, 'pages/usercenter/danmu_list.html')
+
+@login_required(login_url='/signin')
+def participant_manage(request):
+    return render(request, 'pages/usercenter/participants_list.html')
