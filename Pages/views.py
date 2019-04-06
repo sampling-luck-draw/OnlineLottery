@@ -8,6 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
 from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_GET
+
 import MicroProgram.models as models
 from functools import reduce
 from Pages.province import province_dict
@@ -85,15 +87,16 @@ def get_danmu(request):
     if not activity_id:
         return HttpResponseNotFound()
     activity_id = int(activity_id)
-    start = int(request.GET.get('start'))
-    length = int(request.GET.get('length'))
+    start = int(request.GET.get('start', 0))
     activity = models.Activity.objects.get(id=activity_id)
     if activity.belong != organizer:
         return HttpResponseNotFound()
 
     danmus = models.Danmu.objects.filter(activity=activity)
     danmus_count = danmus.count()
-    danmus = danmus.order_by("-id")[start: start + length]
+    length = int(request.GET.get('length', danmus_count))
+    end = min(start + length, danmus_count)
+    danmus = danmus.order_by("-id")[start: end]
     participants_dict = dict([(k['openid'], k['nickName']) for k in activity.participants.values('openid', 'nickName')])
 
     danmu_list = [{
@@ -112,9 +115,33 @@ def get_danmu(request):
     }), content_type='application/json')
 
 
+# @require_GET
 @login_required(login_url='/signin')
 def danmu_manage(request):
-    return render(request, 'pages/usercenter/danmu_list.html')
+    user = request.user
+    organizer = models.Organizer.objects.get(user=user)
+    activity_id = request.GET.get('a', 4)
+    if not activity_id:
+        return HttpResponseNotFound()
+    activity = models.Activity.objects.get(id=activity_id)
+    if activity.belong != organizer:
+        return HttpResponseNotFound()
+
+    danmu_times = models.Danmu.objects.filter(activity=activity).only('time')
+    danmu_time_range = {}
+    for danmu_time in danmu_times:
+        minute = danmu_time.time.minute
+        minute = 3 if minute > 30 else 0
+        # TODO: **Important** Dynamic time zone
+        danmu_time.time += datetime.timedelta(hours=8)
+        key = danmu_time.time.strftime("%Y-%m-%d %H:") + str(minute)
+        if key not in danmu_time_range:
+            danmu_time_range[key] = 1
+        else:
+            danmu_time_range[key] += 1
+
+    return render(request, 'pages/usercenter/danmu_list.html',
+                  {'danmu_time_range': json.dumps(danmu_time_range)})
 
 
 @login_required(login_url='/signin')

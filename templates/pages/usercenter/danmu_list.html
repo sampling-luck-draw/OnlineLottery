@@ -29,7 +29,7 @@
           </div>
 
           <div class="col-md-12 col-sm-12 col-xs-12">
-            <div id="chart_plot_01" data-stuff='["a","b","c"]' class="demo-placeholder"></div>
+            <div id="danmu_hot_graph" data-stuff='["a","b","c"]' class="demo-placeholder"></div>
           </div>
 
           <div class="clearfix"></div>
@@ -55,25 +55,25 @@
 
 {% block javascripts %}
   {{ block.super }}
-  <!-- Chart.js -->
-  <script type="text/javascript" src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
-  <!-- gauge.js -->
-  <script type="text/javascript" src="/static/vendors/gauge.js/dist/gauge.min.js"></script>
-  <!-- Skycons -->
-  <script type="text/javascript" src="/static/vendors/skycons/skycons.js"></script>
-  <!-- Flot -->
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.pie.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.time.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.stack.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.resize.js"></script>
-  <!-- Flot plugins -->
-  <script type="text/javascript" src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-  <script type="text/javascript" src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/flot.curvedlines/curvedLines.js"></script>
-  <!-- DateJS -->
-  <script type="text/javascript" src="/static/vendors/DateJS/build/date.js"></script>
-  <!-- JQVMap -->
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>{#  <!-- Chart.js -->#}
+{#  <script type="text/javascript" src="/static/vendors/Chart.js/dist/Chart.min.js"></script>#}
+{#  <!-- gauge.js -->#}
+{#  <script type="text/javascript" src="/static/vendors/gauge.js/dist/gauge.min.js"></script>#}
+{#  <!-- Skycons -->#}
+{#  <script type="text/javascript" src="/static/vendors/skycons/skycons.js"></script>#}
+{#  <!-- Flot -->#}
+{#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.js"></script>#}
+{#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.pie.js"></script>#}
+{#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.time.js"></script>#}
+{#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.stack.js"></script>#}
+{#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.resize.js"></script>#}
+{#  <!-- Flot plugins -->#}
+{#  <script type="text/javascript" src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>#}
+{#  <script type="text/javascript" src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>#}
+{#  <script type="text/javascript" src="/static/vendors/flot.curvedlines/curvedLines.js"></script>#}
+{#  <!-- DateJS -->#}
+{#  <script type="text/javascript" src="/static/vendors/DateJS/build/date.js"></script>#}
+{#  <!-- JQVMap -->#}
   <script type="text/javascript" src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>
   <script type="text/javascript" src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
   <script type="text/javascript" src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
@@ -96,6 +96,13 @@
   <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>
   <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
   <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+  <script>
+    {% autoescape off %}
+      let danmu_time_range = {{ danmu_time_range }}
+    {% endautoescape %}
+  </script>
+
   <script type="text/javascript" src="{% static "pages/js/usercenter/danmu.js" %}"></script>
 
 {% endblock javascripts %}

@@ -110,11 +110,53 @@ $.fn.dataTable.Api.register('clearPipeline()', function () {
   });
 });
 
+let X = [];
+let Y = [];
+
+function process_danmu_data() {
+  let last_date = "";
+  for (let k in danmu_time_range) {
+    let split_date = k.split(' ');
+    let x_value;
+    if (split_date[0] === last_date) {
+      x_value = split_date[1] + '0';
+    } else {
+      x_value = split_date[1] + '0\n' + split_date[0];
+      last_date = split_date[0];
+    }
+    X.push(x_value);
+    Y.push(danmu_time_range[k]);
+  }
+}
+
 
 //
 // DataTables initialisation
 //
 $(document).ready(function () {
+  process_danmu_data();
+  let chart = echarts.init(document.getElementById('danmu_hot_graph'));
+  chart.setOption({
+    xAxis: {
+      type: 'category',
+      data: X,
+
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [{
+      data: Y,
+      type: 'line',
+      smooth: true
+    }],
+    tooltip: {
+      trigger: 'item',
+      formatter: "{b} <br/> {c}条弹幕"
+    },
+  });
+
+
   $('#danmu-table').DataTable({
     "processing": true,
     "serverSide": true,
@@ -133,30 +175,9 @@ $(document).ready(function () {
         searchable: false,
         targets: [0, 1, 2]
       },
-      { "width": "20%", "targets": 1 }
+      {"width": "20%", "targets": 1}
     ],
     "autoWidth": false,
     fixedColumns: true
   });
 });
-
-// $(document).ready(function () {
-//   $('#danmu-table').DataTable({
-//     ajax: {
-//       url: "/get-danmu?a=4",
-//       dataSrc: ''
-//     },
-//     columns: [
-//       {data: 'nickName'},
-//       {data: 'text'},
-//       {data: 'time'},
-//     ],
-//     columnDefs: [
-//       {
-//         orderable: false,
-//         searchable: false,
-//         targets: [0, 1, 2]
-//       }
-//     ]
-//   });
-// });
