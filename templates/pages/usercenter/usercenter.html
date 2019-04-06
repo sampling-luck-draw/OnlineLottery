@@ -73,7 +73,7 @@
           <td>{{ activity.participants.count }}</td>
           <td>{{ activity.danmu_set.count }}</td>
           <td><span class="label label-success">Finished</span></td>
-          <td><a href="/usercenter/activity?a={{ activity.id }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>查看</a></td>
+          <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>查看</a></td>
         </tr>
       {% endfor %}
 

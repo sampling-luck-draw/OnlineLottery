@@ -161,8 +161,8 @@ $(document).ready(function () {
     "processing": true,
     "serverSide": true,
     "ajax": $.fn.dataTable.pipeline({
-      url: '/get-danmu?a=4',
-      pages: 5 // number of pages to cache
+      url: '/get-danmu',
+      pages: 2 // number of pages to cache
     }),
     columns: [
       {data: 'nickName'},
@@ -170,14 +170,10 @@ $(document).ready(function () {
       {data: 'time'},
     ],
     columnDefs: [
-      {
-        orderable: false,
-        searchable: false,
-        targets: [0, 1, 2]
-      },
       {"width": "20%", "targets": 1}
     ],
     "autoWidth": false,
-    fixedColumns: true
+    fixedColumns: true,
+     "searching": false
   });
 });
