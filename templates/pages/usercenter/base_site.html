@@ -1,103 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   {% load static %}
-    {% block head %}
-      {% block meta %}
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Meta, title, CSS, favicons, etc. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-      {% endblock meta %}
+  {% block head %}
+    {% block meta %}
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock meta %}
 
-      <title>Sampling | {% block title %}{% endblock %}</title>
+    <title>Sampling | {% block title %}{% endblock %}</title>
 
-      {% block stylesheets %}
-        <!-- Bootstrap -->
-        <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <!-- NProgress -->
-        <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
-        <!-- bootstrap-daterangepicker -->
-        <link href="/static/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-        <!-- iCheck -->
-        <link href="/static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-        <!-- bootstrap-progressbar -->
-        <link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-        <!-- JQVMap -->
-        <link href="/static/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-      {% endblock stylesheets %}
-      <!-- Custom Theme Style -->
-    {% endblock head %}
-  </head>
+    {% block stylesheets %}
+      <!-- Bootstrap -->
+      <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Font Awesome -->
+      <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+      <!-- NProgress -->
+      <link href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
 
-  <body class="{% block body_class %}nav-md {% endblock body_class %}">
-    {% block body %}
-      <div class="container body">
-        <div class="main_container">
+      <link href="{% static "pages/css/usercenter/base_site.css" %}" rel="stylesheet">
+    {% endblock stylesheets %}
+    <!-- Custom Theme Style -->
+  {% endblock head %}
+</head>
 
-          {% block sidebar %}
-            <div class="col-md-3 left_col {% block sidebar_class %} {% endblock sidebar_class %}">
-              {% include "pages/usercenter/sidebar.html" %}
-            </div>
-          {% endblock sidebar %}
+<body class="{% block body_class %}nav-md {% endblock body_class %}">
+{% block body %}
+  <div class="container body">
+    <div class="main_container">
 
-          {% block top_navigation %}
-            <div class="top_nav">
-              {% include "pages/usercenter/top_navigation.html" %}
-            </div>
-          {% endblock top_navigation %}
-
-          {% block content %}
-            <!-- {{ content }} -->
-          {% endblock content %}
-
-{#          {% block footer %}#}
-{#            <footer>#}
-{#              {% include "pages/usercenter/footer.html" %}#}
-{#            </footer>#}
-{#          {% endblock footer %}#}
+      {% block sidebar %}
+        <div class="col-md-3 left_col {% block sidebar_class %} {% endblock sidebar_class %}">
+          {% include "pages/usercenter/sidebar.html" %}
         </div>
-      </div>
+      {% endblock sidebar %}
 
-      {% block javascripts %}
-        <!-- jQuery -->
-        <script type="text/javascript" src="/static/vendors/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap -->
-        <script type="text/javascript" src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- FastClick -->
-        <script type="text/javascript" src="/static/vendors/fastclick/lib/fastclick.js"></script>
-        <!-- NProgress -->
-        <script type="text/javascript" src="/static/vendors/nprogress/nprogress.js"></script>
-        <!-- bootstrap-progressbar -->
-        <script type="text/javascript" src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-        <!-- iCheck -->
-        <script type="text/javascript" src="/static/vendors/iCheck/icheck.min.js"></script>
-        <!-- bootstrap-daterangepicker -->
-        <script type="text/javascript" src="/static/vendors/moment/min/moment.min.js"></script>
-        <script type="text/javascript" src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-        <!-- bootstrap-wysiwyg -->
-        <script type="text/javascript" src="/static/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
-        <script type="text/javascript" src="/static/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
-        <script type="text/javascript" src="/static/vendors/google-code-prettify/src/prettify.js"></script>
-        <!-- jQuery Tags Input -->
-        <script type="text/javascript" src="/static/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
-        <!-- Switchery -->
-        <script type="text/javascript" src="/static/vendors/switchery/dist/switchery.min.js"></script>
-        <!-- Select2 -->
-        <script type="text/javascript" src="/static/vendors/select2/dist/js/select2.full.min.js"></script>
-        <!-- Parsley -->
-        <script type="text/javascript" src="/static/vendors/parsleyjs/dist/parsley.min.js"></script>
-        <!-- Autosize -->
-        <script type="text/javascript" src="/static/vendors/autosize/dist/autosize.min.js"></script>
-        <!-- jQuery autocomplete -->`
-        <script type="text/javascript" src="/static/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
-        <!-- starrr -->
-        <script type="text/javascript" src="/static/vendors/starrr/dist/starrr.js"></script>
-      {% endblock %}
-      <!-- Custom Theme Scripts -->
-    {% endblock body %}
-  </body>
+      {% block top_navigation %}
+        <div class="top_nav">
+          {% include "pages/usercenter/top_navigation.html" %}
+        </div>
+      {% endblock top_navigation %}
+
+      {% block content %}
+        <!-- {{ content }} -->
+      {% endblock content %}
+
+      {#          {% block footer %}#}
+      {#            <footer>#}
+      {#              {% include "pages/usercenter/footer.html" %}#}
+      {#            </footer>#}
+      {#          {% endblock footer %}#}
+    </div>
+  </div>
+
+  {% block javascripts %}
+    <!-- jQuery -->
+    <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- NProgress -->
+    <script src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+    <script src="{% static 'pages/js/usercenter/base_site.js' %}"></script>
+  {% endblock %}
+  <!-- Custom Theme Scripts -->
+{% endblock body %}
+</body>
 </html>

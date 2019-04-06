@@ -276,7 +276,7 @@ function initGraph() {
     let item = province_statistics[i];
     maxinum = Math.max(maxinum, item['value']);
   }
-  console.log(maxinum);
+  // console.log(maxinum);
 
 
   var echartMap = echarts.init(document.getElementById('province_statistics_graph'), theme);

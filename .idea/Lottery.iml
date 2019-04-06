@@ -19,6 +19,10 @@
     <orderEntry type="library" name="materialize" level="application" />
     <orderEntry type="library" name="wow" level="application" />
     <orderEntry type="library" name="canvas-nest" level="application" />
+    <orderEntry type="library" name="nprogress" level="application" />
+    <orderEntry type="library" name="jquery.dataTables" level="application" />
+    <orderEntry type="library" name="dataTables.bootstrap" level="application" />
+    <orderEntry type="library" name="jszip" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

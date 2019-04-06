@@ -4,7 +4,6 @@
 {% load static %}
 {% block stylesheets %}
   {{ block.super }}
-  <link href="{% static "pages/css/usercenter/usercenter.css" %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -49,36 +48,39 @@
         <h3>Activities</h3>
       </div>
     </div>
+    <div class="row">
 
-    <table class="table table-striped projects">
-      <thead>
-      <tr>
-        <th style="width: 1%">#</th>
-        <th style="width: 20%">活动名称</th>
-        <th>开始时间</th>
-        <th>结束时间</th>
-        <th>参与人数</th>
-        <th>弹幕数量</th>
-        <th>状态</th>
-        <th>详情</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for activity in activities %}
+      <table class="table table-striped projects">
+        <thead>
         <tr>
-          <td>{{ activity.id }}</td>
-          <td>{{ activity.name }}</td>
-          <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
-          <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
-          <td>{{ activity.participants.count }}</td>
-          <td>{{ activity.danmu_set.count }}</td>
-          <td><span class="label label-success">Finished</span></td>
-          <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>查看</a></td>
+          <th style="width: 1%">#</th>
+          <th style="width: 20%">活动名称</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>参与人数</th>
+          <th>弹幕数量</th>
+          <th>状态</th>
+          <th>详情</th>
         </tr>
-      {% endfor %}
+        </thead>
+        <tbody>
+        {% for activity in activities %}
+          <tr>
+            <td>{{ activity.id }}</td>
+            <td>{{ activity.name }}</td>
+            <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
+            <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
+            <td>{{ activity.participants.count }}</td>
+            <td>{{ activity.danmu_set.count }}</td>
+            <td><span class="label label-success">Finished</span></td>
+            <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i
+                class="fa fa-pencil"></i>查看</a></td>
+          </tr>
+        {% endfor %}
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
 
 
   </div>
@@ -86,48 +88,48 @@
 
 {% block javascripts %}
   {{ block.super }}
-  <!-- Chart.js -->
-  <script type="text/javascript" src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
-  <!-- gauge.js -->
-  <script type="text/javascript" src="/static/vendors/gauge.js/dist/gauge.min.js"></script>
-  <!-- Skycons -->
-  <script type="text/javascript" src="/static/vendors/skycons/skycons.js"></script>
-  <!-- Flot -->
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.pie.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.time.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.stack.js"></script>
-  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.resize.js"></script>
-  <!-- Flot plugins -->
-  <script type="text/javascript" src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-  <script type="text/javascript" src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/flot.curvedlines/curvedLines.js"></script>
-  <!-- DateJS -->
-  <script type="text/javascript" src="/static/vendors/DateJS/build/date.js"></script>
-  <!-- JQVMap -->
-  <script type="text/javascript" src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>
-  <script type="text/javascript" src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-  <script type="text/javascript" src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+  {#  <!-- Chart.js -->#}
+  {#  <script type="text/javascript" src="/static/vendors/Chart.js/dist/Chart.min.js"></script>#}
+  {#  <!-- gauge.js -->#}
+  {#  <script type="text/javascript" src="/static/vendors/gauge.js/dist/gauge.min.js"></script>#}
+  {#  <!-- Skycons -->#}
+  {#  <script type="text/javascript" src="/static/vendors/skycons/skycons.js"></script>#}
+  {#  <!-- Flot -->#}
+  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.pie.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.time.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.stack.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.resize.js"></script>#}
+  {#  <!-- Flot plugins -->#}
+  {#  <script type="text/javascript" src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/flot.curvedlines/curvedLines.js"></script>#}
+  {#  <!-- DateJS -->#}
+  {#  <script type="text/javascript" src="/static/vendors/DateJS/build/date.js"></script>#}
+  {#  <!-- JQVMap -->#}
+  {#  <script type="text/javascript" src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>#}
+  {##}
+  {#  <!-- Table -->#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>#}
+  {#  <script type="text/javascript"#}
+  {#          src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>#}
+  {#  <script type="text/javascript"#}
+  {#          src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>#}
 
-  <!-- Table -->
-  <script type="text/javascript" src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script type="text/javascript"
-          src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script type="text/javascript"
-          src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-
-  <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>
+  {#  <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>#}
 
 {% endblock javascripts %}

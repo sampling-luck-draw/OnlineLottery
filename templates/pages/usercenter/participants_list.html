@@ -5,8 +5,6 @@
 {% load static %}
 {% block stylesheets %}
   {{ block.super }}
-  <link href="{% static "pages/css/usercenter/usercenter.css" %}" rel="stylesheet">
-
 {% endblock stylesheets %}
 
 {% block content %}
@@ -79,40 +77,44 @@
 
 {% block javascripts %}
   {{ block.super }}
-  <!-- Table -->
-  <!-- 搜索和分页 -->
-  <script type="text/javascript" src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  {#  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>#}
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script type="text/javascript"
-          src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script type="text/javascript"
-          src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+  {#  <!-- 搜索和分页 -->#}
+      <script src="https://cdn.bootcss.com/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.bootcss.com/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+  {#      <script type="text/javascript" src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>#}
+  {#    <script type="text/javascript" src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>#}
+    <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script type="text/javascript"
+            src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script type="text/javascript"
+            src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script type="text/javascript" src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  {#  <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>#}
+    <script src="https://cdn.bootcss.com/jszip/2.6.0/jszip.min.js"></script>
+    <script src="https://cdn.bootcss.com/pdfmake/0.1.0/pdfmake.min.js"></script>
+    <script src="https://cdn.bootcss.com/pdfmake/0.1.0/vfs_fonts.js"></script>
+  {#  <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>#}
+  {#  <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>#}
 
-  <script src="/static/vendors/echarts/dist/echarts.min.js"></script>
+  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+{#  <script src="/static/vendors/echarts/dist/echarts.min.js"></script>#}
   <script src="/static/vendors/echarts/map/js/china.js"></script>
 
 
-  {#  <script type="text/javascript" src="{% static "pages/js/usercenter/usercenter.js" %}"></script>#}
   <script type="text/javascript">
-      let gender_static = {
-          male: {{ gender_statistics.male }},
-          female: {{ gender_statistics.female }},
-          other: {{ gender_statistics.other }},
-      };
-      {% autoescape off %}
-          let province_statistics = {{ province_statistics }};
-      {% endautoescape %}
+    let gender_static = {
+      male: {{ gender_statistics.male }},
+      female: {{ gender_statistics.female }},
+      other: {{ gender_statistics.other }},
+    };
+    {% autoescape off %}
+      let province_statistics = {{ province_statistics }};
+    {% endautoescape %}
   </script>
   <script type="text/javascript" src="{% static "pages/js/usercenter/participants.js" %}"></script>
 
