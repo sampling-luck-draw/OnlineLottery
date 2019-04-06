@@ -55,7 +55,7 @@ def usercenter(request):
     overall['average_prize'] = overall['prize_draw_count'] / overall['activity_count']
     overall['average_danmu'] = overall['danmu_count'] / overall['activity_count']
 
-    return render(request, 'Pages/usercenter/usercenter.html',
+    return render(request, 'pages/usercenter/usercenter.html',
                   {'activities': activities, 'overall': overall})
 
 
@@ -75,17 +75,25 @@ def get_participants(request, activity_id):
 
 
 @login_required(login_url='/signin')
-def get_danmu(request, activity_id):
+def get_danmu(request):
     if request.method != 'GET':
         return HttpResponseForbidden()
 
     user = request.user
     organizer = models.Organizer.objects.get(user=user)
+    activity_id = request.GET.get('a', None)
+    if not activity_id:
+        return HttpResponseNotFound()
+    activity_id = int(activity_id)
+    start = int(request.GET.get('start'))
+    length = int(request.GET.get('length'))
     activity = models.Activity.objects.get(id=activity_id)
     if activity.belong != organizer:
         return HttpResponseNotFound()
 
-    danmus = models.Danmu.objects.filter(activity=activity).order_by("-time")
+    danmus = models.Danmu.objects.filter(activity=activity)
+    danmus_count = danmus.count()
+    danmus = danmus.order_by("-id")[start: start + length]
     participants_dict = dict([(k['openid'], k['nickName']) for k in activity.participants.values('openid', 'nickName')])
 
     danmu_list = [{
@@ -96,7 +104,12 @@ def get_danmu(request, activity_id):
         'time': d.time.strftime("%Y-%m-%d %H:%M:%S")
     } for d in danmus]
 
-    return HttpResponse(json.dumps(danmu_list), content_type='application/json')
+    return HttpResponse(json.dumps({
+        'draw': request.GET.get('draw', 0),
+        'recordsTotal': danmus_count,
+        'recordsFiltered': danmus_count,
+        'data': danmu_list
+    }), content_type='application/json')
 
 
 @login_required(login_url='/signin')

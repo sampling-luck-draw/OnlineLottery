@@ -20,6 +20,4 @@ urlpatterns = [
     # path('get-participants/$)', Pages.views.get_participants),
     # path('get-participants/<int:activity_id>)', Pages.views.get_participants),
     path('get-danmu', Pages.views.get_danmu),
-    path('get-danmu/<int:activity_id>', Pages.views.get_danmu)
-
 ]

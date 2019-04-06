@@ -382,10 +382,10 @@ function init_DataTables() {
         className: "btn-sm"
       },],
       responsive: true,
-      'order': [
+      order: [
         [1, 'asc']
       ],
-      'columnDefs': [
+      columnDefs: [
         {
           orderable: false,
           searchable: false,
