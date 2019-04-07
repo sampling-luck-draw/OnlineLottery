@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
 from Lottery.captcha import pc_validate
+from MicroProgram.models import Organizer
 
 from . import views
 
@@ -32,6 +33,9 @@ def signup(request):
     if len(query) > 0:
         return JsonResponse({'result': 'error', 'msg': '该用户已经存在'})
     user = User.objects.create_user(username=username, password=password, email=email)
+    organizer = Organizer()
+    organizer.user = user
+    organizer.save()
     auth.login(request, user)
     return JsonResponse({'result': 'success', 'uid': user.id})
 

@@ -18,28 +18,40 @@
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-calendar-check-o"></i>举办活动</span>
         <div class="count">{{ overall.activity_count }}次</div>
-        <span class="count_bottom">上次活动<i class="green">{{ overall.least_time| date:"Y-n-j" }}</i></span>
+        {% if overall.activity_count > 0 %}
+          <span class="count_bottom">上次活动<i class="green">{{ overall.least_time| date:"Y-n-j" }}</i></span>
+        {% endif %}
       </div>
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-user"></i> 总参与人数</span>
         <div class="count">{{ overall.participant_count }}人</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_participant|floatformat }}</i>人</span>
+        {% if overall.activity_count > 0 %}
+          <span class="count_bottom">平均每场<i class="green">{{ overall.average_participant|floatformat }}</i>人</span>
+        {% endif %}
       </div>
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-clock-o"></i>活动总时间</span>
         <div class="count">{{ overall.time_count }}小时</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_time|floatformat }}</i>小时</span>
+        {% if overall.activity_count > 0 %}
+          <span class="count_bottom">平均每场<i class="green">{{ overall.average_time|floatformat }}</i>小时</span>
+        {% endif %}
       </div>
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-gift"></i>总抽奖次数</span>
         <div class="count">{{ overall.prize_draw_count }}次</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_prize|floatformat }}</i>次</span>
+        {% if overall.activity_count > 0 %}
+          <span class="count_bottom">平均每场<i class="green">{{ overall.average_prize|floatformat }}</i>次</span>
+        {% endif %}
       </div>
 
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-comment"></i>总弹幕数</span>
         <div class="count">{{ overall.danmu_count }}条</div>
-        <span class="count_bottom">平均每场<i class="green">{{ overall.average_danmu|floatformat }}</i>条</span>
+        {% if overall.activity_count > 0 %}
+
+          <span class="count_bottom">平均每场<i class="green">{{ overall.average_danmu|floatformat }}</i>条</span>
+        {% endif %}
+
       </div>
     </div>
     <!-- /top tiles -->
