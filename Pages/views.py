@@ -138,6 +138,8 @@ def danmu_manage(request):
     if isinstance(activity, HttpResponse):
         return activity
 
+    activities = _get_activities(request)
+
     danmu_times = models.Danmu.objects.filter(activity=activity).only('time')
     danmu_time_range = {}
     for danmu_time in danmu_times:
@@ -152,7 +154,8 @@ def danmu_manage(request):
             danmu_time_range[key] += 1
 
     return render(request, 'pages/usercenter/danmu_list.html',
-                  {'danmu_time_range': json.dumps(danmu_time_range), 'activity': activity})
+                  {'danmu_time_range': json.dumps(danmu_time_range),
+                   'activity': activity, 'activities': activities})
 
 
 @require_GET
@@ -161,6 +164,8 @@ def participant_manage(request):
     activity = _get_activity(request)
     if isinstance(activity, HttpResponse):
         return activity
+
+    activities = _get_activities(request)
 
     participant = activity.participants.all()
     gender_statistics_male = participant.filter(gender=1).count()
@@ -174,7 +179,7 @@ def participant_manage(request):
 
     return render(request, 'pages/usercenter/participants_list.html',
                   {'participants': participant, 'activity': activity, 'gender_statistics': gender_statistics,
-                   'province_statistics': json.dumps(province_statistics)})
+                   'province_statistics': json.dumps(province_statistics), 'activities': activities})
 
 
 @login_required(login_url='/signin')
