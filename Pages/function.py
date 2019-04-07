@@ -1,10 +1,13 @@
+import datetime
 import json
 
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.views.decorators.http import require_GET
 
+from Lottery import settings
 from MicroProgram import models
 
 
@@ -32,6 +35,11 @@ def _get_activity(request):
         return HttpResponseNotFound('unauthorized')
 
     return activity
+
+
+def utc_to_local(utc_dt):
+    # return utc_dt.astimezone(tz=pytz.timezone(settings.TIME_ZONE))
+    return utc_dt + datetime.timedelta(hours=8)
 
 
 @require_GET
@@ -91,4 +99,17 @@ def get_participants(request):
         'city': i.city,
         'language': i.language
     } for i in participants]
+    return HttpResponse(json.dumps(json_str), content_type='application/json')
+
+
+@require_GET
+@login_required(login_url='/signin')
+def get_activities(request):
+    activities = _get_activities(request)
+    json_str = [{
+        'id': i.id,
+        'name': i.name,
+        'start_time': utc_to_local(i.start_time).strftime("%Y-%m-%d %H:%M:%S"),
+        'end_time': utc_to_local(i.end_time).strftime("%Y-%m-%d %H:%M:%S")
+    } for i in activities]
     return HttpResponse(json.dumps(json_str), content_type='application/json')

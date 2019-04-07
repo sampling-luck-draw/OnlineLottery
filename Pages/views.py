@@ -3,6 +3,7 @@ import datetime
 import json
 from functools import reduce
 
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse
@@ -10,7 +11,8 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
 import MicroProgram.models as models
-from Pages.function import _get_activity, _get_activities
+from Lottery import settings
+from Pages.function import _get_activity, _get_activities, utc_to_local
 from Pages.province import province_dict
 
 
@@ -83,8 +85,9 @@ def danmu_manage(request):
         minute = danmu_time.time.minute
         minute = 3 if minute > 30 else 0
         # TODO: **Important** Dynamic time zone
-        danmu_time.time += datetime.timedelta(hours=8)
-        key = danmu_time.time.strftime("%Y-%m-%d %H:") + str(minute)
+        # danmu_time.time.tzinfo = pytz.timezone(settings.TIME_ZONE)
+        # danmu_time.time += datetime.timedelta(hours=8)
+        key = utc_to_local(danmu_time.time).strftime("%Y-%m-%d %H:") + str(minute)
         if key not in danmu_time_range:
             danmu_time_range[key] = 1
         else:

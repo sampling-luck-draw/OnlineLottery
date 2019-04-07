@@ -18,6 +18,7 @@ urlpatterns = [
     path('get-csrf', Pages.views.get_csrf),
 
     path('get-participants', Pages.function.get_participants),
+    path('get-activities', Pages.function.get_activities),
     # path('get-participants/<int:activity_id>)', Pages.views.get_participants),
     path('get-danmu', Pages.function.get_danmu),
 ]
