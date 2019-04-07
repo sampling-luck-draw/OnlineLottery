@@ -1,47 +1,72 @@
 import json
 
-from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
-from .models import Activity
+from channels.generic.websocket import AsyncWebsocketConsumer
+from MicroProgram import models
+from MicroProgram.database_sync_to_async_functions import *
 
 
-class Console(WebsocketConsumer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.cnt = 1
+class Console(AsyncWebsocketConsumer):
 
-    def connect(self):
+    async def handle_luck_dog(self, message):
+        uid = message['content']['uid']
+        await self.send('handle_luck_dog')
+
+    async def handle_modify_activity(self, message):
+        await self.send('handle_modify_activity')
+
+    async def handel_get_participants(self, message):
+        await self.send('handel_get_participants')
+
+    async def connect(self):
         user = self.scope['user']
         if not user.is_authenticated:
-            self.accept()
-            self.send('{"error":"unauthenticated"}')
-            self.close()
+            await self.send('{"error":"unauthenticated"}')
+            await self.close()
             return
+        await self.accept()
 
-        async_to_sync(self.channel_layer.group_add)(
-            'test_group',
+        organizer = await get_organizer(user)
+        activity_id = self.scope['url_route']['kwargs'].get('activity_id', None)
+        if not activity_id:
+            activity = await get_latest_activity(organizer)
+        else:
+            try:
+                activity = await get_activity_by_id(activity_id)
+            except models.Activity.DoesNotExist:
+                await self.send('invalid id')
+                return
+        self.activity = activity
+
+        await self.channel_layer.group_add(
+            'console_' + str(activity.id),
             self.channel_name
         )
-        self.accept()
-        self.send("Who is that?")
-        Activity.objects.filter(id=4).update(channel_name=self.channel_name)
+        await self.send("BLXDNZ")
         # print(self.channel_name)
 
-    def disconnect(self, code):
-        async_to_sync(self.channel_layer.group_discard)(
-            'test_group',
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard(
+            'console_' + self.activity.id,
             self.channel_name
         )
 
-    def receive(self, text_data=None, bytes_data=None):
+    async def receive(self, text_data=None, bytes_data=None):
         if text_data is None:
             return
-        self.send('sb')
-        # self.send('{"action": "append-user", "content": {"avatar": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL8dFCa5KPR7Td5rjB6sg41q0ajcIHFwFJMZicY6dSKd3fJhEIvclqX1QeiaJBZcbvVicGzticThdHiauA/132", "nickname": "Yeah...", "language": "zh_CN", "nickName": "Yeah...", "country": "China", "province": "Jilin", "gender": 1, "uid": "oxwbU5M0-CCKSRFknW16tv3JiC3M", "city": "Yanbian"}}')
-        # self.send('{"action": "send-danmu", "content": {"danmu": "kao", "openid": "oxwbU5M0-CCKSRFknW16tv3JiC3M"}}')
-        self.cnt += 1
+        try:
+            message = json.loads(text_data)
+        except json.JSONDecodeError:
+            await self.send('json decode error')
+            return
 
-    def chat_message(self, event):
+        method_name = 'handle_' + message['action'].replace('-', '_')
+        await self.send(method_name)
+        if hasattr(Console, method_name):
+            method = getattr(Console, method_name)
+            await method(self, message)
+        else:
+            await self.send('unrecognized action {}'.format(message['action']))
+
+    async def chat_message(self, event):
         # Handles the "chat.message" event when it's sent to us.
-
-        self.send(text_data=event["text"])
+        await self.send(text_data=event["text"])

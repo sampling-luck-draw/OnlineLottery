@@ -84,9 +84,6 @@ def danmu_manage(request):
     for danmu_time in danmu_times:
         minute = danmu_time.time.minute
         minute = 3 if minute > 30 else 0
-        # TODO: **Important** Dynamic time zone
-        # danmu_time.time.tzinfo = pytz.timezone(settings.TIME_ZONE)
-        # danmu_time.time += datetime.timedelta(hours=8)
         key = utc_to_local(danmu_time.time).strftime("%Y-%m-%d %H:") + str(minute)
         if key not in danmu_time_range:
             danmu_time_range[key] = 1

@@ -7,7 +7,8 @@ from MicroProgram import consumers
 application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter([
-                url(r'^ws$', consumers.Console),
-            ])
+            url(r'^ws/(?P<activity_id>[^/]+)$', consumers.Console),
+            url(r'^ws$', consumers.Console),
+        ])
     ),
 })

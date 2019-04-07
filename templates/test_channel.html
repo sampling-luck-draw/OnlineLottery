@@ -1,55 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<h1> Test Channel.</h1>
-<form id="login">
-    <input type="text" name="username" title="username" id="username" value="天王盖地虎">
-    <input type="text" name="password" title="password" id="password" value="123">
-
-</form>
-<button id="login" onclick="login()">login</button>
-<button id="connect" onclick="connect()">connect</button>
-<div id="box"></div>
-<button onclick="send()"> Send</button>
+<table>
+  <tbody>
+  <tr>
+    <td colspan="3"> Test Channel.</td>
+  </tr>
+  <tr>
+    <td><input type="text" id="username" value="test"></td>
+    <td><input type="text" id="password" value="test"></td>
+    <td>
+      <button id="login" onclick="login()">login</button>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><input type="text" id="ws-addr"></td>
+    <td><button id="connect" onclick="connect()">connect</button></td>
+  </tr>
+  <tr>
+    <td rowspan="2" colspan="2">
+      <textarea id="to-send" style="min-width: 400px; min-height: 150px;"></textarea>
+    </td>
+    <td rowspan="2"><button onclick="send()"> Send</button></td>
+  </tr>
+  <tr></tr>
+  <tr>
+    <td colspan="3">
+      <div id="box" style="border: solid; min-height: 150px"></div>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
 <script>
-    let statusSocket = null;
-    function connect() {
-        statusSocket = new WebSocket('ws://' + window.location.host + '/ws');
-        statusSocket.onmessage = function (e) {
-            console.log(e);
-            var p = document.createElement("p");
-            var node = document.createTextNode(e.data);
-            p.appendChild(node);
-            document.getElementById('box').appendChild(p);
-        };
-    }
-    function send() {
-        statusSocket.send("knock knock");
-    }
+  let statusSocket = null;
+  $(document).ready(function () {
+    $("#ws-addr").val("ws://" + window.location.host + "/ws/4");
+    $("#ws-addr").css('width', 2 * Number.parseFloat($("#ws-addr").css('width')));
+  });
 
-    function login() {
-        let d = {
-                username: $("#username").val(),
-                password: $("#password").val()
-            };
-        console.log(d);
-        $.ajax({
-            url: 'signin',
-            method: 'POST',
-            dataType: 'json',
-            {#contentType: "application/json",#}
-            data: JSON.stringify(d),
-            success: function(e) {
-                console.log(e);
-            }
-        })
-    }
+  function connect() {
+    statusSocket = new WebSocket($("#ws-addr").val());
+    statusSocket.onmessage = function (e) {
+      console.log(e);
+      var p = document.createElement("p");
+      var node = document.createTextNode(e.data);
+      p.appendChild(node);
+      document.getElementById('box').appendChild(p);
+    };
+  }
+
+  function send() {
+    statusSocket.send($("#to-send").val());
+  }
+
+  function login() {
+    let d = {
+      username: $("#username").val(),
+      password: $("#password").val()
+    };
+    console.log(d);
+    $.ajax({
+      url: 'signin',
+      method: 'POST',
+      dataType: 'json',
+      {#contentType: "application/json",#}
+      data: JSON.stringify(d),
+      success: function (e) {
+        console.log(e);
+      }
+    })
+  }
 
 </script>
 

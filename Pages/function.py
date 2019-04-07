@@ -38,6 +38,7 @@ def _get_activity(request):
 
 
 def utc_to_local(utc_dt):
+    # TODO: **Important** Dynamic time zone
     # return utc_dt.astimezone(tz=pytz.timezone(settings.TIME_ZONE))
     return utc_dt + datetime.timedelta(hours=8)
 
