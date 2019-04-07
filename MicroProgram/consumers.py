@@ -13,6 +13,8 @@ class Console(WebsocketConsumer):
     def connect(self):
         user = self.scope['user']
         if not user.is_authenticated:
+            self.accept()
+            self.send('{"error":"unauthenticated"}')
             self.close()
             return
 

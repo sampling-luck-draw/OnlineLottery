@@ -1,7 +1,5 @@
 ## 与云端通信流程
 
-要不要csrf_token？
-
 1. 用户登陆
 
    POST: https://sampling.alphamj.cn/signin
@@ -26,11 +24,36 @@
 
    返回数据头包括COOKIE和SESSION
 
-3. 建立连接
+3. 获取活动列表
 
-   wss://sampling.alphamj.cn/ws
+   GET: https://sampling.alphamj.cn/get-activities
+
+   RET: 
+
+   ```json
+   [
+       {"avatar": "头像地址", "nickname": "Yeah...", "language": "zh_CN", "nickName": "Yeah...", "country": "China", "province": "Jilin", "gender": 1, "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "city": "Yanbian"},
+       {}
+   ]
+   ```
+
+4. 建立连接
+
+   wss://sampling.alphamj.cn/ws/[<活动id>]
 
    建立ws连接时必须附带Session信息，否则服务器会拒绝服务。
+
+   活动id为可选项，若无此id，服务器自动选择最近的活动建立连接
+
+   连接时可能出现的错误如下：
+
+   ```json
+   {"error":"unauthenticated"}
+   ```
+   ```json
+   {"error":"invalid id"}
+   ```
+
 
    以下为可能的数据包格式
 
@@ -49,40 +72,33 @@
        "content": {"danmu": "kao", "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX"}}
       ```
 
-   3. 获得历史活动： 云 -> 本地
+   3. 修改活动设置信息：本地 -> 云
 
       ```json
-      {"action": "history-activities", 
-      "content": [
-          {"id": 1,
-          "name": "jgbzdh",
-          "start_time": "2019-01-06 08:30:41",
-          "end_time": "2019-01-06 10:30:41"
-          }, {}]
-      }
+      {"action": "modify-activity" , "content": {"要修改的信息字典":""}}
       ```
 
-   4. 获得正在进行的活动： 云 -> 本地
-
-      ```json
-      {"action": "running-activity" , "content": {"活动信息字典"}}
-      ```
-
-   5. 修改活动设置信息：本地 -> 云
-
-      ```json
-      {"action": "modify-activity" , "content": {"要修改的信息字典"}}
-      ```
-
-   6. 中奖：
+   4. 中奖：本地 -> 云
 
       ```json
       {"action": "lucky-dog", "content": {"uid": "uid"}}
       ```
-      
-   7. 创建新活动：
+
+   5. 请求用户列表：本地->云
+
       ```json
-      {"action": "create-activity", "content": {}}
+      {"action": "get-participants"}
       ```
+
+   6. 发送用户列表：云->本地
+
+      ```json
+      {"action": "participants", 
+      "content": [
+          {"avatar": "头像地址", "nickname": "Yeah...", "language": "zh_CN", "nickName": "Yeah...", "country": "China", "province": "Jilin", "gender": 1, "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "city": "Yanbian"},
+          {}
+      ]}
+      ```
+
 
 
