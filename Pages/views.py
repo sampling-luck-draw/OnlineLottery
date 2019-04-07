@@ -33,6 +33,12 @@ def signup(request):
     return render(request, 'pages/signup.html')
 
 
+def _get_activities(request):
+    user = request.user
+    organizer = models.Organizer.objects.get(user=user)
+    return models.Activity.objects.filter(belong=organizer).all()
+
+
 def _get_activity(request):
     user = request.user
     organizer = models.Organizer.objects.get(user=user)
@@ -177,4 +183,7 @@ def activity_manage(request):
     if isinstance(activity, HttpResponse):
         return activity
 
-    return render(request, 'pages/usercenter/activity_page.html', {'activity': activity})
+    activities = _get_activities(request)
+
+    return render(request, 'pages/usercenter/activity_page.html',
+                  {'activity': activity, 'activities': activities})

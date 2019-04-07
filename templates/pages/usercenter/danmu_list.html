@@ -55,51 +55,8 @@
 {% block javascripts %}
   {{ block.super }}
   <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>{#  <!-- Chart.js -->#}
-  {#  <script type="text/javascript" src="/static/vendors/Chart.js/dist/Chart.min.js"></script>#}
-  {#  <!-- gauge.js -->#}
-  {#  <script type="text/javascript" src="/static/vendors/gauge.js/dist/gauge.min.js"></script>#}
-  {#  <!-- Skycons -->#}
-  {#  <script type="text/javascript" src="/static/vendors/skycons/skycons.js"></script>#}
-  {#  <!-- Flot -->#}
-  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.pie.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.time.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.stack.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/Flot/jquery.flot.resize.js"></script>#}
-  {#  <!-- Flot plugins -->#}
-  {#  <script type="text/javascript" src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/flot.curvedlines/curvedLines.js"></script>#}
-  {#  <!-- DateJS -->#}
-  {#  <script type="text/javascript" src="/static/vendors/DateJS/build/date.js"></script>#}
-  {#  <!-- JQVMap -->#}
-  {#  <script type="text/javascript" src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>#}
 
-  <!-- Table -->
-  <script src="https://cdn.bootcss.com/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.bootcss.com/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
-  {#  <script type="text/javascript" src="/static/vendors/datatables.net/js/jquery.dataTables.js"></script>#}
-  {#  <script type="text/javascript" src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>#}
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.flash.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.html5.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-buttons/js/buttons.print.js"></script>
-  <script type="text/javascript"
-          src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.js"></script>
-  <script type="text/javascript"
-          src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script type="text/javascript" src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-{#  <script type="text/javascript" src="/static/vendors/jszip/dist/jszip.min.js"></script>#}
-{#  <script type="text/javascript" src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>#}
-{#  <script type="text/javascript" src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>#}
-      <script src="https://cdn.bootcss.com/jszip/2.6.0/jszip.min.js"></script>
-    <script src="https://cdn.bootcss.com/pdfmake/0.1.0/pdfmake.min.js"></script>
-    <script src="https://cdn.bootcss.com/pdfmake/0.1.0/vfs_fonts.js"></script>
+  {% include 'pages/usercenter/include_datatables_js.html' %}
 
   <script>
     {% autoescape off %}

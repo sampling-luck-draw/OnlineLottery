@@ -53,7 +53,12 @@
 
       ```json
       {"action": "history-activities", 
-      "content": [{"活动信息字典，具体格式待定"}, {}]
+      "content": [
+          {"id": 1,
+          "name": "jgbzdh",
+          "start_time": "2019-01-06 08:30:41",
+          "end_time": "2019-01-06 10:30:41"
+          }, {}]
       }
       ```
 

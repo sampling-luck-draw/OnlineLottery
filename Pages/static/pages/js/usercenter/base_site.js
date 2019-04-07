@@ -128,4 +128,5 @@ function init_sidebar() {
 
 $(document).ready(function() {
     init_sidebar();
+    $('.dropdown-toggle').dropdown();
 });

@@ -23,6 +23,18 @@
     <orderEntry type="library" name="jquery.dataTables" level="application" />
     <orderEntry type="library" name="dataTables.bootstrap" level="application" />
     <orderEntry type="library" name="jszip" level="application" />
+    <orderEntry type="library" name="dataTables.buttons" level="application" />
+    <orderEntry type="library" name="buttons.bootstrap" level="application" />
+    <orderEntry type="library" name="buttons.flash" level="application" />
+    <orderEntry type="library" name="buttons.html5" level="application" />
+    <orderEntry type="library" name="buttons.print" level="application" />
+    <orderEntry type="library" name="dataTables.fixedHeader" level="application" />
+    <orderEntry type="library" name="dataTables.keyTable" level="application" />
+    <orderEntry type="library" name="dataTables.responsive" level="application" />
+    <orderEntry type="library" name="responsive.bootstrap" level="application" />
+    <orderEntry type="library" name="pdfmake" level="application" />
+    <orderEntry type="library" name="vfs_fonts" level="application" />
+    <orderEntry type="library" name="dataTables.scroller" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
