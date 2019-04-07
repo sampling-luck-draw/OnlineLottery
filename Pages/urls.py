@@ -1,7 +1,7 @@
 
 from django.urls import path, include
 
-import Pages.auth, Pages.views
+import Pages.auth, Pages.views, Pages.function
 
 urlpatterns = [
     path('', Pages.views.index),
@@ -17,7 +17,7 @@ urlpatterns = [
     path('testws', Pages.views.test_ws),
     path('get-csrf', Pages.views.get_csrf),
 
-    # path('get-participants/$)', Pages.views.get_participants),
+    path('get-participants', Pages.function.get_participants),
     # path('get-participants/<int:activity_id>)', Pages.views.get_participants),
-    path('get-danmu', Pages.views.get_danmu),
+    path('get-danmu', Pages.function.get_danmu),
 ]
