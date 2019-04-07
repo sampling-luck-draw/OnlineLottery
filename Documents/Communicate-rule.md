@@ -32,7 +32,7 @@
 
    ```json
    [
-       {"avatar": "头像地址", "nickname": "Yeah...", "language": "zh_CN", "nickName": "Yeah...", "country": "China", "province": "Jilin", "gender": 1, "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "city": "Yanbian"},
+       {"id": 4, "name": "东北大学才明洋表彰大会", "start_time": "2019-02-30 08:20:18", "end_time": "2019-2-31 20:17:24"},
        {}
    ]
    ```
