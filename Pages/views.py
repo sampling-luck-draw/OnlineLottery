@@ -12,7 +12,8 @@ from django.views.decorators.http import require_GET
 
 import MicroProgram.models as models
 from Lottery import settings
-from Pages.function import _get_activity, _get_activities, utc_to_local
+from Pages.function import _get_activity, _get_activities
+from Pages.utils import utc_to_local
 from Pages.province import province_dict
 
 

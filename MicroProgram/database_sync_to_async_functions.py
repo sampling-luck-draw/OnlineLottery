@@ -15,3 +15,8 @@ def get_latest_activity(organizer):
 @database_sync_to_async
 def get_activity_by_id(activity_id):
     return models.Activity.objects.get(id=activity_id)
+
+
+@database_sync_to_async
+def get_participants_by_activity(activity):
+    return models.Participant.objects.filter(activity=activity)

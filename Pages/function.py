@@ -1,14 +1,11 @@
-import datetime
 import json
 
-import pytz
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
-from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.views.decorators.http import require_GET
 
-from Lottery import settings
 from MicroProgram import models
+from Pages.utils import utc_to_local
 
 
 def _get_activities(request):
@@ -35,12 +32,6 @@ def _get_activity(request):
         return HttpResponseNotFound('unauthorized')
 
     return activity
-
-
-def utc_to_local(utc_dt):
-    # TODO: **Important** Dynamic time zone
-    # return utc_dt.astimezone(tz=pytz.timezone(settings.TIME_ZONE))
-    return utc_dt + datetime.timedelta(hours=8)
 
 
 @require_GET

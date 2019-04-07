@@ -3,6 +3,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from MicroProgram import models
 from MicroProgram.database_sync_to_async_functions import *
+from Pages.utils import model_to_json
 
 
 class Console(AsyncWebsocketConsumer):
@@ -14,8 +15,11 @@ class Console(AsyncWebsocketConsumer):
     async def handle_modify_activity(self, message):
         await self.send('handle_modify_activity')
 
-    async def handel_get_participants(self, message):
-        await self.send('handel_get_participants')
+    async def handle_get_participants(self, message):
+        participants = await get_participants_by_activity(self.activity)
+        participants_list = [model_to_json(i) for i in participants]
+
+        await self.send(json.dumps({'action': 'participants', 'content': participants_list}))
 
     async def connect(self):
         user = self.scope['user']
@@ -60,7 +64,6 @@ class Console(AsyncWebsocketConsumer):
             return
 
         method_name = 'handle_' + message['action'].replace('-', '_')
-        await self.send(method_name)
         if hasattr(Console, method_name):
             method = getattr(Console, method_name)
             await method(self, message)
