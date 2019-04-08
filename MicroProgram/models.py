@@ -20,7 +20,6 @@ class Participant(models.Model):
     province = models.CharField(max_length=64)
     city = models.CharField(max_length=64)
     language = models.CharField(max_length=16)
-    activate_in = models.IntegerField(null=True, default=None)
 
     def __str__(self):
         return "{} {}".format(self.openid, self.nickName)
@@ -32,7 +31,6 @@ class Activity(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     participants = models.ManyToManyField(to=Participant, blank=True)
-    channel_name = models.CharField(max_length=60, default="")
 
     def __str__(self):
         return self.name
