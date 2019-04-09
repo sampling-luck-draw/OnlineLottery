@@ -39,3 +39,9 @@ def add_award(activity, award_name, prize_name, amount):
     award.amount = amount
     award.save()
 
+
+@database_sync_to_async
+def delete_award(activity, name):
+    models.Award.objects.get(activity=activity, award_name=name).delete()
+
+

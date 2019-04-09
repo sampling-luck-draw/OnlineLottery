@@ -112,4 +112,29 @@
        }}
       ```
 
+   8. 删除奖项：本地->云
+
+      ```json
+      {"action": "delete-award",
+       "content": {
+           "name": "一等奖"
+       }}
+      ```
+
+   9. 请求活动信息：本地->云
+
+      ```json
+      {"action": "get-activity-info"}
+      ```
+
+   10. 发送活动信息：云->本地
+
+      ```json
+      {"action":"activity-info",
+       "content": {
+           "name": "才明洋表彰大会",
+           "start_time": "2019-04-09 12:00:00",
+           "end_time": "2019-04-09 22:00:00",
+       }}
+      ```
 
