@@ -69,7 +69,17 @@
 
   <script>
     {% autoescape off %}
-      let danmu_time_range = {{ danmu_time_range }}
+      {% if activity.start_time != None %}
+        let danmu_time_start = "{{ activity.start_time| date:"Y-n-j H:i"  }}";
+      {% else %}
+        let danmu_time_start = "";
+      {% endif %}
+      {% if activity.end_time != None %}
+        let danmu_time_end = "{{ activity.end_time| date:"Y-n-j H:i"  }}";
+      {% else %}
+        let danmu_time_end = "";
+      {% endif %}
+      let danmu_time_range = {{ danmu_time_range }};
     {% endautoescape %}
   </script>
 

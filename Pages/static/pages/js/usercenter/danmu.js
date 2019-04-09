@@ -114,6 +114,10 @@ let X = [];
 let Y = [];
 
 function process_danmu_data() {
+  if (danmu_time_start !== "") {
+    X.push(danmu_time_start);
+    Y.push(0);
+  }
   let last_date = "";
   for (let k in danmu_time_range) {
     let split_date = k.split(' ');
@@ -126,6 +130,10 @@ function process_danmu_data() {
     }
     X.push(x_value);
     Y.push(danmu_time_range[k]);
+  }
+  if (danmu_time_end !== "") {
+    X.push(danmu_time_end);
+    Y.push(0);
   }
 }
 
