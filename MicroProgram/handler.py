@@ -27,7 +27,7 @@ class Handler:
         return '{"result": "success"}'
 
     async def handle_modify_activity(self, message):
-        return 'handle_modify_activity'
+        return '{"result": "没做呢"}'
 
     async def handle_get_participants(self, message):
         participants = await get_participants_by_activity(self.activity)
