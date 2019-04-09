@@ -44,3 +44,11 @@ class Danmu(models.Model):
 
     def __str__(self):
         return "{}: {} @ {} {}".format(self.sender.nickName, self.text, self.activity, self.time)
+
+
+class Award(models.Model):
+    award_name = models.CharField(max_length=64)
+    prize_name = models.CharField(max_length=64)
+    amount = models.IntegerField()
+    activity = models.ForeignKey(to=Activity, on_delete=models.PROTECT)
+    lucky_dogs = models.ManyToManyField(to=Participant, blank=True)

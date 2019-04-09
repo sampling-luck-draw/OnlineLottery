@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Lottery.captcha import pc_validate
 from MicroProgram.models import Organizer
+from Pages.function import exempt_cross_region
 
 from . import views
 

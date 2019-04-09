@@ -56,7 +56,7 @@
 
    以下为可能的数据包格式
 
-0. 当成功连接时，服务器会回复“BLXDNZ”。
+5. 当成功连接时，服务器会回复“BLXDNZ”。
 
    1. 添加用户：云 -> 本地
 
@@ -82,7 +82,7 @@
    4. 中奖：本地 -> 云
 
       ```json
-      {"action": "lucky-dog", "content": {"uid": "uid"}}
+      {"action": "lucky-dog", "content": {"uid": "uid", "award":  "奖项名称"}}
       ```
 
    5. 请求用户列表：本地->云
@@ -101,5 +101,15 @@
       ]}
       ```
 
+   7. 添加奖项：本地->云
+
+      ```json
+      {"action": "append-award",
+       "content": {
+           "name": "一等奖",
+           "prize": "兰博基尼五元优惠券",
+           "amount": 10
+       }}
+      ```
 
 
