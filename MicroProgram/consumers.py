@@ -50,7 +50,7 @@ class Console(AsyncWebsocketConsumer):
 
     async def disconnect(self, code):
         await self.channel_layer.group_discard(
-            'console_' + self.activity.id,
+            'console_' + str(self.activity.id),
             self.channel_name
         )
 

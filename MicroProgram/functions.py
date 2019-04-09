@@ -28,17 +28,20 @@ def send_danmu(request):
         danmu.sender = Participant.objects.get(openid=openid)
     except Participant.DoesNotExist:
         return HttpResponseForbidden('user not exist')
+    danmu.text = text
+    danmu.time = datetime.datetime.now()
     try:
-        channel_name = Activity.objects.get(id=danmu.sender.activate_in).channel_name
+        danmu.activity = Activity.objects.get(id=danmu.sender.activate_in)
     except Activity.DoesNotExist:
-        return HttpResponse('{"result": "fail", "reason": "Activity does not exist"}')
+        return HttpResponseForbidden('activity not exist')
+    danmu.save()
 
     channel_layer = get_channel_layer()
 
     post_data['uid'] = post_data['openid']
     del post_data['openid']
-    async_to_sync(channel_layer.group_send)(
-        'test_group',
+    async_to_sync(channel_layer.send)(
+        'console_' + str(danmu.sender.activate_in),
         {
             'type': 'chat_message',
             'text': json.dumps(
@@ -46,13 +49,6 @@ def send_danmu(request):
         }
     )
 
-    danmu.text = text
-    danmu.time = datetime.datetime.now()
-    try:
-        danmu.activity = Activity.objects.get(id=4)
-    except Activity.DoesNotExist:
-        HttpResponseForbidden('activity not exist')
-    danmu.save()
     return HttpResponse('{"result": "ok"}')
 
 
@@ -109,7 +105,8 @@ def login(request):
     xcx_user.province = post_data.get('province', 'Alpha Centauri')
     xcx_user.city = post_data.get('city', 'Proxima Centauri')
     xcx_user.language = post_data.get('language', 'Xenolinguistics')
-    xcx_user.activate_in = 4  # TODO: 读取二维码
+    activity_id = post_data.get('activity_id', None)
+    xcx_user.activate_in = activity_id
     xcx_user.save()
     decode['result'] = 'ok'
     post_data['uid'] = openid
@@ -119,25 +116,15 @@ def login(request):
     del post_data['code']
     del post_data['nickName']
 
-    a = Activity.objects.get(id=4)
+    a = Activity.objects.get(id=activity_id)
     a.participants.add(xcx_user)
     a.save()
 
-    channel_layer = get_channel_layer()
-    channel_name = Activity.objects.get(id=xcx_user.activate_in).channel_name
-    # async_to_sync(channel_layer.send)(
-    #     channel_name, {'type': 'chat.message', 'text': json.dumps(
-    #         {'action': 'append-user', 'content': post_data})})
-
-    async_to_sync(channel_layer.group_send)(
-        'test_group',
-        {
-            'type': 'chat_message',
-            'text': json.dumps(
-                {'action': 'append-user', 'content': post_data})
-        }
-    )
-
+    if activity_id:
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.send)(
+            "console_" + str(activity_id), {'type': 'chat.message', 'text': json.dumps(
+                {'action': 'append-user', 'content': post_data})})
     return HttpResponse(json.dumps(decode))
 
 
