@@ -9,7 +9,9 @@ def get_organizer(user):
 
 @database_sync_to_async
 def get_latest_activity(organizer):
-    return models.Activity.objects.filter(belong=organizer).order_by('-id')[0]
+    if models.Activity.objects.filter(belong=organizer).count() > 0:
+        return models.Activity.objects.filter(belong=organizer).order_by('-id')[0]
+    return None
 
 
 @database_sync_to_async

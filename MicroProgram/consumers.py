@@ -9,21 +9,26 @@ class Console(AsyncWebsocketConsumer):
 
     async def connect(self):
         user = self.scope['user']
+        await self.accept()
         if not user.is_authenticated:
             await self.send('{"error":"unauthenticated"}')
             await self.close()
             return
-        await self.accept()
 
         organizer = await get_organizer(user)
         activity_id = self.scope['url_route']['kwargs'].get('activity_id', None)
         if not activity_id:
             activity = await get_latest_activity(organizer)
+            if not activity:
+                await self.send('{"error":"no available activity"}')
+                await self.close()
+                return
         else:
             try:
                 activity = await get_activity_by_id(activity_id)
             except models.Activity.DoesNotExist:
-                await self.send('invalid id')
+                await self.send('{"error":"invalid activity id"}')
+                await self.close()
                 return
         self.activity = activity
         self.handler = Handler(activity)
