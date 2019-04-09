@@ -29,3 +29,13 @@ def add_lucky_dog(activity, participant_id, award_name):
     award.lucky_dogs.add(participant)
     award.save()
 
+
+@database_sync_to_async
+def add_award(activity, award_name, prize_name, amount):
+    award = models.Award()
+    award.activity = activity
+    award.award_name = award_name
+    award.prize_name = prize_name
+    award.amount = amount
+    award.save()
+

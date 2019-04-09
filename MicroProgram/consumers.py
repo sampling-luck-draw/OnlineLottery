@@ -12,6 +12,12 @@ class Console(AsyncWebsocketConsumer):
         award_name = message['content']['award']
         await add_lucky_dog(self.activity, uid, award_name)
 
+    async def handle_append_award(self, message):
+        award_name = message['content']['name']
+        prize_name = message['content']['prize']
+        amount = message['content']['amount']
+        await add_award(self.activity, award_name, prize_name, amount)
+
     async def handle_modify_activity(self, message):
         await self.send('handle_modify_activity')
 
