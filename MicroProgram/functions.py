@@ -116,15 +116,16 @@ def login(request):
     del post_data['code']
     del post_data['nickName']
 
-    a = Activity.objects.get(id=activity_id)
-    a.participants.add(xcx_user)
-    a.save()
-
-    if activity_id:
+    try:
+        a = Activity.objects.get(id=activity_id)
+        a.participants.add(xcx_user)
+        a.save()
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.send)(
             "console_" + str(activity_id), {'type': 'chat.message', 'text': json.dumps(
                 {'action': 'append-user', 'content': post_data})})
+    except Activity.DoesNotExist:
+        return HttpResponse("No such Activity.")
     return HttpResponse(json.dumps(decode))
 
 
