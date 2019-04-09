@@ -1,7 +1,6 @@
 import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
-from MicroProgram import models
 from MicroProgram.database_sync_to_async_functions import *
 from Pages.utils import model_to_json
 
@@ -10,7 +9,8 @@ class Console(AsyncWebsocketConsumer):
 
     async def handle_luck_dog(self, message):
         uid = message['content']['uid']
-        await self.send('handle_luck_dog')
+        award_name = message['content']['award']
+        await add_lucky_dog(self.activity, uid, award_name)
 
     async def handle_modify_activity(self, message):
         await self.send('handle_modify_activity')
