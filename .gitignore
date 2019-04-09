@@ -177,3 +177,5 @@ upload_secrets.sh
 rsync.sh
 .rsync.sh.swp
 **/migrations
+
+gentelella/
