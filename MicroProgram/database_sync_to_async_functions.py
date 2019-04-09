@@ -45,3 +45,11 @@ def delete_award(activity, name):
     models.Award.objects.get(activity=activity, award_name=name).delete()
 
 
+@database_sync_to_async
+def modify_activity(activity, content):
+    for k, v in content.items():
+        if hasattr(activity, k):
+            setattr(activity, k, v)
+    activity.save()
+
+
