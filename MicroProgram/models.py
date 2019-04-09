@@ -29,8 +29,8 @@ class Participant(models.Model):
 class Activity(models.Model):
     name = models.CharField(max_length=64)
     belong = models.ForeignKey(to=Organizer, on_delete=models.PROTECT)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
     participants = models.ManyToManyField(to=Participant, blank=True)
 
     def __str__(self):

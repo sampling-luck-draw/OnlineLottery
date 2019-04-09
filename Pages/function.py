@@ -1,8 +1,8 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseNotFound
-from django.views.decorators.http import require_GET
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
+from django.views.decorators.http import require_GET, require_POST
 
 from MicroProgram import models
 from Pages.utils import utc_to_local
@@ -113,3 +113,14 @@ def get_activities(request):
         'end_time': utc_to_local(i.end_time).strftime("%Y-%m-%d %H:%M:%S")
     } for i in activities]
     return HttpResponse(json.dumps(json_str), content_type='application/json')
+
+
+@require_POST
+@login_required(login_url='/signin')
+def append_activity(request):
+    user = request.user
+    organizer = models.Organizer.objects.get(user=user)
+    activity = models.Activity()
+    activity.belong = organizer
+    activity.save()
+    return JsonResponse({'activity_id': activity.id})

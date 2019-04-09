@@ -21,4 +21,5 @@ urlpatterns = [
     path('get-activities', Pages.function.get_activities),
     # path('get-participants/<int:activity_id>)', Pages.views.get_participants),
     path('get-danmu', Pages.function.get_danmu),
+    path('append-activity', Pages.function.append_activity),
 ]

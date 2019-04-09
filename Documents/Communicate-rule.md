@@ -4,11 +4,19 @@
 
    POST: https://sampling.alphamj.cn/signin
 
-   DATA: {"username":"用户名", "password":"密码"}   // 验证码？
+   Payload: 
 
-   RET: {"result": "success", "uid": user.id}
+   ```json
+   {"username":"用户名", "password":"密码"}   // 验证码？
+   ```
 
-   ​         {"result": "error", "msg": "相应的错误信息"}
+   Response: 
+   ```json
+   {"result": "success", "uid": user.id}
+   ```
+   ```json
+   {"result": "error", "msg": "相应的错误信息"}
+   ```
 
    返回数据头包括COOKIE和SESSION，请求其他业务时应附带SESSION信息，作为身份验证。
 
@@ -16,11 +24,18 @@
 
    POST: https://sampling.alphamj.cn/signup
 
-   DATA: {"username":"用户名", "password":"密码", "email": "邮箱"}   // 验证码？
+   Payload: 
+   ```json
+   {"username":"用户名", "password":"密码", "email": "邮箱"}
+   ```
 
-   RET: {"result": "success", "uid": user.id}
-
-   ​         {"result": "error", "msg": "相应的错误信息"}
+   Response: 
+   ```json
+   {"result": "success", "uid": user.id}
+   ```
+   ```json
+   {"result": "error", "msg": "相应的错误信息"}
+   ```
 
    返回数据头包括COOKIE和SESSION
 
@@ -28,7 +43,9 @@
 
    GET: https://sampling.alphamj.cn/get-activities
 
-   RET: 
+   Payload: 无
+
+   Response: 
 
    ```json
    [
@@ -37,7 +54,27 @@
    ]
    ```
 
-4. 建立连接
+4. 创建新活动
+
+   POST: https://sampling.alphamj.cn/append-activity
+
+   Payload:
+
+   ```json
+   {
+       "name": "东北大学才明洋表彰大会"
+   }
+   ```
+
+   Response:
+
+   ```json
+   {
+       "activity_id": 1
+   }
+   ```
+
+5. 建立连接
 
    wss://sampling.alphamj.cn/ws/[<活动id>]
 
@@ -55,8 +92,8 @@
    ```
 
    以下为可能的数据包格式
-
-5. 当成功连接时，服务器会回复“BLXDNZ”。
+  
+   当成功连接时，服务器会回复“BLXDNZ”。
 
    1. 添加用户：云 -> 本地
 
