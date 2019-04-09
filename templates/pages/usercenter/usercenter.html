@@ -19,7 +19,13 @@
         <span class="count_top"><i class="fa fa-calendar-check-o"></i>举办活动</span>
         <div class="count">{{ overall.activity_count }}次</div>
         {% if overall.activity_count > 0 %}
-          <span class="count_bottom">上次活动<i class="green">{{ overall.least_time| date:"Y-n-j" }}</i></span>
+          <span class="count_bottom">上次活动<i class="green">
+            {% if overall.last_time != None %}
+              {{ overall.last_time| date:"Y-n-j" }}
+            {% else %}
+              未开始
+            {% endif %}
+          </i></span>
         {% endif %}
       </div>
       <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -80,8 +86,16 @@
           <tr>
             <td>{{ activity.id }}</td>
             <td>{{ activity.name }}</td>
-            <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
-            <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
+            {% if activity.start_time != None %}
+              <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
+            {% else %}
+              <td>未开始</td>
+            {% endif %}
+            {% if activity.end_time != None %}
+              <td>{{ activity.end_time| date:"Y-n-j H:i" }}</td>
+            {% else %}
+              <td>未结束</td>
+            {% endif %}
             <td>{{ activity.participants.count }}</td>
             <td>{{ activity.danmu_set.count }}</td>
             <td><span class="label label-success">Finished</span></td>

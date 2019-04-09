@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -35,6 +37,12 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.name
+
+    def during(self):
+        if self.start_time and self.end_time:
+            return self.end_time - self.start_time
+        else:
+            return datetime.timedelta()
 
 
 class Danmu(models.Model):

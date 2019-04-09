@@ -32,7 +32,7 @@ def deploy(request):
     if event_type == 'ping':
         return HttpResponse('pong!')
     if event_type == 'push':
-        os.system('cd /web-server/OnlineLottery/ && bash deploy.sh')
+        # os.system('cd /web-server/OnlineLottery/ && bash deploy.sh')
         return HttpResponse('deploy.')
 
     return HttpResponseServerError('Operation not supported.', status=502)

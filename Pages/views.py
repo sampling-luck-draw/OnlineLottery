@@ -51,11 +51,10 @@ def usercenter(request):
             'activity_count': cnt,
             'participant_count': activities.values('participants').exclude(participants=None).count(),
             'time_count': reduce(lambda a, b: a + b,
-                                 map(lambda a: a['end_time'] - a['start_time'],
-                                     activities.values('start_time', 'end_time'))).seconds // 3600,
+                                 map(lambda a: a.during(), activities)).seconds // 3600,
             'prize_draw_count': 130,
             'danmu_count': activities.values('danmu').exclude(danmu=None).count(),
-            'least_time': activities[0].start_time
+            'last_time': activities[0].start_time
         }
         overall['average_participant'] = overall['participant_count'] / overall['activity_count']
         overall['average_time'] = overall['time_count'] / overall['activity_count']
@@ -64,7 +63,7 @@ def usercenter(request):
     else:
         overall = {
             'activity_count': 0, 'participant_count': 0, 'prize_draw_count': 0,
-            'danmu_count': 0, 'least_time': 0, 'time_count': 0
+            'danmu_count': 0, 'last_time': 0, 'time_count': 0
         }
 
     return render(request, 'pages/usercenter/usercenter.html',
