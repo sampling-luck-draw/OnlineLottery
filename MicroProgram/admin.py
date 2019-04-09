@@ -19,7 +19,12 @@ class DanmuAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
 
 
+class AwardAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
+
 admin.site.register(Organizer, OrganizerAdmin)
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(Danmu, DanmuAdmin)
+admin.site.register(Award, AwardAdmin)

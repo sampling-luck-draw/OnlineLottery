@@ -91,7 +91,7 @@ def login(request):
     openid = decode.get('openid', '')
 
     if not openid:
-        return HttpResponseForbidden("No openid")
+        return HttpResponseForbidden(response.content)
 
     try:
         xcx_user = Participant.objects.get(openid=openid)

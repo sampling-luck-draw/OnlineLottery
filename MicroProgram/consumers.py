@@ -2,30 +2,10 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from MicroProgram.database_sync_to_async_functions import *
-from Pages.utils import model_to_json
+from MicroProgram.handler import Handler
 
 
 class Console(AsyncWebsocketConsumer):
-
-    async def handle_luck_dog(self, message):
-        uid = message['content']['uid']
-        award_name = message['content']['award']
-        await add_lucky_dog(self.activity, uid, award_name)
-
-    async def handle_append_award(self, message):
-        award_name = message['content']['name']
-        prize_name = message['content']['prize']
-        amount = message['content']['amount']
-        await add_award(self.activity, award_name, prize_name, amount)
-
-    async def handle_modify_activity(self, message):
-        await self.send('handle_modify_activity')
-
-    async def handle_get_participants(self, message):
-        participants = await get_participants_by_activity(self.activity)
-        participants_list = [model_to_json(i) for i in participants]
-
-        await self.send(json.dumps({'action': 'participants', 'content': participants_list}))
 
     async def connect(self):
         user = self.scope['user']
@@ -46,6 +26,7 @@ class Console(AsyncWebsocketConsumer):
                 await self.send('invalid id')
                 return
         self.activity = activity
+        self.handler = Handler(activity)
 
         await self.channel_layer.group_add(
             'console_' + str(activity.id),
@@ -70,9 +51,9 @@ class Console(AsyncWebsocketConsumer):
             return
 
         method_name = 'handle_' + message['action'].replace('-', '_')
-        if hasattr(Console, method_name):
-            method = getattr(Console, method_name)
-            await method(self, message)
+        if hasattr(Handler, method_name):
+            method = getattr(Handler, method_name)
+            await self.send(await method(self.handler, message))
         else:
             await self.send('unrecognized action {}'.format(message['action']))
 
