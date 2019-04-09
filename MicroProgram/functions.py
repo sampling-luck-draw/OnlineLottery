@@ -4,36 +4,37 @@ import time
 import requests
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST, require_GET
+
 from .models import Participant, Danmu, Activity
 
 from Lottery.secret import xcx_appid, xcx_appsecret
 
 
+@require_POST
 @csrf_exempt
 def send_danmu(request):
-    if request.method != 'POST':
-        return HttpResponseForbidden('Forbidden')
     post_data = json.loads(request.body.decode('utf-8'))
     openid = post_data.get('openid', '')
     if not openid:
-        return HttpResponseForbidden('no openid')
+        return HttpResponse('{"result":"error", "msg":"no openid"}')
     text = post_data.get('danmu', '')
     if not text:
-        return HttpResponseForbidden('no text')
+        return HttpResponse('{"result":"error", "msg":"no danmu"}')
 
     danmu = Danmu()
     try:
         danmu.sender = Participant.objects.get(openid=openid)
     except Participant.DoesNotExist:
-        return HttpResponseForbidden('user not exist')
+        return HttpResponse('{"result":"error", "msg":"no such user"}')
     danmu.text = text
     danmu.time = datetime.datetime.now()
     try:
         danmu.activity = Activity.objects.get(id=danmu.sender.activate_in)
     except Activity.DoesNotExist:
-        return HttpResponseForbidden('activity not exist')
+        return HttpResponse('{"result":"error", "msg":"no such activity"}')
     danmu.save()
 
     channel_layer = get_channel_layer()
@@ -73,17 +74,16 @@ def get_token(request):
     return HttpResponse(xcx_token)
 
 
+@require_POST
 @csrf_exempt
 def login(request):
     """
     用于小程序的“登陆”功能，获得用户openid和session_key
     """
-    if request.method != 'POST':
-        return HttpResponseForbidden("Forbidden")
     post_data = json.loads(request.body.decode('utf-8'))
     code = post_data.get('code', '')
     if not code:
-        return HttpResponseForbidden("No code")
+        return HttpResponse('{"result":"error", "msg":"no code"}')
     response = requests.get('https://api.weixin.qq.com/sns/jscode2session?'
                             'appid={}&secret={}&js_code={}&grant_type=authorization_code'
                             .format(xcx_appid, xcx_appsecret, code))
@@ -91,7 +91,7 @@ def login(request):
     openid = decode.get('openid', '')
 
     if not openid:
-        return HttpResponseForbidden(response.content)
+        return HttpResponse(response.content)
 
     try:
         xcx_user = Participant.objects.get(openid=openid)
@@ -120,17 +120,40 @@ def login(request):
         a = Activity.objects.get(id=activity_id)
         a.participants.add(xcx_user)
         a.save()
+        decode['activity_name'] = a.name
+        decode['activity_status'] = 'Running'  # TODO: status
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.send)(
             "console_" + str(activity_id), {'type': 'chat.message', 'text': json.dumps(
                 {'action': 'append-user', 'content': post_data})})
     except Activity.DoesNotExist:
-        return HttpResponse("No such Activity.")
+        decode['activity_name'] = 'cmy'
+        decode['activity_status'] = 'no such activity'
     return HttpResponse(json.dumps(decode))
 
 
+@require_POST
 @csrf_exempt
 def join(request):
-    if request.method != 'POST':
-        return HttpResponseForbidden("Forbidden")
-    return HttpResponse('{"result": "ok"}')
+    try:
+        post_data = json.loads(request.body.decode('utf-8'))
+        openid = post_data.get('openid', None)
+        user = Participant.objects.get(openid=openid)
+        activity_id = post_data.get('activity_id')
+        activity = Activity.objects.get(id=activity_id)
+        activity.participants.add(user)
+        user.activate_in = activity_id
+        activity.save()
+        user.save()
+    except json.JSONDecodeError:
+        return HttpResponse('{"result": "json decode error"}')
+    except KeyError:
+        return HttpResponse('{"result": "no open id or activity"}')
+    except Participant.DoesNotExist:
+        return HttpResponse('{"result": "no such user"}')
+    except Activity.DoesNotExist:
+        return HttpResponse('{"result": "no such activity"}')
+
+    return JsonResponse({'result': 'ok',
+                         'activity_name': activity.name,
+                         'activity_status': 'Running'})
