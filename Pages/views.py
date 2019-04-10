@@ -48,7 +48,7 @@ def usercenter(request):
             'participant_count': activities.values('participants').exclude(participants=None).count(),
             'time_count': reduce(lambda a, b: a + b,
                                  map(lambda a: a.during, activities)).seconds // 3600,
-            'prize_draw_count': 130,
+            'prize_draw_count': models.Award.objects.filter(activity__in=activities).count(),
             'danmu_count': activities.values('danmu').exclude(danmu=None).count(),
             'last_time': activities[0].start_time
         }
