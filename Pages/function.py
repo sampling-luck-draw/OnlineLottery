@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_GET, require_POST
 
 from MicroProgram import models
@@ -14,7 +14,7 @@ def _get_activities(request):
     return models.Activity.objects.filter(belong=organizer).all()
 
 
-def _get_activity(request):
+def _get_activity(request, default=False):
     user = request.user
     organizer = models.Organizer.objects.get(user=user)
 
@@ -25,11 +25,17 @@ def _get_activity(request):
         request.session['activity'] = activity_id
 
     if not activity_id:
-        return HttpResponseNotFound('no activity id')
+        if default:
+            if models.Activity.objects.filter(belong=organizer).count() > 0:
+                return models.Activity.objects.filter(belong=organizer).order_by('-id')[0]
+            else:
+                return HttpResponseRedirect('/usercenter')
+        else:
+            return HttpResponseNotFound('no activity id')
 
     activity = models.Activity.objects.get(id=activity_id)
     if activity.belong != organizer:
-        return HttpResponseNotFound('unauthorized')
+        return HttpResponseRedirect('/signin')
 
     return activity
 
@@ -76,17 +82,7 @@ def get_danmu(request):
 @require_GET
 @login_required(login_url='/signin')
 def get_participants(request):
-    organizer = models.Organizer.objects.get(user=request.user)
-    activity_id = request.GET.get('activity', None)
-    if not activity_id:
-        return HttpResponseNotFound('no activity id')
-
-    try:
-        activity = models.Activity.objects.get(id=activity_id)
-        if activity.belong != organizer:
-            return HttpResponseNotFound('unauthenticated')
-    except models.Activity.DoesNotExist:
-        return HttpResponseNotFound('no this activity')
+    activity = _get_activity(request, True)
 
     participants = activity.participants.all()
     json_str = [{

@@ -38,11 +38,20 @@ class Activity(models.Model):
     def __str__(self):
         return self.name
 
+    @property
     def during(self):
         if self.start_time and self.end_time:
             return self.end_time - self.start_time
         else:
             return datetime.timedelta()
+
+    @property
+    def status(self):
+        if self.start_time is None:
+            return "Pending"
+        if self.end_time and self.end_time < datetime.datetime.now(datetime.timezone.utc):
+            return "Finished"
+        return "Running"
 
 
 class Danmu(models.Model):

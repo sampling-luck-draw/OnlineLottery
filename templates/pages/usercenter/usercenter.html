@@ -78,14 +78,14 @@
           <th>参与人数</th>
           <th>弹幕数量</th>
           <th>状态</th>
-          <th>详情</th>
+{#          <th>详情</th>#}
         </tr>
         </thead>
         <tbody>
         {% for activity in activities %}
           <tr>
             <td>{{ activity.id }}</td>
-            <td>{{ activity.name }}</td>
+            <td><a href="/usercenter/activity?activity={{ activity.id }}">{{ activity.name }}</a></td>
             {% if activity.start_time != None %}
               <td>{{ activity.start_time| date:"Y-n-j H:i" }}</td>
             {% else %}
@@ -96,11 +96,11 @@
             {% else %}
               <td>未结束</td>
             {% endif %}
-            <td>{{ activity.participants.count }}</td>
-            <td>{{ activity.danmu_set.count }}</td>
-            <td><span class="label label-success">Finished</span></td>
-            <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i
-                class="fa fa-pencil"></i>查看</a></td>
+            <td><a href="/usercenter/participant?activity={{ activity.id }}">{{ activity.participants.count }}</a></td>
+            <td><a href="/usercenter/danmu?activity={{ activity.id }}">{{ activity.danmu_set.count }}</a></td>
+            <td><span class="label label-success">{{ activity.status }}</span></td>
+{#            <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i#}
+{#                class="fa fa-pencil"></i>查看</a></td>#}
           </tr>
         {% endfor %}
 

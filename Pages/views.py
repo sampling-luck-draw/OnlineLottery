@@ -1,20 +1,16 @@
 import collections
-import datetime
 import json
 from functools import reduce
 
-import pytz
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
 import MicroProgram.models as models
-from Lottery import settings
 from Pages.function import _get_activity, _get_activities
-from Pages.utils import utc_to_local
 from Pages.province import province_dict
+from Pages.utils import utc_to_local
 
 
 def index(request):
@@ -51,7 +47,7 @@ def usercenter(request):
             'activity_count': cnt,
             'participant_count': activities.values('participants').exclude(participants=None).count(),
             'time_count': reduce(lambda a, b: a + b,
-                                 map(lambda a: a.during(), activities)).seconds // 3600,
+                                 map(lambda a: a.during, activities)).seconds // 3600,
             'prize_draw_count': 130,
             'danmu_count': activities.values('danmu').exclude(danmu=None).count(),
             'last_time': activities[0].start_time
@@ -73,7 +69,7 @@ def usercenter(request):
 @require_GET
 @login_required(login_url='/signin')
 def danmu_manage(request):
-    activity = _get_activity(request)
+    activity = _get_activity(request, True)
     if isinstance(activity, HttpResponse):
         return activity
 
@@ -98,7 +94,7 @@ def danmu_manage(request):
 @require_GET
 @login_required(login_url='/signin')
 def participant_manage(request):
-    activity = _get_activity(request)
+    activity = _get_activity(request, True)
     if isinstance(activity, HttpResponse):
         return activity
 
@@ -121,7 +117,7 @@ def participant_manage(request):
 
 @login_required(login_url='/signin')
 def activity_manage(request):
-    activity = _get_activity(request)
+    activity = _get_activity(request, True)
     if isinstance(activity, HttpResponse):
         return activity
 
