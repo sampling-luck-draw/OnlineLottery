@@ -34,6 +34,7 @@ class Activity(models.Model):
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     participants = models.ManyToManyField(to=Participant, blank=True)
+    qrcode = models.ImageField(null=True)
 
     def __str__(self):
         return self.name

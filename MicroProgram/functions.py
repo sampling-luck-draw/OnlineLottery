@@ -1,16 +1,18 @@
 import datetime
 import json
 import time
+
 import requests
+from io import BytesIO
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.core.files.images import ImageFile
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST, require_GET
-
-from .models import Participant, Danmu, Activity
+from django.views.decorators.http import require_POST
 
 from Lottery.secret import xcx_appid, xcx_appsecret
+from .models import Participant, Danmu, Activity
 
 
 @require_POST
@@ -57,9 +59,7 @@ xcx_token_expire_time = 0
 xcx_token = ''
 
 
-def get_token(request):
-    if request.method != 'GET':
-        return HttpResponse('Hello')
+def get_token():
     url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.format(
         xcx_appid, xcx_appsecret)
     global xcx_token_expire_time, xcx_token
@@ -68,10 +68,15 @@ def get_token(request):
         o = json.loads(r)
         if 'access_token' in o:
             xcx_token_expire_time = time.time() + o['expires_in']
-            xcx_token = o['access_token']
+            return o['access_token']
         else:
-            return HttpResponse(r)  # 返回错误代码
-    return HttpResponse(xcx_token)
+            return r  # 返回错误代码
+
+
+def get_token_http(request):
+    if request.method != 'GET':
+        return HttpResponse('Hello')
+    return HttpResponse(get_token())
 
 
 @require_POST
@@ -157,3 +162,33 @@ def join(request):
     return JsonResponse({'result': 'ok',
                          'activity_name': activity.name,
                          'activity_status': 'Running'})
+
+
+def get_wxa_code(request):
+    try:
+        activity_id = request.GET['activity_id']
+        activity = Activity.objects.get(id=activity_id)
+        if activity.qrcode is not None:
+            return HttpResponse(activity.qrcode.read(), content_type="image/jpeg")
+    except KeyError:
+        return HttpResponse('{"error": "no activity id"}')
+    except Activity.DoesNotExist:
+        return HttpResponse('{"error": "wrong activity"}')
+
+    url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' + get_token()
+    data = {
+        'scene': str(activity_id),
+        'page': 'pages/room'
+    }
+    # url = 'http://127.0.0.1:9000/avatar.png'
+
+    response = requests.get(url, json=data)
+    if 'application/json' in response.headers.get('Content-Type'):
+        return HttpResponse(response.text)
+
+    i = ImageFile(BytesIO(response.content), name="activity_qr_code_" + activity_id)
+    activity.qrcode = i
+    activity.save()
+    return HttpResponse(response.content, content_type=response.headers['Content-Type'])
+
+
