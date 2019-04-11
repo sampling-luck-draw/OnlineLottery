@@ -18,7 +18,10 @@ def signup(request):
         return views.signup(request)
     if request.method != 'POST':
         return HttpResponseForbidden()
-    data = json.loads(request.body.decode('utf-8'))
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except json.JSONDecodeError:
+        return HttpResponseForbidden("Json decode error")
     username = data.get('username')
     password = data.get('password')
     email = data.get('email')

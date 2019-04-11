@@ -60,9 +60,13 @@
 
    Payload:
 
+   开始和结束时间均为可选
+
    ```json
    {
        "name": "东北大学才明洋表彰大会"
+       [,"start_time": "%Y-%m-%d %H:%M:%S"]
+       [,"end_time": "结束时间"]
    }
    ```
 
@@ -74,7 +78,15 @@
    }
    ```
 
-5. 建立连接
+5. 获取小程序码
+
+   GET: https://sampling.alphamj.cn/xcx/get-qr?activity_id=<activity_id>
+
+   Response:
+
+   图片的二进制数据或包含错误信息的json，用返回的Content-Type区分。
+
+6. 建立连接
 
    wss://sampling.alphamj.cn/ws/[<活动id>]
 
@@ -92,7 +104,7 @@
    ```
 
    以下为可能的数据包格式
-  
+
    当成功连接时，服务器会回复“BLXDNZ”。
 
    1. 添加用户：云 -> 本地

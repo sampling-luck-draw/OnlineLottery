@@ -1,7 +1,8 @@
+import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseNotFound, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.views.decorators.http import require_GET, require_POST
 
 from MicroProgram import models
@@ -115,8 +116,24 @@ def get_activities(request):
 @login_required(login_url='/signin')
 def append_activity(request):
     user = request.user
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        activity_name = data['name']
+    except json.decoder.JSONDecodeError:
+        return HttpResponseForbidden('json decode error')
+    except KeyError:
+        return HttpResponse('{"error": "no activity name"}')
+
     organizer = models.Organizer.objects.get(user=user)
     activity = models.Activity()
+    activity.name = activity_name
     activity.belong = organizer
+    try:
+        if data.get('start_time', None):
+            activity.start_time = datetime.datetime.strptime(data['start_time'], "%Y-%m-%d %H:%M:%S")
+        if data.get('end_time', None):
+            activity.end_time = datetime.datetime.strptime(data['end_time'], "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return HttpResponse('{"error": "parse time error"}')
     activity.save()
     return JsonResponse({'activity_id': activity.id})
