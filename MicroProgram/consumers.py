@@ -54,8 +54,13 @@ class Console(AsyncWebsocketConsumer):
         except json.JSONDecodeError:
             await self.send('json decode error')
             return
+        #
+        # if 'content' not in message:
+        #     await self.send('no content')
+        #     return
 
         method_name = 'handle_' + message['action'].replace('-', '_')
+        print(method_name)
         if hasattr(Handler, method_name):
             method = getattr(Handler, method_name)
             await self.send(await method(self.handler, message))

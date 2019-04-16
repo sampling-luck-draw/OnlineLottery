@@ -3,6 +3,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
 from MicroProgram import models
@@ -113,6 +114,7 @@ def get_activities(request):
 
 
 @require_POST
+@csrf_exempt
 @login_required(login_url='/signin')
 def append_activity(request):
     user = request.user

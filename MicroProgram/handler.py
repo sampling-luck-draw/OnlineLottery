@@ -8,11 +8,14 @@ class Handler:
     def __init__(self, activity):
         self.activity = activity
 
-    async def handle_luck_dog(self, message):
+    async def handle_lucky_dog(self, message):
         uid = message['content']['uid']
         award_name = message['content']['award']
-        await add_lucky_dog(self.activity, uid, award_name)
-        return '{"result": "success"}'
+        result = await add_lucky_dog(self.activity, uid, award_name)
+        if result is None:
+            return '{"result": "success"}'
+        else:
+            return '{"error": "' + result + '"}'
 
     async def handle_append_award(self, message):
         award_name = message['content']['name']
@@ -21,7 +24,7 @@ class Handler:
         await add_award(self.activity, award_name, prize_name, amount)
         return '{"result": "success"}'
 
-    async def handel_delete_award(self, message):
+    async def handle_delete_award(self, message):
         award_name = message['content']['name']
         await delete_award(self.activity, award_name)
         return '{"result": "success"}'
@@ -35,10 +38,26 @@ class Handler:
         participants_list = [model_to_json(i) for i in participants]
         return json.dumps({'action': 'participants', 'content': participants_list})
 
+    async def handle_append_user(self, message):
+        content = message['content']
+        await add_participant(content, self.activity)
+        return '{"result": "success"}'
+
     async def handle_get_activity_info(self, message):
         data = {
             'name': self.activity.name,
-            'start_time': utc_to_local(self.activity.start_time).strftime("%Y-%m-%d %H:%M:%S"),
+            'start_time': utc_to_local(self.activity.start_time).strftime("%Y-%m-%d %H:%M:%S")
+            if self.activity.start_time else "未开始",
             'end_time': utc_to_local(self.activity.end_time).strftime("%Y-%m-%d %H:%M:%S")
+            if self.activity.start_time else "未结束",
         }
         return json.dumps({'action': 'activity-info', 'content': data})
+
+    async def handle_get_awards(self, message):
+        awards = await get_awards_by_activity(self.activity)
+        awards_list = [model_to_json(i) for i in awards]
+        return json.dumps({'action': 'awards', 'content': awards_list})
+
+    async def handle_get_lucky_dogs(self, message):
+        dogs = await get_lucky_dogs_by_activity(self.activity)
+        return json.dumps({'action': 'lucky-dogs', 'content': json.dumps(dogs)})

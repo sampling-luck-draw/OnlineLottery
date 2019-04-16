@@ -1,5 +1,8 @@
 from channels.db import database_sync_to_async
+import datetime
+
 from MicroProgram import models
+from Pages.utils import *
 
 
 @database_sync_to_async
@@ -25,11 +28,22 @@ def get_participants_by_activity(activity):
 
 
 @database_sync_to_async
+def get_awards_by_activity(activity):
+    return models.Award.objects.filter(activity=activity)
+
+
+@database_sync_to_async
 def add_lucky_dog(activity, participant_id, award_name):
-    participant = models.Participant.objects.get(id=participant_id)
-    award = models.Award.objects.get(activity=activity, award_name=award_name)
+    try:
+        participant = models.Participant.objects.get(openid=participant_id)
+        award = models.Award.objects.get(activity=activity, award_name=award_name)
+    except models.Participant.DoesNotExist:
+        return "no such user"
+    except models.Award.DoesNotExist:
+        return "no such award"
     award.lucky_dogs.add(participant)
     award.save()
+    return None
 
 
 @database_sync_to_async
@@ -49,9 +63,43 @@ def delete_award(activity, name):
 
 @database_sync_to_async
 def modify_activity(activity, content):
-    for k, v in content.items():
-        if hasattr(activity, k):
-            setattr(activity, k, v)
+    if 'name' in content:
+        activity.name = content['name']
+    if 'start_time' in content:
+        activity.start_time = local_to_utc(datetime.datetime.strptime(content['start_time'], "%Y-%m-%d %H:%M:%S"))
+
+    if 'end_time' in content:
+        activity.end_time = local_to_utc(datetime.datetime.strptime(content['end_time'], "%Y-%m-%d %H:%M:%S"))
+
+    # for k, v in content.items():
+    #     if hasattr(activity, k):
+    #         setattr(activity, k, v)
     activity.save()
 
+
+@database_sync_to_async
+def get_lucky_dogs_by_activity(activity):
+    return list(models.Award.objects.filter(activity=activity).values_list('award_name', 'lucky_dogs'))
+
+
+@database_sync_to_async
+def add_participant(content, activity):
+    try:
+        participant = models.Participant.objects.get(openid=content['uid'])
+    except models.Participant.DoesNotExist:
+        participant = models.Participant()
+        participant.openid = content['uid']
+
+    participant.nickName = content.get('nickname', 'Anonymous.')
+    participant.avatarUrl = content.get('avatar', 'default_avatar')
+    participant.gender = content.get('gender', 0)
+    participant.country = content.get('country', 'Solar System')
+    participant.province = content.get('province', 'Alpha Centauri')
+    participant.city = content.get('city', 'Proxima Centauri')
+    participant.activate_in = activity.id
+    participant.save()
+    activity.participants.add(participant)
+    activity.save()
+
+    return participant
 
