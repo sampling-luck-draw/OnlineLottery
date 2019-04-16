@@ -106,8 +106,8 @@ def get_activities(request):
     json_str = [{
         'id': i.id,
         'name': i.name,
-        'start_time': utc_to_local(i.start_time).strftime("%Y-%m-%d %H:%M:%S"),
-        'end_time': utc_to_local(i.end_time).strftime("%Y-%m-%d %H:%M:%S")
+        'start_time': utc_to_local(i.start_time).strftime("%Y-%m-%d %H:%M:%S") if i.start_time is not None else "未开始",
+        'end_time': utc_to_local(i.end_time).strftime("%Y-%m-%d %H:%M:%S") if i.start_time is not None else "未结束",
     } for i in activities]
     return HttpResponse(json.dumps(json_str), content_type='application/json')
 
