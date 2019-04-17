@@ -371,10 +371,12 @@ function init_DataTables() {
       }, {
         extend: "csv",
         className: "btn-sm"
-      }, {
-        extend: "excel",
-        className: "btn-sm"
-      }, {
+      },
+      //   {
+      //   extend: "excel",
+      //   className: "btn-sm"
+      // },
+        {
         extend: "pdfHtml5",
         className: "btn-sm"
       }, {

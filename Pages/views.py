@@ -122,6 +122,7 @@ def activity_manage(request):
         return activity
 
     activities = _get_activities(request)
+    awards = models.Award.objects.filter(activity=activity)
 
     return render(request, 'pages/usercenter/activity_page.html',
-                  {'activity': activity, 'activities': activities})
+                  {'activity': activity, 'activities': activities, 'awards': awards})

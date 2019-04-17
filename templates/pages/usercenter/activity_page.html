@@ -22,12 +22,63 @@
           {% endfor %}
         </ul>
       </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-6">
+        <table id="awards-table" class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>奖项</th>
+            <th>奖品</th>
+            <th>总量</th>
+            <th>剩余</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for award in awards %}
+            <tr>
+              <td>{{ award.award_name }}</td>
+              <td>{{ award.prize_name }}</td>
+              <td>{{ award.amount }}</td>
+              <td>{{ award.lucky_dogs.count }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6 col-sm-12 col-xs-6">
+        <table id="dogs-table" class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>奖项</th>
+            <th>Id</th>
+            <th>昵称</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for award in awards %}
+            {% for dog in award.lucky_dogs.all %}
+              <tr>
+                <td>{{ award.award_name }}</td>
+                <td>{{ dog.openid }}</td>
+                <td>{{ dog.nickName }}</td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+
+
 {% endblock content %}
 
 {% block javascripts %}
   {{ block.super }}
+  {% include 'pages/usercenter/include_datatables_js.html' %}
+  <script type="text/javascript" src="{% static "pages/js/usercenter/activity.js" %}"></script>
+
 
 {% endblock javascripts %}
