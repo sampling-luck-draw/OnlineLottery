@@ -3,8 +3,10 @@ import json
 import time
 
 import requests
-import untangle as untangle
+import WeChat.reply
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from Lottery.secret import wechat_token, wechat_appid, wechat_appsecret
 
 
@@ -30,21 +32,8 @@ def checksignature(request):
     return False
 
 
-def reply(request):
-    data = request.body.decode()
-    msg = untangle.parse(data).xml
-    id = msg.MsgId.cdata
 
-    response = '<xml> ' \
-               '<ToUserName><![CDATA[%s]]></ToUserName> ' \
-               '<FromUserName><![CDATA[%s]]></FromUserName> ' \
-               '<CreateTime>%d</CreateTime> ' \
-               '<MsgType>text</MsgType> <Content>' \
-               '<![CDATA[%s]]></Content>' \
-               '</xml> ' % (msg.FromUserName.cdata, msg.ToUserName.cdata, time.time(), msg.FromUserName.cdata)
-    return response
-
-
+@csrf_exempt
 def handle_wechat(request):
     if request.method == 'GET':
         if checksignature(request):
@@ -52,13 +41,10 @@ def handle_wechat(request):
         else:
             return HttpResponse('Fail')
     elif request.method == 'POST':
-        return HttpResponse(reply(request))
-
-
+        return HttpResponse(WeChat.reply.reply(request))
 
 wx_token_expire_time = 0
 wx_token = ''
-
 
 def get_token(request):
     if request.method != 'GET':

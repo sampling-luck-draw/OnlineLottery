@@ -15,13 +15,13 @@ class Organizer(models.Model):
 
 class Participant(models.Model):
     openid = models.CharField(primary_key=True, max_length=32)
-    nickName = models.CharField(max_length=64)
-    avatarUrl = models.URLField()
-    gender = models.SmallIntegerField()
-    country = models.CharField(max_length=64)
-    province = models.CharField(max_length=64)
-    city = models.CharField(max_length=64)
-    language = models.CharField(max_length=16)
+    nickName = models.CharField(max_length=64, null=True)
+    avatarUrl = models.URLField(null=True)
+    gender = models.SmallIntegerField(null=True)
+    country = models.CharField(max_length=64, null=True)
+    province = models.CharField(max_length=64, null=True)
+    city = models.CharField(max_length=64, null=True)
+    language = models.CharField(max_length=16, null=True)
     activate_in = models.IntegerField(null=True)
 
     def __str__(self):
