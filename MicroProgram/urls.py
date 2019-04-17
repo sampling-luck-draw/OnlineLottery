@@ -1,8 +1,8 @@
 from django.urls import path
-from .functions import *
+from .xcx import *
 
 urlpatterns = [
-    path('sanddanmu', send_danmu),
+    path('sanddanmu', xcx_send_danmu),
     path('gettoken', get_token_http),
     path('login', login),
     path('join', join),

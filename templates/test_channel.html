@@ -45,6 +45,8 @@
   });
 
   function connect() {
+    if (statusSocket != null)
+      statusSocket.close();
     statusSocket = new WebSocket($("#ws-addr").val());
     statusSocket.onmessage = function (e) {
       console.log(e);

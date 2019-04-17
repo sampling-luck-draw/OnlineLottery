@@ -2,6 +2,7 @@ import time
 
 SET_NICKNAME = 0
 SET_AVATAR = 1
+REMINDED_ALREADY = 3
 
 class MySession:
     _instance = None
