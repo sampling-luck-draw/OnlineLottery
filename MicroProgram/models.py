@@ -50,7 +50,7 @@ class Activity(models.Model):
 
     @property
     def status(self):
-        if self.start_time is None or self.start_time < datetime.datetime.now(datetime.timezone.utc):
+        if self.start_time is None or self.start_time > datetime.datetime.now(datetime.timezone.utc):
             return "Pending"
         if self.end_time and self.end_time < datetime.datetime.now(datetime.timezone.utc):
             return "Finished"

@@ -78,7 +78,7 @@
           <th>参与人数</th>
           <th>弹幕数量</th>
           <th>状态</th>
-{#          <th>详情</th>#}
+          {#          <th>详情</th>#}
         </tr>
         </thead>
         <tbody>
@@ -98,9 +98,15 @@
             {% endif %}
             <td><a href="/usercenter/participant?activity={{ activity.id }}">{{ activity.participants.count }}</a></td>
             <td><a href="/usercenter/danmu?activity={{ activity.id }}">{{ activity.danmu_set.count }}</a></td>
-            <td><span class="label label-success">{{ activity.status }}</span></td>
-{#            <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i#}
-{#                class="fa fa-pencil"></i>查看</a></td>#}
+            {% if activity.status == 'Pending' %}
+              <td><span class="label label-warning">Pending</span></td>
+            {% elif activity.status == 'Running' %}
+              <td><span class="label label-success">Running</span></td>
+            {% elif activity.status == 'Finished' %}
+              <td><span class="label label-danger">Finished</span></td>
+            {% endif %}
+            {#            <td><a href="/usercenter/activity?activity={{ activity.id }}" class="btn btn-info btn-xs"><i#}
+            {#                class="fa fa-pencil"></i>查看</a></td>#}
           </tr>
         {% endfor %}
 
