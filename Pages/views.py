@@ -10,7 +10,7 @@ from django.views.decorators.http import require_GET
 import MicroProgram.models as models
 from Pages.function import _get_activity, _get_activities
 from Pages.province import province_dict
-from Pages.utils import utc_to_local
+from Pages.utils import utc_to_local, id_to_invite_code
 
 
 def index(request):
@@ -125,4 +125,5 @@ def activity_manage(request):
     awards = models.Award.objects.filter(activity=activity)
 
     return render(request, 'pages/usercenter/activity_page.html',
-                  {'activity': activity, 'activities': activities, 'awards': awards})
+                  {'activity': activity, 'activities': activities,
+                   'awards': awards, 'invite_code': id_to_invite_code(activity.id)})

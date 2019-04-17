@@ -25,6 +25,30 @@
     </div>
 
     <div class="row">
+      <div class="jumbotron">
+        <h1 class="display-4">{{ activity.name }}</h1>
+        <p class="lead">
+          {% if activity.start_time != None %}
+            {{ activity.start_time| date:"Y-n-j H:i" }}
+          {% else %}
+            未开始
+          {% endif %}
+          -
+          {% if activity.end_time != None %}
+            {{ activity.end_time| date:"Y-n-j H:i" }}
+          {% else %}
+            未结束
+          {% endif %}
+        </p>
+        <hr class="my-4">
+        <p>邀请码：<strong>{{ invite_code }}</strong></p>
+        <a class="btn btn-primary btn-lg" href="/usercenter/participant/?actvity={{ activity.id }}"
+           role="button">查看用户</a>
+        <a class="btn btn-primary btn-lg" href="/usercenter/danmu/?actvity={{ activity.id }}" role="button">查看弹幕</a>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-6 col-sm-12 col-xs-6">
         <table id="awards-table" class="table table-striped table-bordered">
           <thead>
