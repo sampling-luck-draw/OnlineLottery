@@ -50,6 +50,7 @@ class Handler:
             if self.activity.start_time else "未开始",
             'end_time': utc_to_local(self.activity.end_time).strftime("%Y-%m-%d %H:%M:%S")
             if self.activity.start_time else "未结束",
+            'invite_code': id_to_invite_code(self.activity.id)
         }
         return json.dumps({'action': 'activity-info', 'content': data})
 
