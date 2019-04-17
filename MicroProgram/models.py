@@ -28,6 +28,8 @@ class Participant(models.Model):
         return "{} {}".format(self.openid, self.nickName)
 
 
+
+
 class Activity(models.Model):
     name = models.CharField(max_length=64)
     belong = models.ForeignKey(to=Organizer, on_delete=models.PROTECT)

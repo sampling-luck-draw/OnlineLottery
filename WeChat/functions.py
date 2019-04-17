@@ -7,7 +7,7 @@ import WeChat.reply
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from Lottery.secret import wechat_token, wechat_appid, wechat_appsecret
+from Lottery.secret import wechat_token_cmy, wechat_appid_cmy, wechat_appsecret_cmy
 
 
 def checksignature(request):
@@ -23,7 +23,7 @@ def checksignature(request):
         return False
 
     if signature and timestamp and nonce:
-        l = [wechat_token, nonce, timestamp]
+        l = [wechat_token_cmy, nonce, timestamp]
         l.sort()
         s = ''.join(l)
         s = hashlib.sha1(s.encode('utf-8')).hexdigest()
@@ -50,7 +50,7 @@ def get_token(request):
     if request.method != 'GET':
         return HttpResponse('Hello')
     url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.format(
-        wechat_appid, wechat_appsecret)
+        wechat_appid_cmy, wechat_appsecret_cmy)
     global wx_token_expire_time, wx_token
     if wx_token_expire_time - time.time() <= 0:
         r = requests.get(url).content.decode()

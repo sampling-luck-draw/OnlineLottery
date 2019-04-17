@@ -2,6 +2,7 @@ import time
 
 import untangle
 from MicroProgram import models
+from Pages.utils import invite_code_to_id
 from WeChat.session import MySession, SET_NICKNAME, SET_AVATAR
 from WeChat import text
 
@@ -13,21 +14,46 @@ def register(openid):
     return text.welcome
 
 
+def check_function(content, openid, participant):
+    if content == '帮助':
+        return "TODO: 帮助文档"
+    if content == '修改昵称':
+        MySession().set(openid, SET_NICKNAME)
+        return text.set_nickname_hint
+    if content == '退出活动':
+        participant.activate_in = None
+        participant.save()
+        return text.quit_success
+
+    # 弹幕或加入
+    if participant.activate_in is None or participant.activate_in.status == 'Finished':
+        if len(content) == 5 and content.isalpha():
+            # 可能是加入邀请码
+            activity_id = invite_code_to_id(content.upper())
+        participant.activate_in = None
+        participant.save()
+        return text.activity_finished
+    return "弹幕"
+
+
+def check_session(content, openid, participant):
+    sess = MySession().get(openid)
+    if sess is None:
+        return check_function(content, openid, participant)
+    elif sess == SET_NICKNAME:
+        participant.nickName = content
+        participant.save()
+        MySession().remove(openid)
+        return text.set_nickname_success.format(content)
+
+
 def process(content, openid):
     try:
         participant = models.Participant.objects.get(openid=openid)
     except models.Participant.DoesNotExist:
         return register(openid)
 
-    sess = MySession().get(openid)
-    if sess is None:
-        # 弹幕和加入
-        return "暂时不能加入和发弹幕"
-    elif sess == SET_NICKNAME:
-        participant.nickName = content
-        participant.save()
-        MySession().remove(openid)
-        return text.set_nickname_success.format(content)
+    return check_session(content, openid, participant)
 
 
 def reply(request):

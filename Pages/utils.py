@@ -31,6 +31,6 @@ r5 = 'AXLCDTHKE'
 def id_to_invite_code(i):
     return r1[i / 10000] + r2[i / 1000] + r3[i / 100] + r2[i / 10] + r5[i % 10]
 
-def invite_code_to_i(code):
+def invite_code_to_id(code):
     return r1.find(code[0]) * 10000 + r2.find(code[1]) * 1000 + \
            r3.find(code[2]) * 100 + r4.find(code[3]) * 10 + r5.find(code[4])
