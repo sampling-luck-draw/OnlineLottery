@@ -49,9 +49,11 @@ def get_token():
         o = json.loads(r)
         if 'access_token' in o:
             xcx_token_expire_time = time.time() + o['expires_in']
+            xcx_token = o['access_token']
             return o['access_token']
         else:
             return r  # 返回错误代码
+    return xcx_token
 
 
 def get_token_http(request):
@@ -67,6 +69,7 @@ def login(request):
     用于小程序的“登陆”功能，获得用户openid和session_key
     """
     post_data = json.loads(request.body.decode('utf-8'))
+    print(request.body.decode('utf-8'))
     code = post_data.get('code', '')
     if not code:
         return HttpResponse('{"result":"error", "msg":"no code"}')
@@ -77,6 +80,7 @@ def login(request):
     openid = decode.get('openid', '')
 
     if not openid:
+        print(response.content)
         return HttpResponse(response.content)
 
     try:
@@ -114,7 +118,8 @@ def login(request):
                 {'action': 'append-user', 'content': post_data})})
     except Activity.DoesNotExist:
         decode['activity_name'] = 'cmy'
-        decode['activity_status'] = 'no such activity'
+        decode['activity_status'] = 'no such activity' if activity_id is not None else 'no activity id'
+    print(json.dumps(decode))
     return HttpResponse(json.dumps(decode))
 
 
@@ -150,20 +155,23 @@ def get_wxa_code(request):
         activity_id = request.GET['activity_id']
         activity = Activity.objects.get(id=activity_id)
         if activity.qrcode is not None:
-            return HttpResponse(activity.qrcode.read(), content_type="image/jpeg")
+            try:
+                return HttpResponse(activity.qrcode.read(), content_type="image/jpeg")
+            except ValueError:
+                pass
     except KeyError:
         return HttpResponse('{"error": "no activity id"}')
     except Activity.DoesNotExist:
         return HttpResponse('{"error": "wrong activity"}')
-
+    print('quest qa code for activity ' + str(activity_id))
     url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' + get_token()
     data = {
         'scene': str(activity_id),
-        'page': 'pages/room'
+        'page': 'pages/room/room'
     }
     # url = 'http://127.0.0.1:9000/avatar.png'
 
-    response = requests.get(url, json=data)
+    response = requests.post(url, json=data)
     if 'application/json' in response.headers.get('Content-Type'):
         return HttpResponse(response.text)
 
