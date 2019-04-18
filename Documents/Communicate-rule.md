@@ -86,7 +86,13 @@
 
    图片的二进制数据或包含错误信息的json，用返回的Content-Type区分。
 
-6. 建立连接 [已测试]
+6. 获得小程序码 [已测试]
+
+   GET: https://sampling.alphamj.cn/xcx/get-qr?activity_id=<activity_id>
+
+   Response: 小程序码的图片
+
+7. 建立连接 [已测试]
 
    wss://sampling.alphamj.cn/ws/[<活动id>]
 
