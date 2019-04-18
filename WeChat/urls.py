@@ -4,5 +4,5 @@ from .functions import *
 
 urlpatterns = [
     path('', handle_wechat),
-    path('gettoken', get_token),
+    path('gettoken', get_token_http),
 ]

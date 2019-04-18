@@ -1,6 +1,11 @@
 import time
+from io import BytesIO
 
+import requests
 import untangle
+from django.core.files.images import ImageFile
+
+import WeChat.functions
 from MicroProgram import models
 from MicroProgram.functions import send_danmu
 from Pages.utils import invite_code_to_id
@@ -22,6 +27,9 @@ def check_function(content, openid, participant):
     if content == '修改昵称':
         MySession().set(openid, SC.SET_NICKNAME)
         return text.set_nickname_hint
+    if content == '修改头像':
+        MySession().set(openid, SC.SET_AVATAR)
+        return text.set_avatar_hint
     if content == '退出活动':
         participant.activate_in = None
         participant.save()
@@ -86,14 +94,42 @@ def process(content, openid):
     return check_session(content, openid, participant)
 
 
+def set_avatar(openid, media_id):
+    if MySession().get(openid) != SC.SET_AVATAR:
+        return text.send_img_hint
+    try:
+        participant = models.Participant.objects.get(openid=openid)
+    except models.Participant.DoesNotExist:
+        return ""
+    url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token={}&media_id={}'.\
+        format(WeChat.functions.get_token(), media_id)
+    print('avatar_url')
+    response = requests.get(url)
+    avatar = ImageFile(BytesIO(response.content), name="avatar_file_" + openid)
+    avatar.close()
+    participant.avatarUrl = 'avatar/avatar_file_' + openid
+    participant.save()
+
+    return ''
+
+
 def reply(request):
     data = request.body.decode()
     msg = untangle.parse(data).xml
+    type = msg.MsgType.cdata
     msgid = msg.MsgId.cdata
-    content = msg.Content.cdata
     openid = msg.FromUserName.cdata
 
-    rep_text = process(content, openid)
+    rep_text = ''
+    print(data)
+    if type == 'text':
+        content = msg.Content.cdata
+        if content == '【收到不支持的消息类型，暂无法显示】':
+            rep_text = '【收到不支持的消息类型，暂无法显示】'
+        else:
+            rep_text = process(content, openid)
+    elif type == 'image':
+        rep_text = set_avatar(openid, msg.MediaId.cdata)
     if rep_text == '':
         response = "success"
     else:

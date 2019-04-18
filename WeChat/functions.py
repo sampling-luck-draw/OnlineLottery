@@ -46,9 +46,7 @@ def handle_wechat(request):
 wx_token_expire_time = 0
 wx_token = ''
 
-def get_token(request):
-    if request.method != 'GET':
-        return HttpResponse('Hello')
+def get_token():
     url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.format(
         wechat_appid_cmy, wechat_appsecret_cmy)
     global wx_token_expire_time, wx_token
@@ -59,5 +57,11 @@ def get_token(request):
             wx_token_expire_time = time.time() + o['expires_in']
             wx_token = o['access_token']
         else:
-            return HttpResponse(r)  # 返回错误代码
-    return HttpResponse(wx_token)
+            return r  # 返回错误代码
+    return wx_token
+
+
+def get_token_http(request):
+    if request.method != 'GET':
+        return HttpResponse('Hello')
+    return HttpResponse(get_token())
