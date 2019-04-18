@@ -7,6 +7,13 @@
 {% endblock stylesheets %}
 
 {% block content %}
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <img src="/xcx/get-qr?activity_id={{ activity.id }}" alt="QR CODE">
+    </div>
+  </div>
+</div>
   <div class="right_col" role="main">
     <div class="row">
 
@@ -25,9 +32,11 @@
     </div>
 
     <div class="row">
-    <img src="/get-qr?activity_id={{ activity.id }}">
+{#    <img src="/xcx/get-qr?activity_id={{ activity.id }}">#}
       <div class="jumbotron">
-        <h1 class="display-4">{{ activity.name }}</h1>
+        <h1 class="display-4">{{ activity.name }} &nbsp;
+          <i class="fa fa-qrcode"  data-toggle="modal" data-target=".bs-example-modal-sm"></i>
+        </h1>
         <p class="lead">
           {% if activity.start_time != None %}
             {{ activity.start_time| date:"Y-n-j H:i" }}
