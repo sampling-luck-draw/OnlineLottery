@@ -128,9 +128,9 @@ def login(request):
 def join(request):
     try:
         post_data = json.loads(request.body.decode('utf-8'))
-        openid = post_data.get('openid', None)
+        openid = post_data['openid']
         user = Participant.objects.get(openid=openid)
-        activity_id = post_data.get('activity_id')
+        activity_id = post_data['activity_id']
         activity = Activity.objects.get(id=activity_id)
         activity.participants.add(user)
         user.activate_in = activity_id
@@ -147,7 +147,7 @@ def join(request):
 
     return JsonResponse({'result': 'ok',
                          'activity_name': activity.name,
-                         'activity_status': 'Running'})
+                         'activity_status': activity.status})
 
 
 def get_wxa_code(request):
