@@ -1,22 +1,43 @@
 import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.contrib.auth.models import User
+
 from MicroProgram.database_sync_to_async_functions import *
 from MicroProgram.handler import Handler
+from django.contrib.sessions.models import Session
 
 
 class Console(AsyncWebsocketConsumer):
 
     async def connect(self):
-        user = self.scope['user']
+        user = self.scope.get('user', None)
         await self.accept()
-        if not user.is_authenticated:
+        if user is None:
+            try:
+                cookies = dict(self.scope['headers'])[b'cookie']
+                cookies_list = cookies.decode('utf-8').split(';')
+                cookies_list = [a.strip() for a in cookies_list]
+                cookies_dict = {a.split('=')[0]: a.split('=')[1] for a in cookies_list}
+                sessionid = cookies_dict['sessionid']
+                session = Session.objects.get(session_key=sessionid)
+                session_data = session.get_decoded()
+                uid = session_data.get('_auth_user_id')
+                user = User.objects.get(id=uid)
+            except Exception:
+                pass
+
+        if user is None or not user.is_authenticated:
             await self.send('{"error":"unauthenticated"}')
             await self.close()
             return
 
         organizer = await get_organizer(user)
-        activity_id = self.scope['url_route']['kwargs'].get('activity_id', None)
+        try:
+            activity_id = self.scope['url_route']['kwargs'].get('activity_id', None)
+        except KeyError:
+            # FOR TEST ONLY
+            activity_id = int(self.scope['query_string'].decode('utf-8').split('=')[1])
         if not activity_id:
             activity = await get_latest_activity(organizer)
             if not activity:

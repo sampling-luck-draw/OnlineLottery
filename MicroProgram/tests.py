@@ -2,9 +2,12 @@ import json
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+from websocket import create_connection
 
 import MicroProgram.models as models
 from django.test import Client
+
+# from MicroProgram.test_websocket import WebsocketClient
 
 
 class MicroProgramTestCase(TestCase):
@@ -25,6 +28,7 @@ class MicroProgramTestCase(TestCase):
         models.Activity.objects.create(id=1, name="act", belong=organizer)
 
     def test_join(self):
+        print('test join')
         client = Client()
         response = client.post('/xcx/join')
         self.assertEqual(response.content, b'{"result": "json decode error"}')

@@ -173,6 +173,7 @@ fabric.properties
 
 Lottery/secret.py
 Lottery/my.cnf
+Lottery/my_test.cnf
 upload_secrets.sh
 rsync.sh
 .rsync.sh.swp
