@@ -42,14 +42,6 @@ def _get_activity(request, default=False):
     return activity
 
 
-def exempt_cross_region(response):
-    response["Access-Control-Allow-Origin"] = "*"
-    response["Access-Control-Allow-Methods"] = "POST,GET,OPTIONS"
-    response["Access-Control-Max-Age"] = "1000"
-    response["Access-Control-Allow-Headers"] = "*"
-    return response
-
-
 @require_GET
 @login_required(login_url='/signin')
 def get_danmu(request):
@@ -63,7 +55,7 @@ def get_danmu(request):
     length = int(request.GET.get('length', danmus_count))
     end = min(start + length, danmus_count)
     danmus = danmus.order_by("-id")[start: end]
-    participants_dict = dict([(k['openid'], k['nickName']) for k in activity.participants.values('openid', 'nickname')])
+    participants_dict = dict([(k['openid'], k['nickname']) for k in activity.participants.values('openid', 'nickname')])
 
     danmu_list = [{
         'id': d.id,
@@ -89,8 +81,8 @@ def get_participants(request):
     participants = activity.participants.all()
     json_str = [{
         'id': i.pk,
-        'nickName': i.nickName,
-        'avatarUrl': i.avatarUrl,
+        'nickname': i.nickname,
+        'avatar': i.avatar,
         'gender': i.gender,
         'country': i.country,
         'province': i.province,
