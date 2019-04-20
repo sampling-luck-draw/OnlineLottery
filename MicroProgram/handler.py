@@ -67,4 +67,4 @@ class Handler:
 
     async def handle_get_lucky_dogs(self, message):
         dogs = await get_lucky_dogs_by_activity(self.activity)
-        return json.dumps({'action': 'lucky-dogs', 'content': json.dumps(dogs)})
+        return json.dumps({'action': 'lucky-dogs', 'content': dogs})

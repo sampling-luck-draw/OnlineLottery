@@ -160,7 +160,7 @@
       ```json
       {"action": "participants", 
       "content": [
-          {"avatar": "头像地址", "nickname": "Yeah...", "language": "zh_CN", "nickName": "Yeah...", "country": "China", "province": "Jilin", "gender": 1, "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "city": "Yanbian"},
+          {"avatar": "头像地址", "nickname": "Yeah...", "language": "zh_CN", "nickname": "Yeah...", "country": "China", "province": "Jilin", "gender": 1, "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "city": "Yanbian"},
           {}
       ]}
       ```
@@ -203,13 +203,21 @@
       {"action": "get-lucky-dogs"}
       ```
 
-   12. 请求活动信息：本地->云 [已测试]
+   12. 中奖人信息
+
+      ```json
+      {"action": "lucky-dogs", "content": [
+       ["一等奖", "GGG"]
+       ]}
+      ```
+
+   13. 请求活动信息：本地->云 [已测试]
 
        ```json
        {"action": "get-activity-info"}
        ```
 
-   13. 发送活动信息：云->本地 [已测试]
+   14. 发送活动信息：云->本地 [已测试]
 
       ```json
       {"action":"activity-info",
