@@ -11,6 +11,8 @@ from django.test import Client, TestCase
 from MicroProgram import models
 from aiounittest import async_test, AsyncTestCase
 
+from Pages.utils import id_to_invite_code
+
 
 class TestChannel(AsyncTestCase):
     @classmethod
@@ -26,18 +28,10 @@ class TestChannel(AsyncTestCase):
                         (b'cookie', self.client.cookies.output(header='', sep='; ').encode())]
 
     @async_test
-    async def test_connect(self):
-        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
-        connected, subprotocol = await communicator.connect()
-        self.assertEqual(connected, True)
-        message = await communicator.receive_from(10)
-        self.assertEqual(message, 'BLXDNZ')
-        await communicator.disconnect()
-
-    @async_test
     async def test_append_user(self):
         communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
         connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
         message = await communicator.receive_from(10)
         self.assertEqual(message, 'BLXDNZ')
         await communicator.send_json_to(
@@ -72,4 +66,26 @@ class TestChannel(AsyncTestCase):
                                              "activate_in": 1
                                          }
                                      ]}, sort_keys=True))
+        await communicator.disconnect()
+
+    @async_test
+    async def test_modify_activity(self):
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'BLXDNZ')
+        await communicator.send_json_to({"action": "modify-activity", "content": {"start_time": "2019-07-01 13:05:40"}})
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"result": "success"}')
+        await communicator.send_json_to({"action": "get-activity-info"})
+        message = await communicator.receive_json_from(10)
+        self.assertEqual(json.dumps(message, sort_keys=True),
+                         json.dumps({"action": "activity-info",
+                                     "content": {
+                                         "name": "才明洋",
+                                         "start_time": "2019-07-01 13:05:40",
+                                         "end_time": "未结束",
+                                         "invite_code": id_to_invite_code(1)
+                                     }}, sort_keys=True))
         await communicator.disconnect()
