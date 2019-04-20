@@ -1,9 +1,10 @@
 import json
 
 from aiounittest import async_test, AsyncTestCase
+from asgiref.sync import async_to_sync
 from channels.testing import WebsocketCommunicator
 from django.contrib.auth.models import User
-from django.test import Client
+from django.test import Client, TestCase
 
 import MicroProgram.consumers
 from MicroProgram import models
@@ -25,13 +26,6 @@ class TestChannel(AsyncTestCase):
 
     @async_test
     async def test_connect(self):
-        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
-        connected, subprotocol = await communicator.connect()
-        self.assertEqual(connected, True)
-        message = await communicator.receive_from(10)
-        self.assertEqual(message, 'BLXDNZ')
-        await communicator.disconnect()
-
         communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1")
         connected, subprotocol = await communicator.connect()
         self.assertEqual(connected, True)
@@ -58,6 +52,37 @@ class TestChannel(AsyncTestCase):
         self.assertEqual(connected, True)
         message = await communicator.receive_from(10)
         self.assertEqual(message, '{"error":"invalid activity id"}')
+        await communicator.disconnect()
+
+        # u = User.objects.create(username="bb", password="bb")
+        # models.Organizer.objects.create(user=u)
+        # client = Client()
+        # self.client.logout()
+        # client.login(username="bb", password="bb")
+        # headers = [(b'origin', b'...'),
+        #            (b'cookie', client.cookies.output(header='', sep='; ').encode())]
+        # communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws", headers)
+        # connected, subprotocol = await communicator.connect()
+        # self.assertEqual(connected, True)
+        # message = await communicator.receive_from(10)
+        # self.assertEqual(message, '{"error":"no available activity"}')
+        # await communicator.disconnect()
+        # self.client.login(username="aa", password="aa")
+
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'BLXDNZ')
+        await communicator.send_to("123")
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'json decode error')
+        await communicator.send_to("abc")
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'json decode error')
+        await communicator.send_to('{"action": "faker"}')
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'unrecognized action faker')
         await communicator.disconnect()
 
     @async_test

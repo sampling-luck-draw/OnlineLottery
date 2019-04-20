@@ -78,7 +78,7 @@
    }
    ```
 
-5. 获取小程序码 [未测试：小程序未发布]
+5. 获取小程序码 [已测试]
 
    GET: https://sampling.alphamj.cn/xcx/get-qr?activity_id=<activity_id>
 

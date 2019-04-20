@@ -82,6 +82,9 @@ class Console(AsyncWebsocketConsumer):
         except json.JSONDecodeError:
             await self.send('json decode error')
             return
+        if not isinstance(message, dict):
+            await self.send('json decode error')
+            return
         #
         # if 'content' not in message:
         #     await self.send('no content')

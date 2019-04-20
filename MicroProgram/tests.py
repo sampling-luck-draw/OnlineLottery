@@ -2,7 +2,6 @@ import json
 
 from django.contrib.auth.models import User
 from django.test import TestCase
-from websocket import create_connection
 
 import MicroProgram.models as models
 from django.test import Client
@@ -13,8 +12,8 @@ from django.test import Client
 class MicroProgramTestCase(TestCase):
     def setUp(self):
         d = {
-            "nickName": "才小羊",
-            "avatarUrl": "avatarUrl",
+            "nickname": "才小羊",
+            "avatar": "avatarUrl",
             "gender": 0,
             "country": "Solar System",
             "province": "Alpha Centauri",
@@ -26,6 +25,7 @@ class MicroProgramTestCase(TestCase):
         user = User.objects.create_user(username="aa", password="aa", email="aa@aa.com")
         organizer = models.Organizer.objects.create(user=user)
         models.Activity.objects.create(id=1, name="act", belong=organizer)
+        models.Participant.objects.create(openid='oxwbU5M0-CCKSRFknXXXXXXXXXXX')
 
     def test_join(self):
         print('test join')
@@ -46,3 +46,22 @@ class MicroProgramTestCase(TestCase):
                                      }))
         self.assertEqual(models.Activity.objects.get(id=1).participants.count(), 1)
         self.assertEqual(models.Participant.objects.get(openid="123").activate_in, 1)
+
+    def test_send_danmu(self):
+        response = self.client.post('/xcx/sanddanmu',
+                                    data={'openid': "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "danmu": "kao"},
+                                    content_type="application/json")
+        self.assertEqual(response.content, b'{"result": "ok"}')
+        response = self.client.post('/xcx/sanddanmu',
+                                    data={"danmu": "kao"},
+                                    content_type="application/json")
+        self.assertEqual(response.content, b'{"result":"error", "msg":"no openid"}')
+        response = self.client.post('/xcx/sanddanmu',
+                                    data={'openid': "oxwbU5M0-CCKSRFknXXXXXXXXXXX"},
+                                    content_type="application/json")
+        self.assertEqual(response.content, b'{"result":"error", "msg":"no danmu"}')
+        response = self.client.post('/xcx/sanddanmu',
+                                    data={'openid': "oxwbU5M0-123"},
+                                    content_type="application/json")
+        self.assertEqual(response.content, b'{"result":"error", "msg":"no such user"}')
+

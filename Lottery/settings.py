@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'channels',
     'Pages',
     'MicroProgram',
-    'gentelella',
+    #'gentelella',
     'corsheaders'
 ]
 

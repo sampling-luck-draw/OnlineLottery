@@ -32,7 +32,6 @@ def checksignature(request):
     return False
 
 
-
 @csrf_exempt
 def handle_wechat(request):
     if request.method == 'GET':
@@ -43,8 +42,10 @@ def handle_wechat(request):
     elif request.method == 'POST':
         return HttpResponse(WeChat.reply.reply(request))
 
+
 wx_token_expire_time = 0
 wx_token = ''
+
 
 def get_token():
     url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.format(

@@ -68,6 +68,8 @@ def check_function(content, openid, participant):
                 return text.already_in.format(activity.name)
 
     if activity is None:
+        participant.activate_in = None
+        participant.save()
         return text.activity_finished
     send_danmu(participant, content)
     return ""
@@ -75,10 +77,8 @@ def check_function(content, openid, participant):
 
 def check_session(content, openid, participant):
     sess = MySession().get(openid)
-    if sess is None:
-        return check_function(content, openid, participant)
-    elif sess == SC.SET_NICKNAME:
-        participant.nickName = content
+    if sess == SC.SET_NICKNAME:
+        participant.nickname = content
         participant.save()
         MySession().remove(openid)
         return text.set_nickname_success.format(content)
@@ -94,23 +94,23 @@ def process(content, openid):
     return check_session(content, openid, participant)
 
 
-def set_avatar(openid, media_id):
-    if MySession().get(openid) != SC.SET_AVATAR:
-        return text.send_img_hint
-    try:
-        participant = models.Participant.objects.get(openid=openid)
-    except models.Participant.DoesNotExist:
-        return ""
-    url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token={}&media_id={}'.\
-        format(WeChat.functions.get_token(), media_id)
-    print('avatar_url')
-    response = requests.get(url)
-    avatar = ImageFile(BytesIO(response.content), name="avatar_file_" + openid)
-    avatar.close()
-    participant.avatarUrl = 'avatar/avatar_file_' + openid
-    participant.save()
-
-    return ''
+# def set_avatar(openid, media_id):
+#     if MySession().get(openid) != SC.SET_AVATAR:
+#         return text.send_img_hint
+#     try:
+#         participant = models.Participant.objects.get(openid=openid)
+#     except models.Participant.DoesNotExist:
+#         return ""
+#     url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token={}&media_id={}'.\
+#         format(WeChat.functions.get_token(), media_id)
+#     print('avatar_url')
+#     response = requests.get(url)
+#     avatar = ImageFile(BytesIO(response.content), name="avatar_file_" + openid)
+#     avatar.close()
+#     participant.avatarUrl = 'avatar/avatar_file_' + openid
+#     participant.save()
+#
+#     return ''
 
 
 def reply(request):
@@ -128,8 +128,8 @@ def reply(request):
             rep_text = '【收到不支持的消息类型，暂无法显示】'
         else:
             rep_text = process(content, openid)
-    elif type == 'image':
-        rep_text = set_avatar(openid, msg.MediaId.cdata)
+    # elif type == 'image':
+    #     rep_text = set_avatar(openid, msg.MediaId.cdata)
     if rep_text == '':
         response = "success"
     else:

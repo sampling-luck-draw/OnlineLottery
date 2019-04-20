@@ -23,7 +23,7 @@ import Pages.auth
 
 urlpatterns = [
     path('', include('Pages.urls')),
-    path('', include('gentelella.urls')),
+#    path('', include('gentelella.urls')),
     path('testws', test_ws),
     path('wx/', include('WeChat.urls')),
     path('xcx/', include('MicroProgram.urls')),
