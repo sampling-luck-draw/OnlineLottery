@@ -37,7 +37,10 @@ class Console(AsyncWebsocketConsumer):
             activity_id = self.scope['url_route']['kwargs'].get('activity_id', None)
         except KeyError:
             # FOR TEST ONLY
-            activity_id = int(self.scope['query_string'].decode('utf-8').split('=')[1])
+            try:
+                activity_id = int(self.scope['query_string'].decode('utf-8').split('=')[1])
+            except Exception:
+                activity_id = None
         if not activity_id:
             activity = await get_latest_activity(organizer)
             if not activity:
@@ -62,10 +65,14 @@ class Console(AsyncWebsocketConsumer):
         # print(self.channel_name)
 
     async def disconnect(self, code):
-        await self.channel_layer.group_discard(
-            'console_' + str(self.activity.id),
-            self.channel_name
-        )
+        try:
+            await self.channel_layer.group_discard(
+                'console_' + str(self.activity.id),
+                self.channel_name
+            )
+        except AttributeError:
+            pass
+        await self.close()
 
     async def receive(self, text_data=None, bytes_data=None):
         if text_data is None:

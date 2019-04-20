@@ -24,6 +24,43 @@ class TestChannel(AsyncTestCase):
                         (b'cookie', self.client.cookies.output(header='', sep='; ').encode())]
 
     @async_test
+    async def test_connect(self):
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'BLXDNZ')
+        await communicator.disconnect()
+
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1")
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"error":"unauthenticated"}')
+        await communicator.disconnect()
+
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", headers="123")
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"error":"unauthenticated"}')
+        await communicator.disconnect()
+
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws", self.headers)
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'BLXDNZ')
+        await communicator.disconnect()
+
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=2", self.headers)
+        connected, subprotocol = await communicator.connect()
+        self.assertEqual(connected, True)
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"error":"invalid activity id"}')
+        await communicator.disconnect()
+
+    @async_test
     async def test_append_user(self):
         communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
         connected, subprotocol = await communicator.connect()
@@ -70,7 +107,7 @@ class TestChannel(AsyncTestCase):
         connected, subprotocol = await communicator.connect()
         self.assertEqual(connected, True)
         message = await communicator.receive_from(10)
-        self.assertEqual(message, 'BLXDNZ123')
+        self.assertEqual(message, 'BLXDNZ')
         await communicator.send_json_to({"action": "modify-activity", "content": {"start_time": "2019-07-01 13:05:40"}})
         message = await communicator.receive_from(10)
         self.assertEqual(message, '{"result": "success"}')
@@ -158,4 +195,12 @@ class TestChannel(AsyncTestCase):
                          json.dumps({"action": "lucky-dogs", "content": [
                              ["二等奖", "oxwbU5M0-CCKSRFknXXXXXXXXXXX"]
                          ]}, sort_keys=True))
+        await communicator.send_json_to({"action": "lucky-dog", "content":
+            {"uid": "oxwbU5MXXXXX", "award": "二等奖"}})
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"error": "no such user"}')
+        await communicator.send_json_to({"action": "lucky-dog", "content":
+            {"uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX", "award": "一等奖"}})
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"error": "no such award"}')
         await communicator.disconnect()
