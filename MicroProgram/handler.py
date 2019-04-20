@@ -35,7 +35,13 @@ class Handler:
 
     async def handle_get_participants(self, message):
         participants = await get_participants_by_activity(self.activity)
-        participants_list = [model_to_json(i) for i in participants]
+        # participants_list = [model_to_json(i) for i in participants]
+        participants_list = []
+        for x in participants:
+            j = model_to_json(x)
+            j['uid'] = j['openid']
+            del j['openid']
+            participants_list.append(j)
         return json.dumps({'action': 'participants', 'content': participants_list})
 
     async def handle_append_user(self, message):

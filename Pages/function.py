@@ -63,7 +63,7 @@ def get_danmu(request):
     length = int(request.GET.get('length', danmus_count))
     end = min(start + length, danmus_count)
     danmus = danmus.order_by("-id")[start: end]
-    participants_dict = dict([(k['openid'], k['nickName']) for k in activity.participants.values('openid', 'nickName')])
+    participants_dict = dict([(k['openid'], k['nickName']) for k in activity.participants.values('openid', 'nickname')])
 
     danmu_list = [{
         'id': d.id,

@@ -88,8 +88,8 @@ def login(request):
     except Participant.DoesNotExist:
         xcx_user = Participant(openid=openid)
 
-    xcx_user.nickName = post_data.get('nickName', 'Anonymous.')
-    xcx_user.avatarUrl = post_data.get('avatarUrl', 'default_avatar')
+    xcx_user.nickname = post_data.get('nickName', 'Anonymous.')
+    xcx_user.avatar = post_data.get('avatarUrl', 'default_avatar')
     xcx_user.gender = post_data.get('gender', 0)
     xcx_user.country = post_data.get('country', 'Solar System')
     xcx_user.province = post_data.get('province', 'Alpha Centauri')

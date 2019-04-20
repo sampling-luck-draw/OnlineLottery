@@ -15,8 +15,8 @@ class Organizer(models.Model):
 
 class Participant(models.Model):
     openid = models.CharField(primary_key=True, max_length=32)
-    nickName = models.CharField(max_length=64, null=True)
-    avatarUrl = models.URLField(null=True)
+    nickname = models.CharField(max_length=64, null=True)
+    avatar = models.URLField(null=True)
     gender = models.SmallIntegerField(null=True)
     country = models.CharField(max_length=64, null=True)
     province = models.CharField(max_length=64, null=True)
@@ -25,7 +25,7 @@ class Participant(models.Model):
     activate_in = models.IntegerField(null=True)
 
     def __str__(self):
-        return "{} {}".format(self.openid, self.nickName)
+        return "{} {}".format(self.openid, self.nickname)
 
 
 class Activity(models.Model):
@@ -62,7 +62,7 @@ class Danmu(models.Model):
     time = models.DateTimeField()
 
     def __str__(self):
-        return "{}: {} @ {} {}".format(self.sender.nickName, self.text, self.activity, self.time)
+        return "{}: {} @ {} {}".format(self.sender.nickname, self.text, self.activity, self.time)
 
 
 class Award(models.Model):

@@ -1,3 +1,5 @@
+import json
+
 import pytest
 import requests
 from channels.testing import WebsocketCommunicator
@@ -11,10 +13,13 @@ from aiounittest import async_test, AsyncTestCase
 
 
 class TestChannel(AsyncTestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         user = User.objects.create_user(username="aa", password="aa", email="aa@aa.com")
         organizer = models.Organizer.objects.create(user=user)
         models.Activity.objects.create(id=1, name='才明洋', belong=organizer)
+
+    def setUp(self):
         self.client = Client()
         self.client.login(username="aa", password="aa")
         self.headers = [(b'origin', b'...'),
@@ -29,23 +34,42 @@ class TestChannel(AsyncTestCase):
         self.assertEqual(message, 'BLXDNZ')
         await communicator.disconnect()
 
-
-# @pytest.mark.django_db
-# def test_signin():
-#     client = Client()
-#     client.post('/signup', data={"username": "123", "password": "123"}, content_type="application/json")
-#     response = client.post('/signin', data={"username": "123", "password": "123"}, content_type="application/json")
-#     assert response.content.decode('utf-8') == '{"status": "ok", "uid": "123"}'
-#     global headers
-#     headers = [(b'origin', b'...'), (b'cookie', response.cookies.output(header='', sep='; ').encode())]
-#
-#
-# @pytest.mark.asyncio
-# async def test_connect():
-#     communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws/1", headers)
-#     connected, subprotocol = await communicator.connect()
-#     assert connected
-#     message = await communicator.receive_from()
-#     assert message == 'BLXDN1Z'
-#     await communicator.disconnect()
-#
+    @async_test
+    async def test_append_user(self):
+        communicator = WebsocketCommunicator(MicroProgram.consumers.Console, "/ws?activity_id=1", self.headers)
+        connected, subprotocol = await communicator.connect()
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, 'BLXDNZ')
+        await communicator.send_json_to(
+            {"action": "append-user",
+             "content": {
+                 "avatar": "头像地址",
+                 "nickname": "Yeah...TT",
+                 "language": "zh_CN",
+                 "country": "China",
+                 "province": "Jilin",
+                 "gender": 1,
+                 "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX",
+                 "city": "Yanbian"
+             }
+             })
+        message = await communicator.receive_from(10)
+        self.assertEqual(message, '{"result": "success"}')
+        await communicator.send_json_to({"action": "get-participants"})
+        message = await communicator.receive_json_from(10)
+        self.assertEqual(json.dumps(message, sort_keys=True),
+                         json.dumps({"action": "participants",
+                                     "content": [
+                                         {
+                                             "avatar": "头像地址",
+                                             "nickname": "Yeah...TT",
+                                             "language": "zh_CN",
+                                             "country": "China",
+                                             "province": "Jilin",
+                                             "gender": 1,
+                                             "uid": "oxwbU5M0-CCKSRFknXXXXXXXXXXX",
+                                             "city": "Yanbian",
+                                             "activate_in": 1
+                                         }
+                                     ]}, sort_keys=True))
+        await communicator.disconnect()

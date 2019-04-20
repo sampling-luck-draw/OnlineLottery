@@ -90,12 +90,13 @@ def add_participant(content, activity):
         participant = models.Participant()
         participant.openid = content['uid']
 
-    participant.nickName = content.get('nickname', 'Anonymous.')
-    participant.avatarUrl = content.get('avatar', 'default_avatar')
+    participant.nickname = content.get('nickname', 'Anonymous.')
+    participant.avatar = content.get('avatar', 'default_avatar')
     participant.gender = content.get('gender', 0)
     participant.country = content.get('country', 'Solar System')
     participant.province = content.get('province', 'Alpha Centauri')
     participant.city = content.get('city', 'Proxima Centauri')
+    participant.language = content.get('Language', 'zh_CN')
     participant.activate_in = activity.id
     participant.save()
     activity.participants.add(participant)
