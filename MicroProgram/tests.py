@@ -61,7 +61,7 @@ class MicroProgramTestCase(TestCase):
                                     content_type="application/json")
         self.assertEqual(response.content, b'{"result":"error", "msg":"no danmu"}')
         response = self.client.post('/xcx/sanddanmu',
-                                    data={'openid': "oxwbU5M0-123"},
+                                    data={'openid': "oxwbU5M0-123", "danmu": "123"},
                                     content_type="application/json")
         self.assertEqual(response.content, b'{"result":"error", "msg":"no such user"}')
 

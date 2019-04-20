@@ -130,4 +130,4 @@ def append_activity(request):
     except ValueError:
         return HttpResponse('{"error": "parse time error"}')
     activity.save()
-    return JsonResponse({'activity_id': activity.id})
+    return JsonResponse({'result': 'success', 'activity_id': activity.id})

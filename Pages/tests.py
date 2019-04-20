@@ -4,6 +4,7 @@ import json
 from django.test import TestCase, Client
 
 from MicroProgram import models
+from Pages.utils import utc_to_local
 
 
 class TestPage(TestCase):
@@ -118,3 +119,29 @@ class TestFunc(TestCase):
             'language': i.language
         }])
         self.assertEqual(r.content.decode(), expect)
+
+    def test_get_activities(self):
+        client = self.client
+        r = client.get('/get-activities', data={'activity': 1})
+        i = models.Activity.objects.get(id=1)
+        expect = json.dumps([{
+            'id': i.id,
+            'name': i.name,
+            'start_time': utc_to_local(i.start_time).strftime(
+                "%Y-%m-%d %H:%M:%S") if i.start_time is not None else "未开始",
+            'end_time': utc_to_local(i.end_time).strftime("%Y-%m-%d %H:%M:%S") if i.start_time is not None else "未结束",
+        }])
+        self.assertEqual(r.content.decode(), expect)
+
+    def test_append_activity(self):
+        client = self.client
+        r = client.post('/append-activity', data={'name': 'ffff', 'end_time': '2019-08-05 05:54:32'},
+                        content_type='application/json')
+        rj = json.loads(r.content.decode())
+        self.assertEqual(rj['result'], 'success')
+        self.assertEqual(models.Activity.objects.get(id=rj['activity_id']).name, 'ffff')
+        r = client.post('/append-activity', data={'end_time': '2019-08-05 05:54:32'}, content_type='application/json')
+        self.assertEqual(r.content.decode(), '{"error": "no activity name"}')
+        r = client.post('/append-activity', data={'name': '123', 'end_time': '20019-08-05 054:54:32'},
+                        content_type='application/json')
+        self.assertEqual(r.content.decode(), '{"error": "parse time error"}')
