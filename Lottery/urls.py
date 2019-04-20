@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from Lottery import deploy, captcha
+# from Lottery import deploy, captcha
 from Pages.views import index, test_ws, get_csrf, usercenter
 import Pages.auth
 
@@ -28,9 +28,9 @@ urlpatterns = [
     path('wx/', include('WeChat.urls')),
     path('xcx/', include('MicroProgram.urls')),
 
-    path('pc-geetest/get', captcha.pc_getcaptcha),
-    path('pc-geetest/validate', captcha.pc_validate),
-
-    path('deploy', deploy.deploy),
+    # path('pc-geetest/get', captcha.pc_getcaptcha),
+    # path('pc-geetest/validate', captcha.pc_validate),
+    #
+    # path('deploy', deploy.deploy),
     path('admin/', admin.site.urls),
 ]

@@ -5,7 +5,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
-from Lottery.captcha import pc_validate
+# from Lottery.captcha import pc_validate
 from MicroProgram.models import Organizer
 
 from . import views
@@ -30,8 +30,8 @@ def signup(request):
         return JsonResponse({"result": "error", "msg": "no password"})
     if not email:
         return JsonResponse({"result": "error", "msg": "no email"})
-    if False and not pc_validate(request):
-        return JsonResponse({"result": "error", "msg": "验证码错误"})
+    # if False and not pc_validate(request):
+    #     return JsonResponse({"result": "error", "msg": "验证码错误"})
     query = User.objects.filter(username=username)
     if len(query) > 0:
         return JsonResponse({"result": "error", "msg": "该用户已经存在"})
@@ -60,8 +60,8 @@ def signin(request):
         return JsonResponse({"result": "error", "msg": "no username"})
     if not password:
         return JsonResponse({"result": "error", "msg": "no password"})
-    if False and not pc_validate(request):
-        return JsonResponse({"result": "error", "msg": "验证码错误"})
+    # if False and not pc_validate(request):
+    #     return JsonResponse({"result": "error", "msg": "验证码错误"})
 
     user = auth.authenticate(username=username, password=password)
     if user is None:
@@ -87,8 +87,8 @@ def changePsw(request):
         return JsonResponse({"result": "error", "msg": "no old password"})
     if not new_psw:
         return JsonResponse({"result": "error", "msg": "no new password"})
-    if False and not pc_validate(request):
-        return JsonResponse({"result": "error", "msg": "验证码错误"})
+    # if False and not pc_validate(request):
+    #     return JsonResponse({"result": "error", "msg": "验证码错误"})
 
     user = request.user
     if not user.check_password(old_psw):

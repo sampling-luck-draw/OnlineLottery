@@ -65,3 +65,9 @@ class MicroProgramTestCase(TestCase):
                                     content_type="application/json")
         self.assertEqual(response.content, b'{"result":"error", "msg":"no such user"}')
 
+    def test_get_token(self):
+        client = Client()
+        response = client.get('/xcx/gettoken')
+        print(response.content)
+        self.assertEqual(response.status_code, 200)
+

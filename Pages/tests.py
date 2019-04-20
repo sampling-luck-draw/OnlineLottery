@@ -145,3 +145,56 @@ class TestFunc(TestCase):
         r = client.post('/append-activity', data={'name': '123', 'end_time': '20019-08-05 054:54:32'},
                         content_type='application/json')
         self.assertEqual(r.content.decode(), '{"error": "parse time error"}')
+
+
+class TestView(TestCase):
+    def setUp(self):
+        client = Client()
+        client.post('/signup', {'username': '123', 'password': '123', 'email': '123@123.com'},
+                    content_type='application/json')
+        self.client = client
+        user = models.User.objects.get(username='123')
+        organizer = models.Organizer.objects.get(user=user)
+        self.act = models.Activity.objects.create(name='act111', belong=organizer)
+        participant = models.Participant.objects.create(nickname='ccc', openid="444")
+        self.act.participants.add(participant)
+        self.act.save()
+        models.Danmu.objects.create(sender=participant, activity=self.act, text='danmu1',
+                                    time=datetime.datetime.now(datetime.timezone.utc))
+        models.Danmu.objects.create(sender=participant, activity=self.act, text='danmu2',
+                                    time=datetime.datetime.now(datetime.timezone.utc))
+
+    def test_index(self):
+        client = self.client
+        r = client.get('/')
+        self.assertEqual(r.status_code, 200)
+
+    def test_signup(self):
+        client = self.client
+        r = client.get('/signup')
+        self.assertEqual(r.status_code, 200)
+
+    def test_signin(self):
+        client = self.client
+        r = client.get('/signin')
+        self.assertEqual(r.status_code, 200)
+
+    def test_usercenter(self):
+        client = self.client
+        r = client.get('/usercenter')
+        self.assertEqual(r.status_code, 200)
+
+    def test_usercenter_danmu(self):
+        client = self.client
+        r = client.get('/usercenter/danmu')
+        self.assertEqual(r.status_code, 200)
+
+    def test_usercenter_participant(self):
+        client = self.client
+        r = client.get('/usercenter/participant')
+        self.assertEqual(r.status_code, 200)
+
+    def test_usercenter_activity(self):
+        client = self.client
+        r = client.get('/usercenter/activity')
+        self.assertEqual(r.status_code, 200)
