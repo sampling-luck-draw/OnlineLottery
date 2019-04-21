@@ -62,7 +62,7 @@ def get_danmu(request):
         'openid': d.sender.openid,
         'nickName': participants_dict[d.sender.openid],
         'text': d.text,
-        'time': d.time.strftime("%Y-%m-%d %H:%M:%S")
+        'time': utc_to_local(d.time).strftime("%Y-%m-%d %H:%M:%S")
     } for d in danmus]
 
     return HttpResponse(json.dumps({

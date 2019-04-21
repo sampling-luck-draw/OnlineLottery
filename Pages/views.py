@@ -79,8 +79,8 @@ def danmu_manage(request):
     danmu_time_range = {}
     for danmu_time in danmu_times:
         minute = danmu_time.time.minute
-        minute = 3 if minute > 30 else 0
-        key = utc_to_local(danmu_time.time).strftime("%Y-%m-%d %H:") + str(minute)
+        minute = minute // 10
+        key = utc_to_local(danmu_time.time).strftime("%Y-%m-%d %H:") + str(minute) + '0'
         if key not in danmu_time_range:
             danmu_time_range[key] = 1
         else:

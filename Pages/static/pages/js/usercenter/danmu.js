@@ -123,9 +123,9 @@ function process_danmu_data() {
     let split_date = k.split(' ');
     let x_value;
     if (split_date[0] === last_date) {
-      x_value = split_date[1] + '0';
+      x_value = split_date[1];
     } else {
-      x_value = split_date[1] + '0\n' + split_date[0];
+      x_value = split_date[1] + '\n' + split_date[0];
       last_date = split_date[0];
     }
     X.push(x_value);
