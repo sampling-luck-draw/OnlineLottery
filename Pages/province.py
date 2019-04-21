@@ -19,7 +19,7 @@ province_dict = {
     "Neimenggu": "内蒙古",
     "Ningxia": "宁夏",
     "Qinghai": "青海",
-    "Shanxi": "陕西",
+    "Shaanxi": "陕西",
     "Gansu": "甘肃",
     "Xinjiang": "新疆",
     "Sichuan": "四川",

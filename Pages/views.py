@@ -108,7 +108,7 @@ def participant_manage(request):
                          'female': gender_statistics_female, 'other': gender_statistics_other}
 
     province_statistics = collections.Counter(participant.values_list('province', flat=True))
-    province_statistics = [{"name": province_dict.get(k), "value": v} for k, v in province_statistics.items()]
+    province_statistics = [{"name": province_dict.get(k, k), "value": v} for k, v in province_statistics.items()]
 
     return render(request, 'pages/usercenter/participants_list.html',
                   {'participants': participant, 'activity': activity, 'gender_statistics': gender_statistics,
