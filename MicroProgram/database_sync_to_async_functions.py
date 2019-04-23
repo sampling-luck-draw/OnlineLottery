@@ -19,7 +19,10 @@ def get_latest_activity(organizer):
 
 @database_sync_to_async
 def get_activity_by_id(activity_id):
-    return models.Activity.objects.get(id=activity_id)
+    try:
+        return models.Activity.objects.get(id=activity_id)
+    except Exception:
+        raise models.Activity.DoesNotExist
 
 
 @database_sync_to_async

@@ -24,8 +24,8 @@ class Console(AsyncWebsocketConsumer):
                 session_data = session.get_decoded()
                 uid = session_data.get('_auth_user_id')
                 user = User.objects.get(id=uid)
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
 
         if user is None or not user.is_authenticated:
             await self.send('{"error":"unauthenticated"}')

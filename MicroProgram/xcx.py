@@ -169,6 +169,7 @@ def get_wxa_code(request):
         'scene': str(activity_id),
         'page': 'pages/room/room'
     }
+    print(data)
     # url = 'http://127.0.0.1:9000/avatar.png'
 
     response = requests.post(url, json=data)
