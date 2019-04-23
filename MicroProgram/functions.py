@@ -26,8 +26,7 @@ def send_danmu(participant, content):
             'type': 'chat.message',
             'text': json.dumps(
                 {'action': 'send-danmu', 'content': {'uid': participant.openid,
-                                                     'danmu': content,
-                                                     'did': danmu.id}})
+                                                     'danmu': content}})
         }
     )
     return True

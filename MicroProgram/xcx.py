@@ -81,7 +81,14 @@ def login(request):
 
     if not openid:
         print(response.content)
-        return HttpResponse(response.content)
+        parse_response = json.loads(response.content)
+        decode['errcode'] = parse_response.get('errcode')
+        decode['errmsg'] = parse_response.get('errmsg')
+        avatar = post_data.get('avatarUrl', None)
+        if avatar is None:
+            return HttpResponse(response.content)
+        openid = Participant.objects.get(avatar=avatar).openid
+        decode['openid'] = openid
 
     try:
         xcx_user = Participant.objects.get(openid=openid)
@@ -112,12 +119,13 @@ def login(request):
         activity.save()
         decode['activity_name'] = activity.name
         decode['activity_status'] = activity.status
+        del post_data['activity_id']
         channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.send)(
+        async_to_sync(channel_layer.group_send)(
             "console_" + str(activity_id), {'type': 'chat.message', 'text': json.dumps(
                 {'action': 'append-user', 'content': post_data})})
     except Activity.DoesNotExist:
-        decode['activity_name'] = 'cmy'
+        decode['activity_name'] = '<ERROR>'
         decode['activity_status'] = 'no such activity' if activity_id is not None else 'no activity id'
     print(json.dumps(decode))
     return HttpResponse(json.dumps(decode))
@@ -144,6 +152,29 @@ def join(request):
         return HttpResponse('{"result": "no such user"}')
     except Activity.DoesNotExist:
         return HttpResponse('{"result": "no such activity"}')
+
+    del post_data['activity_id']
+    post_data['uid'] = openid
+    del post_data['openid']
+    # xcx_user.nickname = post_data.get('nickName', 'Anonymous.')
+    # xcx_user.avatar = post_data.get('avatarUrl', 'default_avatar')
+    # xcx_user.gender = post_data.get('gender', 0)
+    # xcx_user.country = post_data.get('country', 'Solar System')
+    # xcx_user.province = post_data.get('province', 'Alpha Centauri')
+    # xcx_user.city = post_data.get('city', 'Proxima Centauri')
+    # xcx_user.language = post_data.get('language', 'Xenolinguistics')
+    post_data['nickname'] = user.nickname
+    post_data['avatar'] = user.avatar
+    post_data['gender'] = user.gender
+    post_data['country'] = user.country
+    post_data['province'] = user.province
+    post_data['city'] = user.city
+    post_data['language'] = user.language
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "console_" + str(activity_id), {'type': 'chat.message', 'text': json.dumps(
+            {'action': 'append-user', 'content': post_data})}
+    )
 
     return JsonResponse({'result': 'ok',
                          'activity_name': activity.name,

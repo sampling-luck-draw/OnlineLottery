@@ -102,4 +102,5 @@ class Console(AsyncWebsocketConsumer):
 
     async def chat_message(self, event):
         # Handles the "chat.message" event when it's sent to us.
+        print('send to client ' + event['text'])
         await self.send(text_data=event["text"])
