@@ -62,6 +62,8 @@ class Console(AsyncWebsocketConsumer):
             self.channel_name
         )
         await self.send("BLXDNZ")
+        await self.send(self.handler.handle_get_activity_info(None))
+        await self.send(self.handler.handle_get_participants(None))
         # print(self.channel_name)
 
     async def disconnect(self, code):
